@@ -2,9 +2,6 @@ import click
 from disk import Color, Attr, DiskUsage
 
 @click.command()
-# @click.option(':colors', type=Color, help='Light_red, Red, Dark_red, Dark_blue, '\
-#         + 'Blue, Cyan, Green, Neon, White, Black, Purple, Pink, Grey, Beige, Orange')
-# @click.option(':attributes', type=Attr, help='Bold, Dim, Underlined, Blink, Reverse, Hidden')
 @click.option('-h', '--header', default=None, type=str, metavar='[COLOR]',
                 help='Set the partition name color')
 @click.option('-s', '--style', default=None, type=str, metavar='[ATTR]',
@@ -14,7 +11,7 @@ from disk import Color, Attr, DiskUsage
 @click.option('-g', '--graph', default=None, type=str, metavar='[COLOR]',
                 help='Change the color of the bar graph')
 def cli(header, style, text, graph):
-    """***Displayes disk space graphically***
+    """** Displayes Disk Space, File & Folder size, User Theme, graphically **
 
     Customize visual representation by setting colors and attributes
 
@@ -45,6 +42,15 @@ def cli(header, style, text, graph):
     du.main()
 
 def check_color(option: str) -> Color:
+    """Checks if the string argument for color is in
+    Color(Enum) list and returns enum for that selection
+    
+    Args:
+        option (str): user input for selected color
+
+    rtype:
+        Color: enum with a selected color
+    """
     if option == None:
         return
     for name in Color.__members__.items():
@@ -52,6 +58,15 @@ def check_color(option: str) -> Color:
             return name[1]
 
 def check_attr(option: str) -> Attr:
+    """Checks if the string argument for attribute is in
+    Attr(Enum) list and returns enum for that selection
+    
+    Args:
+        option (str): user input for selected attribute
+
+    rtype:
+        Attr: enum with a selected attribute
+    """
     if option == None:
         return
     for name in Attr.__members__.items():

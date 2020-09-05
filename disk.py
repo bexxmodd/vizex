@@ -35,6 +35,14 @@ class Attr(Enum):
 
 
 class DiskUsage:
+    """
+    Personalize and visualize disk space and its usage in the terminal
+
+    options:
+        barh: visualizes values as a horizontal bar
+        barv: visualize disk space as a vertical bar
+        pie: visualizes as a pie charts
+    """
 
     def __init__(self,
                 header: Color,
@@ -53,8 +61,7 @@ class DiskUsage:
             self.graph = graph
 
     def main(self) -> None:
-        """
-        Add option for user to choose colors
+        """Prints the disk usage based on the selected parameters
         """
         disks = self.disk_space()
         for disk in disks:
@@ -90,6 +97,12 @@ class DiskUsage:
                         + f"{stylize(usage, fg(Color.NEON.value))}\n")
 
     def disk_space(self) -> dict:
+        """Gets and creates a dictionary of the media
+        and disk partitions on the given computer. 
+
+        rtype:
+            dict: partition names as keys and disk paths as values
+        """
         disks = {}
         # First append the root partition
         disks["root"] = {"total": psutil.disk_usage("/").total,
@@ -98,8 +111,8 @@ class DiskUsage:
         # Add media partitions
         disk_parts = psutil.disk_partitions(all=True)
         for disk in disk_parts[:-1]:
-            # disk[1] is Path to the disk partition,
-            # if it starts with media will grab it
+            # disk[1] is the path to the disk partition
+            # if it starts with media we'll get it
             if 'media' in disk[1]:
                 try:
                     disks[disk[1].split('/')[-1]] = {"total": psutil.disk_usage(disk[1]).total,
@@ -111,16 +124,27 @@ class DiskUsage:
 
     # Function to convert bytes into Gb or Mb based on its size
     def bytes_to_readable_format(self, bytes: int) -> str:
-        gb = round(bytes / 1024 / 1024 / 1024, 2)
-        if gb < 1.0:
-            return f'{gb * 1024} MB'
-        return f'{gb} GB'
+        """Convert bytes into human readable form
 
-    # Printing free and used space
+        args:
+            bytes (int): bytes
+        rtype:
+            str: from based on the size of return value(GB|MB|KB)
+        """
+        gb = bytes / 1024 / 1024 / 1024, 2
+        if gb < 1.0:
+            return f'{round(gb * 1024, 2)} MB'
+        return f'{round(gb, 2)} GB'
+
     def print_graph(self, disk: dict) -> str:
         """
         Add args for user option to choose symbols
         for bar and for empty space.
+
+        args:
+            disk (dict): media disk from the host computer
+        rtype:
+            str: horizontal bar representing the space usage
         """
         used = 0
         bar = ' '
@@ -135,13 +159,31 @@ class DiskUsage:
             bar += '░'
         return bar
 
-    def usage_percent(self, disk: dict) -> dict:
+    def usage_percent(self, disk: dict) -> int:
+        """calculates the disk space usage percentage
+
+        args:
+            disk (dict): disk partition space values
+        raises:
+            ValueError: if any of the dict keys are missing
+        rtype:
+            int: percent of the disk space used
+        """
         try:
             return disk['used'] / disk['total'] * 100
         except:
             raise ValueError("Expected total, used, and free as dict keys")
 
     def print_stats(self, disk: dict) -> str:
+        """Returns the disk total, used, and free space
+
+        args:
+            disk (dict): disk partition
+        raises:
+            TypeError: if the dict has no requiered keys
+        rtype:
+            str: alphanumeric text of the total, used and free space
+        """
         try:
             total = self.bytes_to_readable_format(disk['total'])
             used = self.bytes_to_readable_format(disk['used'])
