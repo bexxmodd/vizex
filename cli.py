@@ -2,7 +2,7 @@ import click
 from disk import Color, Attr, DiskUsage
 
 @click.command()
-@click.option('-h', '--header', default=None, type=str, metavar='[COLOR]',
+@click.option('-d', '--header', default=None, type=str, metavar='[COLOR]',
                 help='Set the partition name color')
 @click.option('-s', '--style', default=None, type=str, metavar='[ATTR]',
                 help='Change the style of the header\'s display')
@@ -20,34 +20,33 @@ def cli(header, style, text, graph):
     
     ATTRIBUTES: Bold, Dim, Underlined, Blink, Reverse, Hidden.
     """
-    h = Color.RED
+    d = Color.RED
     s = Attr.BOLD
     t = None
     g = None
     if check_color(header):
-        h = check_color(header)
+        d = check_color(header)
     if check_attr(style):
         s = check_attr(style)
     if check_color(text):
         t = check_color(text)
     if check_color(graph):
         g = check_color(graph)
-    du = DiskUsage(header=h, style=s)
+    du = DiskUsage(header=d, style=s)
     if t and g:
-        du = DiskUsage(header=h, style=s, text=t, graph=g)
+        du = DiskUsage(header=d, style=s, text=t, graph=g)
     elif t:
-        du = DiskUsage(header=h, style=s, text=t)
+        du = DiskUsage(header=d, style=s, text=t)
     elif g:
-        du = DiskUsage(header=h, style=s, graph=g)
+        du = DiskUsage(header=d, style=s, graph=g)
     du.main()
 
 def check_color(option: str) -> Color:
     """Checks if the string argument for color is in
     Color(Enum) list and returns enum for that selection
     
-    Args:
+    args:
         option (str): user input for selected color
-
     rtype:
         Color: enum with a selected color
     """
@@ -61,9 +60,8 @@ def check_attr(option: str) -> Attr:
     """Checks if the string argument for attribute is in
     Attr(Enum) list and returns enum for that selection
     
-    Args:
+    args:
         option (str): user input for selected attribute
-
     rtype:
         Attr: enum with a selected attribute
     """

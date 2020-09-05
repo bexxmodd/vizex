@@ -131,8 +131,8 @@ class DiskUsage:
         rtype:
             str: from based on the size of return value(GB|MB|KB)
         """
-        gb = bytes / 1024 / 1024 / 1024, 2
-        if gb < 1.0:
+        gb = bytes / 1024 / 1024 / 1024
+        if gb < 1:
             return f'{round(gb * 1024, 2)} MB'
         return f'{round(gb, 2)} GB'
 
