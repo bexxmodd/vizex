@@ -18,7 +18,7 @@ def cli(header, style, text, graph):
 
     Customize visual representation by setting colors and attributes
 
-    COLORS: Light_red, Red, Dark_red, Dark_blue, Blue, Cyan,
+    COLORS: Light_red, Red, Dark_red, Dark_blue, Blue, Cyan, Yellow,
     Green, Neon, White, Black, Purple, Pink, Grey, Beige, Orage.
     
     ATTRIBUTES: Bold, Dim, Underlined, Blink, Reverse, Hidden.

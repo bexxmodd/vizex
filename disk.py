@@ -23,6 +23,7 @@ class Color(Enum):
     GRAY = 8
     BEIGE = 230
     ORANGE = 214
+    YELLOW = 3
 
 class Attr(Enum):
     BOLD = 1
