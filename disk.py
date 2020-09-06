@@ -3,27 +3,27 @@
 visualize disk usage and disk space in terminal
 """
 import psutil
-from colored import fg, bg, attr, stylize
+from colored import fg, attr, stylize
 from enum import Enum
 
 class Color(Enum):
-    DARK_RED = 52
+    BLACK = 0
     RED = 1
-    LIGHT_RED = 9
-    DARK_BLUE = 18
+    GREEN = 2
+    YELLOW = 3
     BLUE = 4
     CYAN = 6
-    DARK_GREEN = 22
-    GREEN = 2
-    NEON = 82
     WHITE = 7
-    BLACK = 0
-    PINK = 218
-    PURPLE = 93
     GRAY = 8
-    BEIGE = 230
+    LIGHT_RED = 9
+    DARK_BLUE = 18
+    DARK_GREEN = 22
+    DARK_RED = 52
+    NEON = 82
+    PURPLE = 93
     ORANGE = 214
-    YELLOW = 3
+    PINK = 218
+    BEIGE = 230
 
 class Attr(Enum):
     BOLD = 1
