@@ -1,10 +1,12 @@
-# - [] create a disk exclusion command
+"""
+- [] create a disk exclusion command
+"""
 
 import click
 from disk import Color, Attr, DiskUsage, Chart
 
 @click.command()
-@click.argument('chart', nargs=1, type=str, default=Chart.BARH)
+@click.argument('chart', nargs=1, type=str, default=Chart.BARH, metavar='[CHART_TYPE]')
 @click.option('-d', '--header', default=None, type=str, metavar='[COLOR]',
                 help='Set the partition name color')
 @click.option('-s', '--style', default=None, type=str, metavar='[ATTR]',
@@ -18,10 +20,17 @@ def cli(header, style, text, graph, chart):
 
     Customize visual representation by setting colors and attributes
 
-    COLORS: Light_red, Red, Dark_red, Dark_blue, Blue, Cyan, Yellow,
-    Green, Neon, White, Black, Purple, Pink, Grey, Beige, Orage.
+    Select one of the available graph types:
+
+        barv : Vertical Bars
+        barh : Horizontal Bars
+        pie : Pie Chart
+
+
+    COLORS: light_red, red, dark_red, dark_blue, blue, cyan, yellow,
+    green, neon, white, black, purple, pink, grey, beige, orage.
     
-    ATTRIBUTES: Bold, Dim, Underlined, Blink, Reverse, Hidden.
+    ATTRIBUTES: bold, dim, underlined, blink, reverse, hidden.
     """
     if chart == Chart.BARH or chart == 'barh':
         ch = Chart.BARH
