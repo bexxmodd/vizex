@@ -71,13 +71,16 @@ class DiskUsage:
             self.graph = graph
 
     def main(self) -> None:
+        """Prints the charts based on user selection type"""
         if self.chart == Chart.BARH:
-            self.print_barh()
+            self.print_horizontal_barchart()
         elif self.chart == Chart.BARV:
-            self.print_barv()
+            self.print_vertical_barchart()
+        elif self.chart == Chart.PIE:
+            pass
 
     def disk_space(self) -> dict:
-        """Gets and creates a dictionary of the media
+        """Creates a dictionary of the media
         and disk partitions on the given computer. 
 
         rtype:
@@ -103,7 +106,7 @@ class DiskUsage:
         return disks
 
     # Function to convert bytes into Gb or Mb based on its size
-    def bytes_to_readable_format(self, bytes: int) -> str:
+    def bytes_to_human_readable(self, bytes: int) -> str:
         """Convert bytes into human readable form
 
         args:
@@ -116,7 +119,7 @@ class DiskUsage:
             return f'{round(gb * 1024, 2)} MB'
         return f'{round(gb, 2)} GB'
 
-    def print_graph(self, disk: dict) -> str:
+    def create_horizontal_bar(self, disk: dict) -> str:
         """
         Add args for user option to choose symbols
         for bar and for empty space.
@@ -154,97 +157,121 @@ class DiskUsage:
         except:
             raise ValueError("Expected total, used, and free as dict keys")
 
-    def print_stats(self, disk: dict) -> str:
-        """Returns the disk total, used, and free space
+    def integers_to_readable(self, disk: dict) -> dict:
+        """Returns the dictionary of integers
+        converted into human readable strings
 
         args:
             disk (dict): disk partition
         raises:
             TypeError: if the dict has no requiered keys
         rtype:
-            str: alphanumeric text of the total, used and free space
+            dict: alphanumeric text as values and the total,
+                    used and free space as keys
         """
         try:
-            total = self.bytes_to_readable_format(disk['total'])
-            used = self.bytes_to_readable_format(disk['used'])
-            free = self.bytes_to_readable_format(disk['free'])
+            total = self.bytes_to_human_readable(disk['total'])
+            used = self.bytes_to_human_readable(disk['used'])
+            free = self.bytes_to_human_readable(disk['free'])
         except:
             raise TypeError("Non-media type dict given")
-        return f'Total: {total}   Used: {used}   Free: {free}'
+        return {'total': total, 'used': used, 'free': free}
 
-    def print_barh(self) -> str:
+    def print_horizontal_barchart(self) -> str:
         """Prints the disk usage based on the selected parameters
         """
         disks = self.disk_space()
         for disk in disks:
+            # Print partition name
             print(f"{stylize(disk, self.header + self.style)}")
             if self.text == None:
-                print(f"{self.print_stats(disks[disk])}")
+                res = self.integers_to_readable(disks[disk])
+                print(f"Total: {res['total']}   Used: {res['used']}   Free: {res['free']}")
             else:
-                print(f"{stylize(self.print_stats(disks[disk]), self.text)}")
+                print(f"{stylize(self.integers_to_readable(disks[disk]), self.text)}")
+            # Print usage and usage percent
             usage = round(self.usage_percent(disks[disk]) * 100, 2)
             if usage >= 80:
                 usage = str(usage) + '% full'
                 if self.graph == None:
-                    print(f"{self.print_graph(disks[disk])}  "\
+                    print(f"{self.create_horizontal_bar(disks[disk])}  "\
                         + f"{stylize(usage, attr(Attr.BLINK.value) + fg(Color.LIGHT_RED.value))}\n")
                 else:
-                    print(f"{stylize(self.print_graph(disks[disk]), self.graph)}  "\
+                    print(f"{stylize(self.create_horizontal_bar(disks[disk]), self.graph)}  "\
                         + f"{stylize(usage, fg(Color.LIGHT_RED.value), attr(Attr.BLINK.value))}\n")                    
             elif usage >= 60:
                 usage = str(usage) + '% full'
                 if self.graph == None:
-                    print(f"{self.print_graph(disks[disk])}  "\
+                    print(f"{self.create_horizontal_bar(disks[disk])}  "\
                         + f"{stylize(usage, fg(Color.ORANGE.value))}\n")
                 else:
-                    print(f"{stylize(self.print_graph(disks[disk]), self.graph)}  "\
+                    print(f"{stylize(self.create_horizontal_bar(disks[disk]), self.graph)}  "\
                         + f"{stylize(usage, fg(Color.ORANGE.value))}\n")
             else:
                 usage = str(usage) + '% full'
                 if self.graph == None:
-                    print(f"{self.print_graph(disks[disk])}  "\
+                    print(f"{self.create_horizontal_bar(disks[disk])}  "\
                         + f"{stylize(usage, fg(Color.NEON.value))}\n")
                 else:
-                    print(f"{stylize(self.print_graph(disks[disk]), self.graph)}  "\
+                    print(f"{stylize(self.create_horizontal_bar(disks[disk]), self.graph)}  "\
                         + f"{stylize(usage, fg(Color.NEON.value))}\n")
 
-    def print_barv(self) -> str:
+    def print_vertical_barchart(self) -> str:
+        charts = []
         disks = self.disk_space()
         for disk in disks:
-            usage = self.usage_percent(disks[disk]) * 100
-            n = 8 * (usage / 100)
-            # If the usage is below 1% set up chart to empty
+            usage_percent = self.usage_percent(disks[disk]) * 100
+            text = self.integers_to_readable(disks[disk])
+            n = 8 * (usage_percent / 100)
+            # If the usage % is below 1 print empty chart
             if n < 0.1:
                 n = 0
             else:
-                # Round up to closest integer
+                # Round up to the closest integer
                 n = ceil(n)
-            if usage >= 80:
-                used = stylize(round(used, 2), attr(Attr.BLINK.value) + fg(Color.LIGHT_RED.value))
-            elif usage >= 60:
-                used = stylize(round(usage, 2), fg(Color.ORANGE.value))
+            # Print disk usage percent
+            if usage_percent >= 80:
+                used = stylize(str(round(usage_percent, 2)) + '% full', attr(Attr.BLINK.value) + fg(Color.LIGHT_RED.value))
+            elif usage_percent >= 60:
+                used = stylize(str(round(usage_percent, 2)) + '% full', fg(Color.ORANGE.value))
             else:
-                used = stylize(round(usage, 2), fg(Color.NEON.value))
+                used = stylize(str(round(usage_percent, 2)) + '% full', fg(Color.NEON.value))
 
             def draw_chart(n):
+                """
+                creates a multiline string with horizontal bar chart,
+                name of the partition and its detailed usage information.
+                """
                 res = []
-                fb = '▓▓▓▓▓▓▓▓▓'
-                eb = '░░░░░░░░░'
+                fb, eb = '▓▓▓▓▓▓▓▓▓▓▓', '░░░░░░░░░░░'
+                total, use, free = text['total'], text['used'], text['free']
+                # Check if user has elected graph color
+                if self.graph:
+                    fb = stylize('▓▓▓▓▓▓▓▓▓▓▓', self.graph)
+                    eb = stylize('░░░░░░░░░░░', self.graph)
+                # Check if user selected the text color
+                if self.text:
+                    total = stylize(text['total'], self.text)
+                    use = stylize(text['used'], self.text)
+                    free = stylize(text['free'], self.text)
                 for i in range(n):
                     res.append(fb)
                 for i in range(8 - n):
                     res.append(eb)
                 return f'''
     {res[7]}
-    {res[6]}  {disk}
+    {res[6]}   {stylize(disk, self.header + self.style)}
     {res[5]}
-    {res[4]}  Total: {disks[disk]['total']}
-    {res[3]}  Used: {disks[disk]['used']}
-    {res[2]}  Free: {disks[disk]['free']}
-    {res[1]}  {used} % full
+    {res[4]}  Total: {total}
+    {res[3]}  Used: {use}
+    {res[2]}  Free: {free}
+    {res[1]}  {used}
     {res[0]}
-                '''
-            print(draw_chart(n))
+    '''
+            charts.append(draw_chart(n))
+        # Print out all the partitions
+        for i in charts:
+            print(i)
 
 if __name__ == '__main__':
     du = DiskUsage()
