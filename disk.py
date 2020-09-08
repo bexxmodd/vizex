@@ -3,8 +3,9 @@
 visualize disk usage and disk space in terminal
 """
 import psutil
-from colored import fg, attr, stylize
 from enum import Enum
+from math import ceil
+from colored import fg, attr, stylize
 
 class Color(Enum):
     BLACK = 0
@@ -25,6 +26,7 @@ class Color(Enum):
     PINK = 218
     BEIGE = 230
 
+
 class Attr(Enum):
     BOLD = 1
     DIM = 2
@@ -32,6 +34,12 @@ class Attr(Enum):
     BLINK = 5
     REVERSE = 7
     HIDDEN = 8
+
+
+class Chart(Enum):
+    BARH = 1
+    BARV = 2
+    PIE = 3
 
 
 class DiskUsage:
@@ -45,10 +53,12 @@ class DiskUsage:
     """
 
     def __init__(self,
+                chart: Chart,
                 header: Color,
                 style: Attr,
                 text: Color = None,
                 graph: Color = None) -> None:
+        self.chart = chart
         self.header = fg(header.value)
         self.style = attr(style.value)
         if text:
@@ -61,40 +71,10 @@ class DiskUsage:
             self.graph = graph
 
     def main(self) -> None:
-        """Prints the disk usage based on the selected parameters
-        """
-        disks = self.disk_space()
-        for disk in disks:
-            print(f"{stylize(disk, self.header + self.style)}")
-            if self.text == None:
-                print(f"{self.print_stats(disks[disk])}")
-            else:
-                print(f"{stylize(self.print_stats(disks[disk]), self.text)}")
-            usage = round(self.usage_percent(disks[disk]), 2)
-            if usage >= 80:
-                usage = str(usage) + '% full'
-                if self.graph == None:
-                    print(f"{self.print_graph(disks[disk])}  "\
-                        + f"{stylize(usage, attr(Attr.BLINK.value) + fg(Color.LIGHT_RED.value))}\n")
-                else:
-                    print(f"{stylize(self.print_graph(disks[disk]), self.graph)}  "\
-                        + f"{stylize(usage, fg(Color.LIGHT_RED.value), attr(Attr.BLINK.value))}\n")                    
-            elif usage >= 60:
-                usage = str(usage) + '% full'
-                if self.graph == None:
-                    print(f"{self.print_graph(disks[disk])}  "\
-                        + f"{stylize(usage, fg(Color.ORANGE.value))}\n")
-                else:
-                    print(f"{stylize(self.print_graph(disks[disk]), self.graph)}  "\
-                        + f"{stylize(usage, fg(Color.ORANGE.value))}\n")
-            else:
-                usage = str(usage) + '% full'
-                if self.graph == None:
-                    print(f"{self.print_graph(disks[disk])}  "\
-                        + f"{stylize(usage, fg(Color.NEON.value))}\n")
-                else:
-                    print(f"{stylize(self.print_graph(disks[disk]), self.graph)}  "\
-                        + f"{stylize(usage, fg(Color.NEON.value))}\n")
+        if self.chart == Chart.BARH:
+            self.print_barh()
+        elif self.chart == Chart.BARV:
+            self.print_barv()
 
     def disk_space(self) -> dict:
         """Gets and creates a dictionary of the media
@@ -159,7 +139,7 @@ class DiskUsage:
             bar += '░'
         return bar
 
-    def usage_percent(self, disk: dict) -> int:
+    def usage_percent(self, disk: dict) -> float:
         """calculates the disk space usage percentage
 
         args:
@@ -170,7 +150,7 @@ class DiskUsage:
             int: percent of the disk space used
         """
         try:
-            return disk['used'] / disk['total'] * 100
+            return disk['used'] / disk['total']
         except:
             raise ValueError("Expected total, used, and free as dict keys")
 
@@ -192,6 +172,79 @@ class DiskUsage:
             raise TypeError("Non-media type dict given")
         return f'Total: {total}   Used: {used}   Free: {free}'
 
+    def print_barh(self) -> str:
+        """Prints the disk usage based on the selected parameters
+        """
+        disks = self.disk_space()
+        for disk in disks:
+            print(f"{stylize(disk, self.header + self.style)}")
+            if self.text == None:
+                print(f"{self.print_stats(disks[disk])}")
+            else:
+                print(f"{stylize(self.print_stats(disks[disk]), self.text)}")
+            usage = round(self.usage_percent(disks[disk]) * 100, 2)
+            if usage >= 80:
+                usage = str(usage) + '% full'
+                if self.graph == None:
+                    print(f"{self.print_graph(disks[disk])}  "\
+                        + f"{stylize(usage, attr(Attr.BLINK.value) + fg(Color.LIGHT_RED.value))}\n")
+                else:
+                    print(f"{stylize(self.print_graph(disks[disk]), self.graph)}  "\
+                        + f"{stylize(usage, fg(Color.LIGHT_RED.value), attr(Attr.BLINK.value))}\n")                    
+            elif usage >= 60:
+                usage = str(usage) + '% full'
+                if self.graph == None:
+                    print(f"{self.print_graph(disks[disk])}  "\
+                        + f"{stylize(usage, fg(Color.ORANGE.value))}\n")
+                else:
+                    print(f"{stylize(self.print_graph(disks[disk]), self.graph)}  "\
+                        + f"{stylize(usage, fg(Color.ORANGE.value))}\n")
+            else:
+                usage = str(usage) + '% full'
+                if self.graph == None:
+                    print(f"{self.print_graph(disks[disk])}  "\
+                        + f"{stylize(usage, fg(Color.NEON.value))}\n")
+                else:
+                    print(f"{stylize(self.print_graph(disks[disk]), self.graph)}  "\
+                        + f"{stylize(usage, fg(Color.NEON.value))}\n")
+
+    def print_barv(self) -> str:
+        disks = self.disk_space()
+        for disk in disks:
+            usage = self.usage_percent(disks[disk]) * 100
+            n = 8 * (usage / 100)
+            # If the usage is below 1% set up chart to empty
+            if n < 0.1:
+                n = 0
+            else:
+                # Round up to closest integer
+                n = ceil(n)
+            if usage >= 80:
+                used = stylize(round(used, 2), attr(Attr.BLINK.value) + fg(Color.LIGHT_RED.value))
+            elif usage >= 60:
+                used = stylize(round(usage, 2), fg(Color.ORANGE.value))
+            else:
+                used = stylize(round(usage, 2), fg(Color.NEON.value))
+
+            def draw_chart(n):
+                res = []
+                fb = '▓▓▓▓▓▓▓▓▓'
+                eb = '░░░░░░░░░'
+                for i in range(n):
+                    res.append(fb)
+                for i in range(8 - n):
+                    res.append(eb)
+                return f'''
+    {res[7]}
+    {res[6]}  {disk}
+    {res[5]}
+    {res[4]}  Total: {disks[disk]['total']}
+    {res[3]}  Used: {disks[disk]['used']}
+    {res[2]}  Free: {disks[disk]['free']}
+    {res[1]}  {used} % full
+    {res[0]}
+                '''
+            print(draw_chart(n))
 
 if __name__ == '__main__':
     du = DiskUsage()
