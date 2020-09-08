@@ -1,3 +1,5 @@
+# - [] create a disk exclusion command
+
 import click
 from disk import Color, Attr, DiskUsage, Chart
 
@@ -21,7 +23,7 @@ def cli(header, style, text, graph, chart):
     
     ATTRIBUTES: Bold, Dim, Underlined, Blink, Reverse, Hidden.
     """
-    if chart.lower() == 'barh':
+    if chart == Chart.BARH or chart == 'barh':
         ch = Chart.BARH
     elif chart.lower() == 'barv':
         ch = Chart.BARV
