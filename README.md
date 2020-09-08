@@ -3,4 +3,4 @@
 </p>
 
 
-**vizex** is the program for the UNIX/Linux terminal which helps user to visualize the disk space usage for every partition and media on your machine. **vizex** is highly customizable based on the user's taste and preferences.
+**vizex** is the program for the UNIX/Linux terminal which helps user to visualize the disk space usage for every partition and media on your machine. **vizex** is highly customizable and can fit any user's taste and preferences.
