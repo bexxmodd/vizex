@@ -243,7 +243,7 @@ class DiskUsage:
                 name of the partition and its detailed usage information.
                 """
                 res = []
-                fb, eb = '▓▓▓▓▓▓▓▓▓▓▓', '░░░░░░░░░░░'
+                full, empty = '▓▓▓▓▓▓▓▓▓▓▓', '░░░░░░░░░░░'
                 total, use, free = text['total'], text['used'], text['free']
                 # Check if user has elected graph color
                 if self.graph:
@@ -255,9 +255,9 @@ class DiskUsage:
                     use = stylize(text['used'], self.text)
                     free = stylize(text['free'], self.text)
                 for i in range(n):
-                    res.append(fb)
+                    res.append(full)
                 for i in range(8 - n):
-                    res.append(eb)
+                    res.append(empty)
                 return f'''
     {res[7]}
     {res[6]}   {stylize(disk, self.header + self.style)}
