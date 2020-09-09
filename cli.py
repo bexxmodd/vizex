@@ -1,12 +1,13 @@
-"""
-- [] create a disk exclusion command
-"""
-
 import click
+import ast
 from disk import Color, Attr, DiskUsage, Chart
 
+
 @click.command()
-@click.argument('chart', nargs=1, type=str, default=Chart.BARH, metavar='[CHART_TYPE]')
+@click.argument('chart', nargs=1, default=Chart.BARH,
+                metavar='[CHART_TYPE]')
+@click.option('-I', '--exclude', default=None, multiple=True,
+                help='Select partition you want to exclude')
 @click.option('-d', '--header', default=None, type=str, metavar='[COLOR]',
                 help='Set the partition name color')
 @click.option('-s', '--style', default=None, type=str, metavar='[ATTR]',
@@ -15,8 +16,8 @@ from disk import Color, Attr, DiskUsage, Chart
                 help='Set the color of the regular text')
 @click.option('-g', '--graph', default=None, type=str, metavar='[COLOR]',
                 help='Change the color of the bar graph')
-def cli(header, style, text, graph, chart):
-    """** Displayes Disk Space, File & Folder size, User Theme, graphically **
+def cli(chart, exclude, header, style, text, graph):
+    """** Displayes Disk Usage in the terminal, graphically **
 
     Customize visual representation by setting colors and attributes
 
@@ -32,12 +33,14 @@ def cli(header, style, text, graph, chart):
     
     ATTRIBUTES: bold, dim, underlined, blink, reverse, hidden.
     """
+    ch = None
     if chart == Chart.BARH or chart == 'barh':
         ch = Chart.BARH
     elif chart.lower() == 'barv':
         ch = Chart.BARV
     elif chart.lower() == 'pie':
         ch = Chart.PIE
+    ex = exclude
     d = Color.RED
     s = Attr.BOLD
     t = None
@@ -50,13 +53,16 @@ def cli(header, style, text, graph, chart):
         t = check_color(text)
     if check_color(graph):
         g = check_color(graph)
-    du = DiskUsage(chart=ch, header=d, style=s)
+    du = DiskUsage(chart=ch, header=d, style=s, exclude=ex)
     if t and g:
-        du = DiskUsage(chart=ch, header=d, style=s, text=t, graph=g)
+        du = DiskUsage(
+            chart=ch, header=d, style=s, exclude=ex, text=t, graph=g)
     elif t:
-        du = DiskUsage(chart=ch, header=d, style=s, text=t)
+        du = DiskUsage(
+            chart=ch, header=d, style=s, exclude=ex, text=t)
     elif g:
-        du = DiskUsage(chart=ch, header=d, style=s, graph=g)
+        du = DiskUsage(
+            chart=ch, header=d, style=s, exclude=ex, graph=g)
     du.main()
 
 def check_color(option: str) -> Color:
