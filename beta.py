@@ -1,4 +1,5 @@
 from colored import fg, bg, attr, stylize
+import psutil
 
 # apple = '''
 #                        ./+o+-
@@ -21,28 +22,25 @@ from colored import fg, bg, attr, stylize
 #                          `oo++.
 # ''' % (fg(1), fg(3), fg(1), fg(3), fg(1), fg(3), fg(1), fg(3), fg(1), fg(3), fg(1))
 # print(apple)
+def test():
+    disks = {}
+        # First append the root partition
+    disks["root"] = {"total": psutil.disk_usage("/").total,
+                        "used": psutil.disk_usage("/").used,
+                        "free": psutil.disk_usage("/").free,
+                        "fstype": psutil.disk_partitions(all=False)[0][2]}
+    disk_parts = psutil.disk_partitions(all=True)
+    for disk in disk_parts[:-1]:
+        if 'media' in disk[1]:
+            disks[disk[1].split('/')[-1]] = {"total": psutil.disk_usage(disk[1]).total,
+                                            "used": psutil.disk_usage(disk[1]).used,
+                                            "free": psutil.disk_usage(disk[1]).free,
+                                            "fstype": disk.fstype}
+    for i in disks:
+        print(disks[i])
 
-def print_vertical_bar(n: int) -> str:
-    results = []
-    fb = '▓▓▓▓▓▓▓▓▓'
-    eb = '░░░░░░░░░'
-    for i in range(n):
-        results.append(fb)
-    for i in range(10 - n):
-        results.append(eb)
-    return f'''
-        {results[7]}                    {' '}
-        {results[6]}  root
-        {results[5]}
-        {results[4]}  Total: 100 GB
-        {results[3]}  Used: 60 GB
-        {results[2]}  FREE: 40 GB
-        {results[1]}  60% Usage
-        {results[0]}
-    '''
-
-print(print_vertical_bar(6))
-print(print_vertical_bar(3))
+if __name__ == '__main__':
+    test()
 
 # from gi.repository import Gtk
 # gset = Gtk.Settings.get_default ()

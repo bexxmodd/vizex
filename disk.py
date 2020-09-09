@@ -259,8 +259,8 @@ class DiskUsage:
                     total, use, free = text['total'], text['used'], text['free']
                     # Check if user has elected graph color
                     if self.graph:
-                        fb = stylize('▓▓▓▓▓▓▓▓▓▓', self.graph)
-                        eb = stylize('░░░░░░░░░░', self.graph)
+                        full = stylize('▓▓▓▓▓▓▓▓▓▓', self.graph)
+                        empty = stylize('░░░░░░░░░░', self.graph)
                     # Check if user selected the text color
                     if self.text:
                         total = stylize(text['total'], self.text)
@@ -280,7 +280,7 @@ class DiskUsage:
     {res[1]}   {used}
     {res[0]}
     '''
-                charts.append(draw_chart(n))
+            charts.append(draw_chart(n))
         # Print out all the partitions
         for ch in charts:
             print(ch)
