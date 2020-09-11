@@ -184,8 +184,8 @@ class DiskUsage:
             raise TypeError("Non-media type dict given")
         return {'total': total, 'used': used, 'free': free}
 
-    def print_horizontal_barchart(self) -> str:
-        """Prints the disk usage based on the selected parameters
+    def print_horizontal_barchart(self) -> None:
+        """Prints the disk usage in the Terminal
         """
         disks = self.disk_space()
         for disk in disks:
@@ -225,6 +225,8 @@ class DiskUsage:
                             + f"{stylize(usage, fg(Color.NEON.value))}\n")
 
     def print_vertical_barchart(self) -> str:
+        """prints vertical bar chart in the Terminal
+        """
         charts = []
         disks = self.disk_space()
         for disk in disks:
