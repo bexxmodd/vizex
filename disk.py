@@ -196,7 +196,8 @@ class DiskUsage:
                     res = self.integers_to_readable(disks[disk])
                     print(f"Total: {res['total']}   Used: {res['used']}   Free: {res['free']}")
                 else:
-                    print(f"{stylize(self.integers_to_readable(disks[disk]), self.text)}")
+                    res = self.integers_to_readable(disks[disk])
+                    print(stylize(f"Total: {res['total']}   Used: {res['used']}   Free: {res['free']}", self.text))
                 # Print usage and usage percent
                 usage = round(self.usage_percent(disks[disk]) * 100, 2)
                 if usage >= 80:
