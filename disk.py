@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-- [ ] Show file system type
+- [ ] Option to display TeraBytes (TB)
 """
 
 import psutil
@@ -48,9 +48,9 @@ class DiskUsage:
     Personalize and visualize the disk usage in the terminal
 
     options:
-        barh: visualizes values as a horizontal bar
-        barv: visualize disk space as a vertical bar
-        pie: visualizes as a pie charts
+        barh: visualize values as a horizontal bar
+        barv: visualiz disk space as a vertical bar
+        pie: visualize as a pie charts
     """
 
     def __init__(self,

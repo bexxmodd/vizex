@@ -23,21 +23,9 @@ import psutil
 # ''' % (fg(1), fg(3), fg(1), fg(3), fg(1), fg(3), fg(1), fg(3), fg(1), fg(3), fg(1))
 # print(apple)
 def test():
-    disks = {}
-        # First append the root partition
-    disks["root"] = {"total": psutil.disk_usage("/").total,
-                        "used": psutil.disk_usage("/").used,
-                        "free": psutil.disk_usage("/").free,
-                        "fstype": psutil.disk_partitions(all=False)[0][2]}
-    disk_parts = psutil.disk_partitions(all=True)
-    for disk in disk_parts[:-1]:
-        if 'media' in disk[1]:
-            disks[disk[1].split('/')[-1]] = {"total": psutil.disk_usage(disk[1]).total,
-                                            "used": psutil.disk_usage(disk[1]).used,
-                                            "free": psutil.disk_usage(disk[1]).free,
-                                            "fstype": disk.fstype}
-    for i in disks:
-        print(disks[i])
+    print('''
+    ⠮⠩⠕⠉⠲⠭ Total
+    ''')
 
 if __name__ == '__main__':
     test()
