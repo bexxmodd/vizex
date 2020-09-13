@@ -33,13 +33,7 @@ def cli(chart, exclude, header, style, text, graph):
     
     ATTRIBUTES: bold, dim, underlined, blink, reverse, hidden.
     """
-    ch = None
-    if chart == Chart.BARH or chart == 'barh':
-        ch = Chart.BARH
-    elif chart.lower() == 'barv':
-        ch = Chart.BARV
-    elif chart.lower() == 'pie':
-        ch = Chart.PIE
+    ch = check_chart(chart)
     ex = exclude
     d = Color.RED
     s = Attr.BOLD
@@ -79,6 +73,7 @@ def check_color(option: str) -> Color:
     for name in Color.__members__.items():
         if option.upper() == name[0]:
             return name[1]
+    raise KeyError('Color not available!')
 
 def check_attr(option: str) -> Attr:
     """Checks if the string argument for attribute is in
@@ -94,6 +89,18 @@ def check_attr(option: str) -> Attr:
     for name in Attr.__members__.items():
         if option.upper() == name[0]:
             return name[1]
+    raise KeyError('Type of Attribute not found!')
+
+def check_chart(chart: str) -> Chart:
+    """Checks what type of bar user wants to be displayed"""
+    if chart == Chart.BARH or chart == 'barh':
+        return Chart.BARH
+    elif chart.lower() == 'barv':
+        return Chart.BARV
+    elif chart.lower() == 'pie':
+        return Chart.PIE
+    else:
+        raise NameError("Unsupported chart type!")
 
 
 if __name__ == '__main__':

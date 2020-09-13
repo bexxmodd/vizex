@@ -86,8 +86,8 @@ class DiskUsage:
         """Creates a dictionary of the media
         and disk partitions on the given computer. 
 
-        rtype:
-            dict: keys're partition names and disk size're values
+        returns:
+            keys as partition names and disk size as values
         """
         disks = {}
         # First append the root partition
@@ -117,9 +117,9 @@ class DiskUsage:
         """Convert bytes into human readable form
 
         args:
-            bytes (int): bytes
-        rtype:
-            str: Digits with accompanied value (GB|MB|KB)
+            bytes
+        returns:
+            Digits with accompanied value (GB|MB|KB)
         """
         gb = bytes / 1024 / 1024 / 1024
         if gb < 1:
@@ -132,9 +132,9 @@ class DiskUsage:
         for bar and for empty space.
 
         args:
-            disk (dict): media disk from the host computer
-        rtype:
-            str: horizontal bar representing the space usage
+            media disk from the host computer
+        returns:
+            horizontal bar representing the space usage
         """
         used = 0
         bar = ' '
@@ -153,11 +153,11 @@ class DiskUsage:
         """calculates the disk space usage percentage
 
         args:
-            disk (dict): disk partition space values
+            disk partition space values
         raises:
             ValueError: if any of the dict keys are missing
-        rtype:
-            int: percent of the disk space used
+        returns:
+            percent of the disk space used
         """
         try:
             return disk['used'] / disk['total']
@@ -169,12 +169,12 @@ class DiskUsage:
         converted into human readable strings
 
         args:
-            disk (dict): disk partition
+            disk partition
         raises:
             TypeError: if the dict has no requiered keys
-        rtype:
-            dict: alphanumeric text as values and the total,
-                    used and free space as keys
+        returns:
+            alphanumeric text as values and the total,
+            used and free space as keys
         """
         try:
             total = self.bytes_to_human_readable(disk['total'])
