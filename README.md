@@ -2,7 +2,7 @@
 	<img title="Logo" src="https://i.imgur.com/Jt0V0ce.png" width=550>
 </p>
 
-[![GitHub release](https://img.shields.io/github/release/Naereen/StrapDown.js.svg)](https://GitHub.com/bexxmodd/vizex/releases/) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/bexxmodd/vizex/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/Naereen/StrapDown.js.svg)](https://github.com/bexxmodd/vizex/releases/tag/1.0/) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/bexxmodd/vizex/blob/master/LICENSE)
 
 **vizex** is the terminal program for the UNIX/Linux systems which helps the user to visualize the disk space usage for every partition and media on the user's machine. **vizex** is highly customizable and can fit any user's taste and preferences.
 
