@@ -2,27 +2,28 @@
 	<img title="Logo" src="https://i.imgur.com/Jt0V0ce.png" width=550>
 </p>
 
-[![GitHub release](https://img.shields.io/github/release/Naereen/StrapDown.js.svg)](https://github.com/bexxmodd/vizex/releases/tag/1.0/) [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/bexxmodd/vizex/blob/master/LICENSE)
+
+
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/bexxmodd/vizex?color=red&include_prereleases&style=flat-square) ![Python](https://img.shields.io/pypi/pyversions/vizex?color=yellow&style=flat-square) ![LICENSE](https://img.shields.io/pypi/l/vizex?color=g&style=flat-square)
 
 **vizex** is the terminal program for the UNIX/Linux systems which helps the user to visualize the disk space usage for every partition and media on the user's machine. **vizex** is highly customizable and can fit any user's taste and preferences.
 
 ----
 
 ## Installation
-**vizex** is packaged through the `pypi` which makes it easy to install:
+**vizex** can be installed through your terminal and requieres `Python 3.5` or above and the `pip package manager`. Simply run this command in your Linux terminal and start using the program.
 ```
 pip install vizex
 ```
 
 
 ## How it Works
-[------video goes here-------]
 
 After installing run the program with a single command `vizex` in your terminal. This will graphically display disk space and usage:
 
 Change the graph type from horizontal bars or to the vertical bars or to the *pie charts (in works).
 ```
-vizex barv
+vizex
 ```
 
 But the best part is that you can modify the colors and style of the display to your preferences with following commands:
