@@ -10,7 +10,7 @@ def add_path():
             )
         )
     parentdir = os.path.dirname(currentdir)
-    sys.path.insert(0, parentdir)
+    sys.path.insert(0, parentdir + '/src')
 
 if __name__ == '__main__':
     add_path()

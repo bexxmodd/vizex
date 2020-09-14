@@ -1,13 +1,20 @@
 import click
 import ast
-from disk import Color, Attr, DiskUsage, Chart
+from tools import Color, Attr, Chart
+from disks import DiskUsage
 
 
 @click.command()
 @click.argument('chart', nargs=1, default=Chart.BARH,
                 metavar='[CHART_TYPE]')
-@click.option('-I', '--exclude', default=None, multiple=True,
+@click.option('-P', '--path', default=None, multiple=True,
+                help='Print only specific partition/disk')
+@click.option('-X', '--exclude', default=None, multiple=True,
                 help='Select partition you want to exclude')
+@click.option('--every', is_flag=True,
+                help='Display information for all the (virtual and physical disks')
+@click.option('--details', is_flag=True,
+                help='Display additinal details like fstype and mountpoint')
 @click.option('-d', '--header', default=None, type=str, metavar='[COLOR]',
                 help='Set the partition name color')
 @click.option('-s', '--style', default=None, type=str, metavar='[ATTR]',
@@ -16,16 +23,18 @@ from disk import Color, Attr, DiskUsage, Chart
                 help='Set the color of the regular text')
 @click.option('-g', '--graph', default=None, type=str, metavar='[COLOR]',
                 help='Change the color of the bar graph')
-def cli(chart, exclude, header, style, text, graph):
-    """** Displayes Disk Usage in the terminal, graphically **
+@click.option('-m', '--mark', default=None,
+                help='Choose the symbols used for the graph')
+def cli(chart, path, every, details, exclude, header, style, text, graph, mark):
+    """** Displays Disk Usage in the terminal, graphically **
 
     Customize visual representation by setting colors and attributes
 
     Select one of the available graph types:
 
         barv : Vertical Bars
-        barh : Horizontal Bars
-        pie : Pie Chart
+        *barh : Horizontal Bars (buggy)
+        *pie : Pie Chart (coming soon)
 
 
     COLORS: light_red, red, dark_red, dark_blue, blue, cyan, yellow,
@@ -34,32 +43,49 @@ def cli(chart, exclude, header, style, text, graph):
     ATTRIBUTES: bold, dim, underlined, blink, reverse, hidden.
     """
     ch = check_chart(chart)
-    ex = exclude
+    if path:
+        p = path
+    else:
+        p = None
+    if every:
+        e = True
+    else:
+        e = False
+    if details:
+        dets = True
+    else:
+        dets = False
+    x = list(exclude)
     d = Color.RED
     s = Attr.BOLD
     t = None
     g = None
-    if check_color(header):
-        d = check_color(header)
+    m = mark
+    if _check_color(header):
+        d = _check_color(header)
     if check_attr(style):
         s = check_attr(style)
-    if check_color(text):
-        t = check_color(text)
-    if check_color(graph):
-        g = check_color(graph)
-    du = DiskUsage(chart=ch, header=d, style=s, exclude=ex)
+    if _check_color(text):
+        t = _check_color(text)
+    if _check_color(graph):
+        g = _check_color(graph)
+    du = DiskUsage(chart=ch, path=p, details=dets, header=d,
+            symbol = m, style=s, exclude=x, every=e)
     if t and g:
         du = DiskUsage(
-            chart=ch, header=d, style=s, exclude=ex, text=t, graph=g)
+            chart=ch, path=p, header=d, details=dets, symbol=m,
+                style=s, exclude=x, text=t, graph=g, every=e)
     elif t:
         du = DiskUsage(
-            chart=ch, header=d, style=s, exclude=ex, text=t)
+            chart=ch, path=p, header=d, details=dets, style=s,
+                symbol=m, exclude=x, text=t, every=e)
     elif g:
         du = DiskUsage(
-            chart=ch, header=d, style=s, exclude=ex, graph=g)
+            chart=ch, path=p, header=d, details=dets, style=s,
+                symbol=m, exclude=x, graph=g, every=e)
     du.main()
 
-def check_color(option: str) -> Color:
+def _check_color(option: str) -> Color:
     """Checks if the string argument for color is in
     Color(Enum) list and returns enum for that selection
     

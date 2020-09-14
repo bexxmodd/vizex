@@ -5,6 +5,8 @@ import unittest
 import unittest.mock
 
 from access import add_path
+add_path()
+
 from cli import cli, check_color, check_attr, check_chart
 from disk import DiskUsage, Color, Attr, Chart
 from click.testing import CliRunner

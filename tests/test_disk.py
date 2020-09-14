@@ -5,6 +5,7 @@ import unittest
 import unittest.mock
 
 from access import add_path
+add_path()
 from disk import DiskUsage, Color, Attr, Chart
 
 
