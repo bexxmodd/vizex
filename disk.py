@@ -1,7 +1,4 @@
 #!/usr/bin/python3
-"""
-- [ ] Option to display TeraBytes (TB)
-"""
 
 import psutil
 from enum import Enum
