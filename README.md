@@ -11,7 +11,7 @@
 ----
 
 ## Installation
-**vizex** can be installed through your terminal and requieres `Python 3.5` or above and the `pip package manager`. Simply run this command in your Linux terminal and start using the program.
+**vizex** can be installed through your terminal and requires `Python 3.5` or above and the `pip package manager`. Simply run this command in your Linux terminal and start using the program.
 ```
 pip install vizex
 ```
@@ -40,7 +40,7 @@ Or exclude any combination of partitions/disks with:
 -I <PartitionName1> -I <PartitionName2> ...
 ```
 
-For the full list of the available options please check:
+For a full list of the available options please check:
 ```
 vizex --help
 ```
