@@ -28,7 +28,7 @@ vizex
 
 ![demo](https://i.imgur.com/dsWFE1v.png)
 
-But the best part is that you can modify the colors and style of the display to your preferences with following commands:
+But the best part is that you can modify the colors and style of the display to your preferences with following commands. For example above command has excluded two partitions. You can aslo do give the following options:
 
 ```
 -d --header <color>
