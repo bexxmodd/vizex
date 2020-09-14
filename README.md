@@ -26,6 +26,8 @@ Change the graph type from horizontal bars or to the vertical bars or to the *pi
 vizex
 ```
 
+![demo](https://i.imgur.com/dsWFE1v.png)
+
 But the best part is that you can modify the colors and style of the display to your preferences with following commands:
 
 ```
