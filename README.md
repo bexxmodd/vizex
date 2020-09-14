@@ -11,7 +11,11 @@
 ----
 
 ## Installation
-**vizex** can be installed through your terminal and requires `Python 3.5` or above and the `pip package manager`. Simply run this command in your Linux terminal and start using the program.
+**vizex** can be installed through your terminal and requires `Python 3.7` or above and the `pip package manager`.
+
+Here's [how to set up Python](https://realpython.com/installing-python/) on your machine.
+
+If you don't have PyPackage Index (PyPi) installed, [Here's the guide on how to install it](https://www.tecmint.com/install-pip-in-linux/). After everythong is set up run the following command:
 ```
 pip install vizex
 ```
