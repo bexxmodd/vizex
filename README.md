@@ -53,19 +53,28 @@ vizex --help
 
 ## File Structure
 ```bash
-├── cli.py
-├── disk.py
 ├── LICENSE
-├── pkg
-│   └── __init__.py
 ├── README.md
 ├── requirements.txt
 ├── setup.py
+├── src
+│   ├── charts.py
+│   ├── cli.py
+│   ├── disks.py
+│   └── tools.py
 └── tests
     ├── access.py
     ├── test_cli.py
     └── test_disk.py
 ```
+
+## Release History
+
+- v1.1.0:
+    - Displayes media and network partitions
+    - Print all the partitions with `--every` command
+    - Print additional (fstype and mount point) with `--details`
+    - Refactored for a better reusability
 
 ------
 ## Follow me on Social Media
