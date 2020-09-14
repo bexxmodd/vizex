@@ -29,7 +29,7 @@ def cli(chart, exclude, header, style, text, graph):
 
 
     COLORS: light_red, red, dark_red, dark_blue, blue, cyan, yellow,
-    green, neon, white, black, purple, pink, grey, beige, orage.
+    green, neon, white, black, purple, pink, grey, beige, orange.
     
     ATTRIBUTES: bold, dim, underlined, blink, reverse, hidden.
     """
