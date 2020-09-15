@@ -113,26 +113,34 @@ def check_color(option: str) -> Color:
 def check_attr(option: str) -> Attr:
     """Checks if the string argument for attribute is in
     Attr(Enum) list and returns enum for that selection
-    
+
     args:
         option (str): user input for selected attribute
     rtype:
         Attr: enum with a selected attribute
     """
-    if option == None:
-        return
-    for name in Attr.__members__.items():
-        if option.upper() == name[0]:
-            return name[1]
-    raise KeyError('Type of Attribute not found!')
+    if option is None:
+        return None
+
+    # Build a dict of available arrts so look ups are O(1) instead of O(n)
+    if "attrs" not in check_attr.__dict__:
+        check_attr.attrs = {}
+        for name in Attr.__members__.items():
+            check_attr.attrs[name.upper()] = name
+    try:
+        # This will fail with a KeyError if attr does not exist
+        return check_attr.attrs[option.upper()][1]
+    except KeyError:
+        return None
+
 
 def check_chart(chart: str) -> Chart:
     """Checks what type of bar user wants to be displayed"""
-    if chart == Chart.BARH or chart == 'barh':
+    if chart == Chart.BARH or chart == "barh":
         return Chart.BARH
-    elif chart.lower() == 'barv':
+    elif chart.lower() == "barv":
         return Chart.BARV
-    elif chart.lower() == 'pie':
+    elif chart.lower() == "pie":
         return Chart.PIE
     else:
         raise NameError("Unsupported chart type!")
