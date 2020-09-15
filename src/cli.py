@@ -63,8 +63,6 @@ from tools import Color, Attr, Chart
 @click.option(
     "-m", "--mark", default=None, help="Choose the symbols used for the graph"
 )
-
-
 def cli(chart, path, every, details, exclude, header, style, text, graph, mark):
     """** Displays Disk Usage in the terminal, graphically **
 
@@ -157,15 +155,18 @@ def check_attr(option: str) -> Attr:
 
 def check_chart(chart: str) -> Chart:
     """Checks what type of bar user wants to be displayed"""
-    if chart == Chart.BARH or chart == 'barh':
+    if type(chart) == str:
+        chart = chart.lower()
+
+    if chart == Chart.BARH or chart == "barh":
         return Chart.BARH
-    elif chart.lower() == 'barv':
+    elif chart == Chart.BARV or chart == "barv":
         return Chart.BARV
-    elif chart.lower() == 'pie':
+    elif chart == Chart.PIE or chart == "pie":
         return Chart.PIE
     else:
         raise NameError("Unsupported chart type!")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     cli()
