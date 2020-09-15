@@ -15,7 +15,19 @@
 
 Here's [how to set up Python](https://realpython.com/installing-python/) on your machine.
 
-If you don't have PyPackage Index (PyPi) installed, [Here's the guide on how to install it](https://www.tecmint.com/install-pip-in-linux/). After everythong is set up run the following command:
+Some `vizex` dependencies require a Python 3 development package on Linux.
+
+For Debian and other derived systems (Ubuntu, Mint, Kali, etc.) you can install this with the following command:
+```
+sudo apt-get install python3-dev
+```
+
+For Red Hat derived systems (Fedora, RHEL, CentOS, etc.) you can install this with the following command:
+```
+sudo yum install python3-devel
+```
+
+If you don't have PyPackage Index (PyPI) installed, [Here's the guide on how to install it](https://www.tecmint.com/install-pip-in-linux/). After everything is set up run the following command:
 ```
 pip install vizex
 ```
