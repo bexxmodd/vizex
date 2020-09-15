@@ -79,53 +79,34 @@ def cli(chart, path, every, details, exclude, header, style, text, graph, mark):
 
     COLORS: light_red, red, dark_red, dark_blue, blue, cyan, yellow,
     green, neon, white, black, purple, pink, grey, beige, orange.
-    
+
     ATTRIBUTES: bold, dim, underlined, blink, reverse, hidden.
     """
-    ch = check_chart(chart)
-    if path:
-        p = path
-    else:
-        p = None
-    if every:
-        e = True
-    else:
-        e = False
-    if details:
-        dets = True
-    else:
-        dets = False
-    x = list(exclude)
-    d = Color.RED
-    s = Attr.BOLD
-    t = None
-    g = None
-    m = mark
-    if _check_color(header):
-        d = _check_color(header)
-    if check_attr(style):
-        s = check_attr(style)
-    if _check_color(text):
-        t = _check_color(text)
-    if _check_color(graph):
-        g = _check_color(graph)
-    du = DiskUsage(chart=ch, path=p, details=dets, header=d,
-            symbol = m, style=s, exclude=x, every=e)
-    if t and g:
-        du = DiskUsage(
-            chart=ch, path=p, header=d, details=dets, symbol=m,
-                style=s, exclude=x, text=t, graph=g, every=e)
-    elif t:
-        du = DiskUsage(
-            chart=ch, path=p, header=d, details=dets, style=s,
-                symbol=m, exclude=x, text=t, every=e)
-    elif g:
-        du = DiskUsage(
-            chart=ch, path=p, header=d, details=dets, style=s,
-                symbol=m, exclude=x, graph=g, every=e)
-    du.main()
 
-def _check_color(option: str) -> Color:
+    chart = check_chart(chart)
+    graph_color = check_color(graph)
+    graph_symbol = mark
+    header_color = check_color(header) or Color.RED
+    style = check_attr(style) or Attr.BOLD
+    text_color = check_color(text)
+    exclude_list = list(exclude)
+
+    renderer = DiskUsage(
+        chart=chart,
+        path=path,
+        header=header_color,
+        details=details,
+        symbol=graph_symbol,
+        style=style,
+        exclude=exclude_list,
+        text=text_color,
+        graph=graph_color,
+        every=every,
+    )
+
+    renderer.main()
+
+
 def check_color(option: str) -> Color:
     """Checks if the string argument for color is in
     Color(Enum) list and returns enum for that selection
