@@ -1,30 +1,70 @@
+""" cli.py - Command line interface for visex"""
+
 import click
-import ast
-from tools import Color, Attr, Chart
 from disks import DiskUsage
+from tools import Color, Attr, Chart
 
 
+# Command line arguments for vizex
 @click.command()
-@click.argument('chart', nargs=1, default=Chart.BARH,
-                metavar='[CHART_TYPE]')
-@click.option('-P', '--path', default=None, multiple=True,
-                help='Print only specific partition/disk')
-@click.option('-X', '--exclude', default=None, multiple=True,
-                help='Select partition you want to exclude')
-@click.option('--every', is_flag=True,
-                help='Display information for all the (virtual and physical disks')
-@click.option('--details', is_flag=True,
-                help='Display additinal details like fstype and mountpoint')
-@click.option('-d', '--header', default=None, type=str, metavar='[COLOR]',
-                help='Set the partition name color')
-@click.option('-s', '--style', default=None, type=str, metavar='[ATTR]',
-                help='Change the style of the header\'s display')
-@click.option('-t', '--text', default=None, type=str, metavar='[COLOR]',
-                help='Set the color of the regular text')
-@click.option('-g', '--graph', default=None, type=str, metavar='[COLOR]',
-                help='Change the color of the bar graph')
-@click.option('-m', '--mark', default=None,
-                help='Choose the symbols used for the graph')
+@click.argument("chart", nargs=1, default=Chart.BARH, metavar="[CHART_TYPE]")
+@click.option(
+    "-P",
+    "--path",
+    default=None,
+    multiple=True,
+    help="Print only specific partition/disk",
+)
+@click.option(
+    "-X",
+    "--exclude",
+    default=None,
+    multiple=True,
+    help="Select partition you want to exclude",
+)
+@click.option("--every", is_flag=True, help="Display information for all the disks")
+@click.option(
+    "--details",
+    is_flag=True,
+    help="Display additinal details like fstype and mountpoint",
+)
+@click.option(
+    "-d",
+    "--header",
+    default=None,
+    type=str,
+    metavar="[COLOR]",
+    help="Set the partition name color",
+)
+@click.option(
+    "-s",
+    "--style",
+    default=None,
+    type=str,
+    metavar="[ATTR]",
+    help="Change the style of the header's display",
+)
+@click.option(
+    "-t",
+    "--text",
+    default=None,
+    type=str,
+    metavar="[COLOR]",
+    help="Set the color of the regular text",
+)
+@click.option(
+    "-g",
+    "--graph",
+    default=None,
+    type=str,
+    metavar="[COLOR]",
+    help="Change the color of the bar graph",
+)
+@click.option(
+    "-m", "--mark", default=None, help="Choose the symbols used for the graph"
+)
+
+
 def cli(chart, path, every, details, exclude, header, style, text, graph, mark):
     """** Displays Disk Usage in the terminal, graphically **
 
@@ -136,11 +176,11 @@ def check_attr(option: str) -> Attr:
 
 def check_chart(chart: str) -> Chart:
     """Checks what type of bar user wants to be displayed"""
-    if chart == Chart.BARH or chart == "barh":
+    if chart == Chart.BARH or chart == 'barh':
         return Chart.BARH
-    elif chart.lower() == "barv":
+    elif chart.lower() == 'barv':
         return Chart.BARV
-    elif chart.lower() == "pie":
+    elif chart.lower() == 'pie':
         return Chart.PIE
     else:
         raise NameError("Unsupported chart type!")
