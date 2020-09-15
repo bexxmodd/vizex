@@ -86,20 +86,29 @@ def cli(chart, path, every, details, exclude, header, style, text, graph, mark):
     du.main()
 
 def _check_color(option: str) -> Color:
+def check_color(option: str) -> Color:
     """Checks if the string argument for color is in
     Color(Enum) list and returns enum for that selection
-    
+
     args:
         option (str): user input for selected color
     rtype:
         Color: enum with a selected color
     """
-    if option == None:
-        return
-    for name in Color.__members__.items():
-        if option.upper() == name[0]:
-            return name[1]
-    raise KeyError('Color not available!')
+    if option is None:
+        return None
+
+    # Build a dict of available colors so look ups are O(1) instead of O(n)
+    if "colors" not in check_color.__dict__:
+        check_color.colors = {}
+        for name in Color.__members__.items():
+            check_color.colors[name[0].upper()] = name
+    try:
+        # This will fail with a KeyError if color does not exist
+        return check_color.colors[option.upper()][1]
+    except KeyError:
+        return None
+
 
 def check_attr(option: str) -> Attr:
     """Checks if the string argument for attribute is in
