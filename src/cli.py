@@ -155,18 +155,18 @@ def check_attr(option: str) -> Attr:
 
 def check_chart(chart: str) -> Chart:
     """Checks what type of bar user wants to be displayed"""
-    if type(chart) == str:
+    if isinstance(chart, str):
         chart = chart.lower()
-
-    if chart == Chart.BARH or chart == "barh":
-        return Chart.BARH
-    elif chart == Chart.BARV or chart == "barv":
-        return Chart.BARV
-    elif chart == Chart.PIE or chart == "pie":
-        return Chart.PIE
+    ret = None
+    if chart in [Chart.BARH, "barh"]:
+        ret = Chart.BARH
+    elif chart in [Chart.BARV, "barv"]:
+        ret = Chart.BARV
+    elif chart[Chart.PIE, "pie"]:
+        ret = Chart.PIE
     else:
         raise NameError("Unsupported chart type!")
-
+    return ret
 
 if __name__ == "__main__":
     cli()
