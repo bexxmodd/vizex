@@ -90,16 +90,16 @@ def cli(chart, path, every, details, exclude, header, style, text, graph, mark):
     exclude_list = list(exclude)
 
     renderer = DiskUsage(
-        chart=chart,
-        path=path,
-        header=header_color,
-        details=details,
-        symbol=graph_symbol,
-        style=style,
-        exclude=exclude_list,
-        text=text_color,
-        graph=graph_color,
-        every=every,
+        chart = chart,
+        path = path,
+        header = header_color,
+        details = details,
+        symbol = graph_symbol,
+        style = style,
+        exclude = exclude_list,
+        text = text_color,
+        graph = graph_color,
+        every = every,
     )
 
     renderer.main()
@@ -118,6 +118,7 @@ def check_color(option: str) -> Color:
         return None
 
     # Build a dict of available colors so look ups are O(1) instead of O(n)
+    print(check_color.__dict__)
     if "colors" not in check_color.__dict__:
         check_color.colors = {}
         for name in Color.__members__.items():
@@ -125,7 +126,7 @@ def check_color(option: str) -> Color:
     try:
         # This will fail with a KeyError if color does not exist
         return check_color.colors[option.upper()][1]
-    except KeyError:
+    except KeyError('Invalid color'):
         return None
 
 
@@ -145,11 +146,11 @@ def check_attr(option: str) -> Attr:
     if "attrs" not in check_attr.__dict__:
         check_attr.attrs = {}
         for name in Attr.__members__.items():
-            check_attr.attrs[name.upper()] = name
+            check_attr.attrs[name[0].upper()] = name
     try:
         # This will fail with a KeyError if attr does not exist
         return check_attr.attrs[option.upper()][1]
-    except KeyError:
+    except KeyError('Invalid Attribute'):
         return None
 
 
