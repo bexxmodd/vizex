@@ -11,6 +11,8 @@
 ----
 
 ## Installation
+
+### pip
 **vizex** can be installed through your terminal and requires `Python 3.7` or above and the `pip package manager`.
 
 Here's [how to set up Python](https://realpython.com/installing-python/) on your machine.
@@ -32,6 +34,13 @@ If you don't have PyPackage Index (PyPI) installed, [Here's the guide on how to 
 pip install vizex
 ```
 
+### AUR
+**vizex** is available as a package on the AUR (Arch user repository), distributions with access to the AUR may install directly from them command line using their favorite `pacman` helper.
+
+Example using `yay`:
+```
+yay -S vizex
+```
 
 ## How it Works
 
