@@ -2,7 +2,9 @@ from math import ceil
 from tools import Color, Attr
 from colored import fg, attr, stylize
 
+
 class ChartPrint():
+    """Draws chart with user selected color and symbol"""
 
     def __init__(self,
                 graph: Color = None,
@@ -28,7 +30,11 @@ class ChartPrint():
             self.esymbol = stylize(self.esymbol, self.graph)
 
     def draw_horizontal_bar(self, capacity: int, used: int) -> str:
-        """Creates a horizontal bar chart """
+        """Draw a horizontal bar chart
+        
+        Return:
+            drawn horizontal bar chart
+        """
         bar = ''
         usage = int((used / capacity) * 36)
         for i in range(1, usage + 1):
@@ -42,9 +48,14 @@ class ChartPrint():
         return bar
 
     def draw_vertical_bar(self, capacity: int, used: int) -> str:
+        """Draw a vertical bar chart
+
+        Returns:
+            drawn vertical bar chart
+        """
         bar = '\n'
         n = (capacity / used) * 8
-        # If the usage % is below 1 print empty chart
+        # If the usage is below 1% print empty chart
         if n < 0.1:
             n = 0
         else:

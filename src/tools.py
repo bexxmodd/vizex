@@ -1,6 +1,6 @@
-from colored import fg, attr, stylize
 from math import ceil
 from enum import Enum
+from colored import fg, attr, stylize
 
 class Color(Enum):
     BLACK = 0
@@ -38,7 +38,10 @@ class Chart(Enum):
 
 
 def bytes_to_human_readable(bytes: int, suffix='B') -> str:
-    """Convert bytes into human readable form"""
+    """
+    Converts bytes into the appropriate human
+    readable unit with a relevant suffix.
+    """
     for unit in ['','K','M','G','T','P','E','Z']:
         if abs(bytes) < 1024.0:
             return f'{bytes:3.1f} {unit}{suffix}'
@@ -48,7 +51,7 @@ def bytes_to_human_readable(bytes: int, suffix='B') -> str:
 def ints_to_human_readable(disk: dict) -> dict:
     """
     Converts the dictionary of integers
-    into the human readable strings
+    into the human readable strings.
     """
     result = {}
     try:
@@ -59,7 +62,7 @@ def ints_to_human_readable(disk: dict) -> dict:
     return result
 
 def printml(folder: list, cols: int = 1) -> None:
-    """Prints multiline strings side by side"""
+    """Prints multiline strings side by side."""
     size = len(folder)
     incr = ceil(size / cols)
     end, start = 0, 0
@@ -67,7 +70,7 @@ def printml(folder: list, cols: int = 1) -> None:
         if end >= size:
             break
         end += incr
-        # check if the end index exceeds the last index
+        # Check if the end index exceeds the last index
         if end > size:
             end = size
         lines = [folder[i].splitlines() for i in range(start, end)]

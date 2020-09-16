@@ -1,15 +1,15 @@
-
-
 import psutil
+
 from math import ceil
 from charts import ChartPrint
-from tools import Color, Attr, Chart, bytes_to_human_readable, ints_to_human_readable
 from colored import fg, attr, stylize
+from tools import Color, Attr, Chart
+from tools import bytes_to_human_readable, ints_to_human_readable
 
 
 class DiskUsage:
     """
-    Personalize and visualize the disk usage in the terminal
+    Personalize and visualize the disk space usage in the terminal
 
     options:
         barh: visualize values as a horizontal bar
@@ -49,24 +49,28 @@ class DiskUsage:
             pass
 
     def print_horizontal_barchart(self) -> None:
-        """Prints disk usage in the Terminal"""
+        """
+        Prints disk usage in the Terminal with horizontal bars
+        """
         if self.path:
-            disks = self.grab_specific_part
+            disks = self.grab_specific_disk
         else:
             disks = self.grab_partitions(exclude=self.exclude,
                                     every=self.every)
         for disk in disks:
             print(f"{stylize(disk, self.header + self.style)}")
             print(self.create_stats(disks[disk]))
-            cp = ChartPrint(self.graph, self.symbol)
-            print('', cp.draw_horizontal_bar(capacity=disks[disk]['total'],
-                                            used=disks[disk]['used']),
-                                            self.create_warning(disks[disk]['percent']))
+            chart = ChartPrint(self.graph, self.symbol)
+            print('', chart.draw_horizontal_bar(capacity=disks[disk]['total'],
+                                    used=disks[disk]['used']),
+                                    self.create_warning(disks[disk]['percent']))
             if self.details:
-                print(f"fstype={disks[disk]['fstype']}\tmountpoint={disks[disk]['mountpoint']}")
+                print(self.color_details_text(disks[disk]))
             print()
 
-    def grab_partitions(self, exclude, every: bool=False) -> dict:
+    def grab_partitions(self,
+                        exclude: list,
+                        every: bool=False) -> dict:
         """Grabs all the partitions from the user's PC."""
         disks = {}
         # First append the root partition
@@ -81,6 +85,7 @@ class DiskUsage:
             # Exclude mounpoints created by snap
             if disk.device.startswith('/dev/loop'):
                 continue
+            # Check that part name is not in the excluded list
             if disk[1].split('/')[-1] in self.exclude:
                 continue
             try:
@@ -92,21 +97,36 @@ class DiskUsage:
                         "percent": psutil.disk_usage(disk[1]).percent,
                         "fstype": disk.fstype,
                         "mountpoint": disk.mountpoint
-                }
+                    }
             except:
                 continue
         return disks
 
-    def grab_specific_part(self, path: str) -> dict:
-        """Grabs data of the user specified path"""
+    def grab_specific_disk(self, path: str) -> dict:
+        """
+        Grabs data for the partition of the user specified path
+        """
         disks = {}
-        disks[path.split('/')[-1]] = {"total": psutil.disk_usage(path).total,
-                        "used": psutil.disk_usage(path).used,
-                        "free": psutil.disk_usage(path).free,
-                        "percent": psutil.disk_usage(path).percent,
-                        "fstype": 'N/A',
-                        "mountpoint": 'N/A'}
+        disks[path.split('/')[-1]] = {
+                "total": psutil.disk_usage(path).total,
+                "used": psutil.disk_usage(path).used,
+                "free": psutil.disk_usage(path).free,
+                "percent": psutil.disk_usage(path).percent,
+                "fstype": 'N/A',
+                "mountpoint": 'N/A'
+        }
         return disks
+
+    def color_details_text(self, disk: dict) -> dict:
+        """
+        Sets the color of fstype and mountpoint
+        to the user specified text color.
+        """
+        if self.text:
+            return stylize(f"fstype={disk['fstype']}\tmountpoint={disk['mountpoint']}",
+                        fg(self.text.value))
+        else:
+            return f"fstype={disk['fstype']}\tmountpoint={disk['mountpoint']}"
 
     def create_stats(self, disk: dict) -> str:
         """Create disk/partition usage stats"""
