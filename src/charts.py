@@ -54,7 +54,7 @@ class ChartPrint():
             drawn vertical bar chart
         """
         bar = '\n'
-        n = (capacity / used) * 8
+        n = (used / capacity) * 8
         # If the usage is below 1% print empty chart
         if n < 0.1:
             n = 0
@@ -62,4 +62,4 @@ class ChartPrint():
             n = ceil(n)
         bar += f'{self.esymbol * 9}  \n' * (8 - n)
         bar += f'{self.fsymbol * 9}  \n' * n
-        return bar * '\n'
+        return bar
