@@ -35,7 +35,7 @@ pip install vizex
 ```
 
 ### AUR
-**vizex** is available as a package on the AUR (Arch user repository), distributions with access to the AUR may install directly from them command line using their favorite `pacman` helper.
+**vizex** is available as a package on the AUR (Arch user repository), distributions with AUR support may install directly from the command line using their favorite `pacman` helper.
 
 Example using `yay`:
 ```
