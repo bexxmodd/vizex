@@ -3,10 +3,11 @@ import random
 import psutil
 import unittest
 import unittest.mock
-
-from access import add_path
-add_path()
-from disk import DiskUsage, Color, Attr, Chart
+from unittest.mock import MagicMock
+from colored import fg, attr, stylize
+from tools import Color, Attr, Chart
+from disks import DiskUsage
+from charts import ChartPrint
 
 
 class TestDiskUsage(unittest.TestCase):
@@ -16,33 +17,59 @@ class TestDiskUsage(unittest.TestCase):
     def setUpClass(cls):
         # Create mock up class for method testing
         cls.du = DiskUsage(
-            chart = Chart.BARH,
-            header = Color.LIGHT_RED,
-            style = Attr.UNDERLINED,
-            exclude = [],
-            text = Color.WHITE,
-            graph = Color.PINK
+            chart=Chart.BARH,
+            path=None,
+            exclude=[],
+            header=Color.PINK,
+            style=Attr.UNDERLINED,
+            details=False,
+            every=False,
+            symbol=None,
+            text=Color.BEIGE,
+            graph=None
         )
         cls.test_disk = {
-            'total': 100,
-            'used': 50,
-            'free': 50,
-            'fstype': 'ext4'
+            'total': 100000,
+            'used': 60000,
+            'free': 40000,
+            'percent': 60,
+            'fstype': 'ext4',
+            'mountpoint': '/test'
+
         }
-        cls.dict_to_test_raise = {'total': 100,
-                            'not_used': 50,
-                            'not_free': 50}
+        cls.dict_to_test_raise = {
+                'total': 100,
+                'not_used': 50,
+                'not_free': 50,
+                'precent': 50,
+                'fstype': 'ext4',
+                'mountpoint': '/test'
+        }
     
     def test_main(self):
         self.assertIsInstance(self.du, DiskUsage,
-                    msg="Class is not created properly")
+                    msg="Class doesn't instantiate properly")
+        self.du.switch = MagicMock()
+        self.du.main()
+        self.du.switch.assert_called()
 
-    def test_disk_space(self):
-        disks = self.du.disk_space()
+    def test_switch(self):
+        pass
+
+    def test_print_horizontal_barchart(self):
+        pass
+
+    def test_grab_partitions(self):
+        disks = self.du.grab_partitions(self.du.exclude)
         self.assertIsInstance(disks, dict,
                 msg='Function should return dict')
         # Test that proper keys are present
-        compare_keys = ['total', 'used', 'free', 'fstype']
+        compare_keys = ['total',
+                        'used',
+                        'free',
+                        'percent',
+                        'fstype',
+                        'mountpoint']
         for disk in disks:
             self.assertIsNotNone(disk)
             keys = [key for key in disks[disk].keys()]
@@ -54,45 +81,69 @@ class TestDiskUsage(unittest.TestCase):
             self.assertGreaterEqual(disks[disk]['total'], 1)
             self.assertGreaterEqual(disks[disk]['used'], 1)
             self.assertGreaterEqual(disks[disk]['free'], 0)
+            self.assertGreaterEqual(disks[disk]['percent'], 0)
             self.assertIsInstance(disks[disk]['fstype'], str)
+            self.assertIsInstance(disks[disk]['mountpoint'], str)
 
-    def test_bytes_to_human_readable(self):
-        # Test if method correctly converts to MB
-        for i in range(20):
-            bt = random.randint(1048576, 943718400)
-            h = self.du.bytes_to_human_readable(bt).split(' ')[1]
-            self.assertEqual(h, 'MB', msg='Should be MB')
-        # Test if method correctly converts to GB
-        for i in range(20):
-            bt = random.randint(1073741824, 549755813888)
-            h = self.du.bytes_to_human_readable(bt).split(' ')[1]
-            self.assertEqual(h, 'GB', msg='Should be GB')
+    def test_grab_specific_disk(self):
+        disks = self.du.grab_specific_disk('/home/')
+        self.assertIsInstance(disks, dict,
+                msg='Function should return dict')
+        # Test that proper keys are present
+        compare_keys = ['total',
+                        'used',
+                        'free',
+                        'percent',
+                        'fstype',
+                        'mountpoint']
+        for disk in disks:
+            self.assertIsNotNone(disks)
+            keys = [key for key in disks[disk].keys()]
+            self.assertListEqual(keys, compare_keys,
+                            msg=f'{keys} are not present')
+        
+        # Test that they have positive integer values
+        for disk in disks:
+            self.assertGreaterEqual(disks[disk]['total'], 1)
+            self.assertGreaterEqual(disks[disk]['used'], 1)
+            self.assertGreaterEqual(disks[disk]['free'], 0)
+            self.assertGreaterEqual(disks[disk]['percent'], 0)
+            self.assertIsInstance(disks[disk]['fstype'], str)
+            self.assertIsInstance(disks[disk]['mountpoint'], str)
 
-    def test_create_horizontal_bar(self):
-        compare_bar = ' ██████████████████▒░░░░░░░░░░░░░░░░░░'
-        bar = self.du.create_horizontal_bar(self.test_disk)
-        self.assertEqual(bar, compare_bar,
-                    msg='bar is not printing properly')
-        # Test that error is raise
-        with self.assertRaises(ValueError):
-            self.du.create_horizontal_bar(self.dict_to_test_raise)
+    def test_print_horizontal_barchart(self):
+        self.du.create_stats = MagicMock()
+        self.du.print_horizontal_barchart(
+                                'test_disk', self.test_disk)
+        self.du.create_stats.assert_called()
+
+    def test_color_details_text(self):
+        expected_output = stylize(f"fstype={self.test_disk['fstype']}\tmountpoint={self.test_disk['mountpoint']}",
+                        fg(self.du.text.value))
+        self.assertEqual(
+            expected_output, self.du.color_details_text(self.test_disk))
+
+    def test_create_stats(self):
+        # Switch back text color to defualt
+        self.du.text = None
+        compare = "Total: 97.7 KB\t Used: 58.6 KB\t Free: 39.1 KB"
+        self.assertEqual(
+            self.du.create_stats(self.test_disk), compare)
+        
+    def test_create_warning(self):
+        # Check warning when disk is at capacity
+        compare_high = stylize('80% full',
+            attr(Attr.BLINK.value) + fg(Color.LIGHT_RED.value))
+        self.assertEqual(self.du.create_warning(80), compare_high)
+        # Check when disk is half full
+        compare_med = stylize('60% full', fg(Color.ORANGE.value))
+        self.assertEqual(self.du.create_warning(60), compare_med)
+        # Check when disk is nearly empty
+        compare_low = stylize('10% full', fg(Color.NEON.value))
+        self.assertEqual(self.du.create_warning(10), compare_low)
+
     
-    def test_usage_percent(self):
-        used = self.du.usage_percent(self.test_disk)
-        self.assertEqual(used, 0.5, msg='Check your math!')
-        # Test raise error
-        with self.assertRaises(ValueError):
-            self.du.usage_percent(self.dict_to_test_raise)
-    
-    def test_integers_to_readable(self):
-        h = self.du.integers_to_readable(self.test_disk)
-        keys = [key for key in h.keys()]
-        compare_keys = ['total', 'used', 'free']
-        self.assertListEqual(keys, compare_keys)
-        # Riase error test
-        with self.assertRaises(TypeError):
-            self.du.integers_to_readable(self.dict_to_test_raise)
-    
+    @unittest.skip("Under construction")
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def assert_stdout(self, expected_output, mock_stdout):
         # I will exclude all the media partitions
@@ -106,11 +157,6 @@ class TestDiskUsage(unittest.TestCase):
                     continue
         self.du.print_horizontal_barchart()
         self.assertRegex(mock_stdout.getvalue(), expected_output)
-
-    def test_print_horizontal_and_vertical_barchart(self):
-        self.maxDiff = None
-        self.assert_stdout('root')
-        self.assert_stdout('▓▓▓▓▓▓▓▓▓▓|░░░░░░░░░░')
 
 
 if __name__ == '__main__':

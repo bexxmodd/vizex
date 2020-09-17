@@ -42,31 +42,40 @@ class DiskUsage:
     def main(self) -> None:
         """Prints the charts based on user selection type"""
         if self.chart == Chart.BARH:
-            self.print_horizontal_barchart()
+            self.switch()
         elif self.chart == Chart.BARV:
-            self.print_vertical_barchart()
+            pass
         elif self.chart == Chart.PIE:
             pass
 
-    def print_horizontal_barchart(self) -> None:
+    def switch(self) -> None:
         """
-        Prints disk usage in the Terminal with horizontal bars
+        Switch between printing all the
+        partitions or only user specified.
         """
         if self.path:
-            disks = self.grab_specific_disk
+            disks = self.grab_specific_disk(self.path[0])
         else:
             disks = self.grab_partitions(exclude=self.exclude,
                                     every=self.every)
         for disk in disks:
-            print(f"{stylize(disk, self.header + self.style)}")
-            print(self.create_stats(disks[disk]))
-            chart = ChartPrint(self.graph, self.symbol)
-            print('', chart.draw_horizontal_bar(capacity=disks[disk]['total'],
-                                    used=disks[disk]['used']),
-                                    self.create_warning(disks[disk]['percent']))
-            if self.details:
-                print(self.color_details_text(disks[disk]))
-            print()
+            self.print_horizontal_barchart(disk, disks[disk])
+
+    def print_horizontal_barchart(self,
+                                disk_name: str,
+                                disk: dict) -> None:
+        """
+        Prints disk usage in the Terminal with horizontal bars
+        """
+        print(f"{stylize(disk_name, self.header + self.style)}")
+        print(self.create_stats(disk))
+        chart = ChartPrint(self.graph, self.symbol)
+        print('', chart.draw_horizontal_bar(capacity=disk['total'],
+                                used=disk['used']),
+                                self.create_warning(disk['percent']))
+        if self.details:
+            print(self.color_details_text(disk))
+        print()
 
     def grab_partitions(self,
                         exclude: list,
@@ -107,7 +116,7 @@ class DiskUsage:
         Grabs data for the partition of the user specified path
         """
         disks = {}
-        disks[path.split('/')[-1]] = {
+        disks[path] = {
                 "total": psutil.disk_usage(path).total,
                 "used": psutil.disk_usage(path).used,
                 "free": psutil.disk_usage(path).free,
@@ -152,7 +161,8 @@ class DiskUsage:
     ################ UNDER CONSTRUCTION ################
     ####################################################
 
-    # def print_vertical_barchart(self) -> str:
+    def print_vertical_barchart(self) -> str:
+        pass
     #     """prints vertical bar chart in the Terminal
     #     """
     #     charts = []

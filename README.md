@@ -4,7 +4,7 @@
 
 
 
-![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/bexxmodd/vizex?color=red&include_prereleases&style=flat-square) ![Python](https://img.shields.io/pypi/pyversions/vizex?color=yellow&style=flat-square) ![LICENSE](https://img.shields.io/pypi/l/vizex?color=g&style=flat-square)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/bexxmodd/vizex?color=beige&style=flat-square) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/vizex?color=orange&style=flat-square) ![PyPI - Downloads](https://img.shields.io/pypi/dw/vizex?color=red&style=flat-square) ![LICENSE](https://img.shields.io/pypi/l/vizex?color=g&style=flat-square)
 
 **vizex** is the terminal program for the UNIX/Linux systems which helps the user to visualize the disk space usage for every partition and media on the user's machine. **vizex** is highly customizable and can fit any user's taste and preferences.
 
@@ -14,9 +14,9 @@
 
 ## pip
 
-**vizex** can be installed through your terminal and requires `Python 3.7` or above and the `pip package manager`. Here's [how to set up Python](https://realpython.com/installing-python/) on your machine.
+**vizex** can be installed through your terminal and requires `Python >= 3.7` and the `pip package manager`. Here's [how to set up Python](https://realpython.com/installing-python/) on your machine.
 
-If you don't have PyPackage Index (PyPI) installed, [Here's the guide on how to install it](https://www.tecmint.com/install-pip-in-linux/). Install **vizex** with the following command:
+If you don't have PyPackage Index (PyPI or just `pip`) installed, [Here's the guide on how to install it](https://www.tecmint.com/install-pip-in-linux/). Install **vizex** with the following command:
 ```
 pip install vizex
 ```
@@ -62,7 +62,7 @@ But the best part is that you can modify the colors and style of the display to 
 -g --graph <color>
 ```
 
-Display additional details, like `fstype` and `mount point`, for each partition with option:
+Display additional details, like `fstype` and `mount point`, for each partition:
 ```
 vizex --details
 ```
@@ -70,12 +70,12 @@ vizex --details
 
 If you are interested in visualizing a specific path run with the following command:
 ```
-vizex --path <full/path>
+vizex --path </full/path>
 ```
 
 You can also exclude any combination of partitions/disks with multiple `-X` or for verbose `--exclude` option:
 ```
--X <PartitionName1> -X <PartitionName2> ...
+vizex -X <PartitionName1> -X <PartitionName2> ...
 ```
 
 For a full list of the available options please check:
@@ -83,7 +83,7 @@ For a full list of the available options please check:
 vizex --help
 ```
 
-If you want to contribute you are more than a welcome! But first, make sure all the tests run after you fork the project and before the pull request. First, run the `access.py`, that way `tests` folder will obtain a path to the `src` folder. After that, you can run all the remaining tests.
+If you want to contribute to the project you are more than a welcome! But first, make sure all the tests run after you fork the project and before the pull request. First, run the `access.py`, that way `tests` folder will obtain a path to the `src` folder and you can run all the remaining tests.
 
 # File Structure
 
