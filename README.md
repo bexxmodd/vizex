@@ -8,33 +8,33 @@
 
 **vizex** is the terminal program for the UNIX/Linux systems which helps the user to visualize the disk space usage for every partition and media on the user's machine. **vizex** is highly customizable and can fit any user's taste and preferences.
 
-----
 
-## Installation
 
-### pip
-**vizex** can be installed through your terminal and requires `Python 3.7` or above and the `pip package manager`.
+# Installation
 
-Here's [how to set up Python](https://realpython.com/installing-python/) on your machine.
+## pip
 
-Some `vizex` dependencies require a Python 3 development package on Linux.
+**vizex** can be installed through your terminal and requires `Python 3.7` or above and the `pip package manager`. Here's [how to set up Python](https://realpython.com/installing-python/) on your machine.
 
-For Debian and other derived systems (Ubuntu, Mint, Kali, etc.) you can install this with the following command:
-```
-sudo apt-get install python3-dev
-```
-
-For Red Hat derived systems (Fedora, RHEL, CentOS, etc.) you can install this with the following command:
-```
-sudo yum install python3-devel
-```
-
-If you don't have PyPackage Index (PyPI) installed, [Here's the guide on how to install it](https://www.tecmint.com/install-pip-in-linux/). After everything is set up run the following command:
+If you don't have PyPackage Index (PyPI) installed, [Here's the guide on how to install it](https://www.tecmint.com/install-pip-in-linux/). Install **vizex** with the following command:
 ```
 pip install vizex
 ```
 
-### AUR
+If you encounter any problems during installation, know that some `vizex` dependencies require a Python 3 development package on Linux and you need to set up that manually.
+
+For **Debian** and other derived systems (Ubuntu, Mint, Kali, etc.) you can install this with the following command:
+```
+sudo apt-get install python3-dev
+```
+
+For **Red Hat** derived systems (Fedora, RHEL, CentOS, etc.) you can install this with the following command:
+```
+sudo yum install python3-devel
+```
+
+
+## AUR
 **vizex** is available as a package on the AUR (Arch user repository), distributions with AUR support may install directly from the command line using their favorite `pacman` helper.
 
 Example using `yay`:
@@ -42,7 +42,7 @@ Example using `yay`:
 yay -S vizex
 ```
 
-## How it Works
+# How it Works
 
 After installing run the program with a single command `vizex` in your terminal. This will graphically display disk space and usage:
 
@@ -51,9 +51,9 @@ Change the graph type from horizontal bars or to the vertical bars or to the *pi
 vizex
 ```
 
-![demo](https://i.imgur.com/dsWFE1v.png)
+![demo](https://i.imgur.com/OiPWWJf.png)
 
-But the best part is that you can modify the colors and style of the display to your preferences with following commands. For example above command has excluded two partitions. You can aslo do give the following options:
+But the best part is that you can modify the colors and style of the display to your preferences with the following commands. For the example above command has excluded two partitions. You can also do give the following options:
 
 ```
 -d --header <color>
@@ -62,9 +62,20 @@ But the best part is that you can modify the colors and style of the display to 
 -g --graph <color>
 ```
 
-Or exclude any combination of partitions/disks with:
+Display additional details, like `fstype` and `mount point`, for each partition with option:
 ```
--I <PartitionName1> -I <PartitionName2> ...
+vizex --details
+```
+![details-img](https://i.imgur.com/ThILQMo.png)
+
+If you are interested in visualizing a specific path run with the following command:
+```
+vizex --path <full/path>
+```
+
+You can also exclude any combination of partitions/disks with multiple `-X` or for verbose `--exclude` option:
+```
+-X <PartitionName1> -X <PartitionName2> ...
 ```
 
 For a full list of the available options please check:
@@ -72,24 +83,32 @@ For a full list of the available options please check:
 vizex --help
 ```
 
-## File Structure
+If you want to contribute you are more than a welcome! But first, make sure all the tests run after you fork the project and before the pull request. First, run the `access.py`, that way `tests` folder will obtain a path to the `src` folder. After that, you can run all the remaining tests.
+
+# File Structure
+
 ```bash
+vizex/
 ├── LICENSE
 ├── README.md
 ├── requirements.txt
 ├── setup.py
-├── src
+├── src/
 │   ├── charts.py
 │   ├── cli.py
 │   ├── disks.py
+│   ├── pkg/
+│   │   └── __init__.py
 │   └── tools.py
-└── tests
+└── tests/
     ├── access.py
+    ├── test_charts.py
     ├── test_cli.py
-    └── test_disk.py
+    ├── test_disk.py
+    └── test_tools.py
 ```
 
-## Release History
+# Release History
 
 - v1.1.0:
     - Displayes media and network partitions
@@ -97,8 +116,16 @@ vizex --help
     - Print additional (fstype and mount point) with `--details`
     - Refactored for a better reusability
 
+----
+## Special Thanks to the Contributors!
+
+<a href="https://github.com/bexxmodd/vizex/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=bexxmodd/vizex" />
+</a>
+
+
 ------
-## Follow me on Social Media
+## Follow Me on Social Media
 <p align="center">
 	<a href="https://www.twitter.com/bexxmodd">
         	<img alt="twitter" src="https://i.imgur.com/fFlVB1c.png" height=50>
@@ -111,5 +138,5 @@ vizex --help
 	</a>
 </p>
 
---------
+
 Repo is distributed under the MIT license. Please see the `LICENSE` for more information.
