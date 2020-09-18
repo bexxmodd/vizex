@@ -2,8 +2,8 @@ import io
 import random
 import psutil
 import unittest
-import unittest.mock
-from unittest.mock import MagicMock
+
+from unittest.mock import MagicMock, call
 from colored import fg, attr, stylize
 from tools import Color, Attr, Chart
 from disks import DiskUsage
@@ -54,10 +54,12 @@ class TestDiskUsage(unittest.TestCase):
         self.du.switch.assert_called()
 
     def test_switch(self):
-        pass
-
-    def test_print_horizontal_barchart(self):
-        pass
+        self.du = MagicMock()
+        self.du(1).switch().grab_partitions()(2.0).print_horizontal_barchart('test',
+                                                                        self.test_disk)
+        kall = call(1).switch().grab_partitions()(2.0).print_horizontal_barchart('test',
+                                                                        self.test_disk)
+        self.du.mock_calls == kall.call_list()
 
     def test_grab_partitions(self):
         disks = self.du.grab_partitions(self.du.exclude)
@@ -141,22 +143,6 @@ class TestDiskUsage(unittest.TestCase):
         # Check when disk is nearly empty
         compare_low = stylize('10% full', fg(Color.NEON.value))
         self.assertEqual(self.du.create_warning(10), compare_low)
-
-    
-    @unittest.skip("Under construction")
-    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
-    def assert_stdout(self, expected_output, mock_stdout):
-        # I will exclude all the media partitions
-        # And only keep the root to test with regex
-        disk_parts = psutil.disk_partitions(all=True)
-        for disk in disk_parts[:-1]:
-            if 'media' in disk[1]:
-                try:
-                    self.du.exclude.append(disk[1].split('/')[-1])
-                except:
-                    continue
-        self.du.print_horizontal_barchart()
-        self.assertRegex(mock_stdout.getvalue(), expected_output)
 
 
 if __name__ == '__main__':
