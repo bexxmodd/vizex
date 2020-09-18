@@ -83,12 +83,12 @@ For a full list of the available options please check:
 vizex --help
 ```
 
-If you want to contribute to the project you are more than a welcome! But first, make sure all the tests run after you fork the project and before the pull request. First, run the `access.py`, that way `tests` folder will obtain a path to the `src` folder and you can run all the remaining tests.
+If you want to contribute to the project you are more than a welcome! But first, make sure all the tests run after you fork the project and before the pull request. First, run the `access.py`, that way `tests` folder will obtain a path to the `src` folder and you can run all the tests.
 
 # File Structure
 
 ```bash
-vizex/
+.
 ├── LICENSE
 ├── README.md
 ├── requirements.txt
