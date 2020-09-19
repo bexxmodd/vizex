@@ -23,11 +23,9 @@ class TestCli(unittest.TestCase):
         result = runner.invoke(cli, ['barh'])
         assert result.exit_code == 0
 
-    @patch("module_where_toCreate_is.toCreate")
-    def test_created(self, mock_toCreate):
-        creator = toTest()
-        toTest.createObject()
-        mock_toCreate.assert_called_with()
+    @patch("disks.DiskUsage")
+    def test_du_created(self, mock_toCreate):
+        pass
     
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def assert_keyerror_stdout(self,
