@@ -109,12 +109,18 @@ If you want to contribute to the project you are more than a welcome! But first,
 ```
 
 # Release History
+- v1.3.2:
+	- Refactored module disks.py
+	- Unit Tests created
+	- Handling of unavailable colors/attributes Pie-chart option
+	- Set up the color for all the text
+	- Updated docstrings
 
 - v1.1.0:
-    - Displayes media and network partitions
-    - Print all the partitions with `--every` command
-    - Print additional (fstype and mount point) with `--details`
-    - Refactored for a better reusability
+	- Displayes media and network partitions
+	- Print all the partitions with `--every` command
+	- Print additional (fstype and mount point) with `--details`
+	- Refactored for a better reusability
 
 ----
 ## Special Thanks to the Contributors!
