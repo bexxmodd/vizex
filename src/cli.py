@@ -126,7 +126,8 @@ def _check_color(option: str) -> Color:
     try:
         # This will fail with a KeyError if color does not exist
         return _check_color.colors[option.upper()][1]
-    except KeyError('Invalid color'):
+    except:
+        print(f'----- color {option} is not available')
         return None
 
 
@@ -150,7 +151,8 @@ def _check_attr(option: str) -> Attr:
     try:
         # This will fail with a KeyError if attr does not exist
         return _check_attr.attrs[option.upper()][1]
-    except KeyError('Invalid Attribute'):
+    except:
+        print(f'----- attribute {option} is not available')
         return None
 
 
@@ -163,7 +165,7 @@ def _check_chart(chart: str) -> Chart:
         ret = Chart.BARH
     elif chart in [Chart.BARV, "barv"]:
         ret = Chart.BARV
-    elif chart[Chart.PIE, "pie"]:
+    elif chart in [Chart.PIE, "pie"]:
         ret = Chart.PIE
     else:
         raise NameError("Unsupported chart type!")
