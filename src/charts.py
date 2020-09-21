@@ -6,7 +6,7 @@ from colored import fg, attr, stylize
 
 class Options():
     """Options"""
-    _graph_color = fg("green")
+    _graph_color = fg("white")
     _header_color = fg("red")
     _pre_graph_color = fg("white")
     _post_graph_color = fg("white")
