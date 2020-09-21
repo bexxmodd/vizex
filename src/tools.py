@@ -1,41 +1,7 @@
+""" Utility function for vizex """
+
 from math import ceil
-from enum import Enum
 from colored import fg, attr, stylize
-
-class Color(Enum):
-    BLACK = 0
-    RED = 1
-    GREEN = 2
-    YELLOW = 3
-    BLUE = 4
-    CYAN = 6
-    WHITE = 7
-    GRAY = 8
-    LIGHT_RED = 9
-    DARK_BLUE = 18
-    DARK_GREEN = 22
-    DARK_RED = 52
-    NEON = 82
-    PURPLE = 93
-    ORANGE = 214
-    PINK = 218
-    BEIGE = 230
-
-
-class Attr(Enum):
-    BOLD = 1
-    DIM = 2
-    UNDERLINED = 4
-    BLINK = 5
-    REVERSE = 7
-    HIDDEN = 8
-
-
-class Chart(Enum):
-    BARH = 1
-    BARV = 2
-    PIE = 3
-
 
 def bytes_to_human_readable(bytes: int, suffix='B') -> str:
     """

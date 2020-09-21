@@ -1,7 +1,6 @@
 """ Text Chart Printing Functions """
 
 from math import ceil
-from tools import Color, Attr
 from colored import fg, attr, stylize
 
 
@@ -49,7 +48,7 @@ class Options():
         return self._post_graph_color
     @post_graph_color.setter
     def post_graph_color(self, color):
-        self._post_graph_color = fg(color)
+        self._post_graph_color=fg(color)
 
     @property
     def footer_color(self):
@@ -168,9 +167,10 @@ if __name__ == "__main__":
     ch = BarChart()
     ch.options.post_graph_color = "green"
     ch.options.pre_graph_color = "blue"
+    ch.options.footer_color = "yellow"
     ch.chart(title="Test Content",
              maximum=100,
              current=32,
-             pre_graph_text="Some Title: Some Value\tOther [5%]\tLast Thing",
+             pre_graph_text="Lorem: Sit ea dolore ad accusantium",
              post_graph_text="Good job!",
-             footer="Thus concludes our test")
+             footer="This concludes our test")
