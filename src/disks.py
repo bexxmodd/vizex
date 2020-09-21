@@ -1,7 +1,7 @@
 import psutil
 
 from math import ceil
-from charts import BarChart, Options
+from charts import Chart, BarChart, Options
 from colored import fg, attr, stylize
 from tools import bytes_to_human_readable, ints_to_human_readable
 
@@ -34,16 +34,19 @@ class DiskUsage:
         self.details = details
         self.every = every
 
-    def main(self) -> None:
+    def print_charts(self, options: Options = None) -> None:
         """Prints the charts based on user selection type"""
+        if options is None:
+            options = Options()
+
         parts = self.grab_partitions()
 
-        ch = BarChart()
+        ch = BarChart(options)
         for partname in parts:
-            self.print_disk_chart(partname, parts[partname])
+            self.print_disk_chart(ch, partname, parts[partname])
 
-    def print_disk_chart(self, partname: str, part: dict, details: bool = False):
-        ch = BarChart()
+    def print_disk_chart(self, chart: Chart, partname: str, part: dict, details: bool = False):
+        ch = chart
         title = (partname,)
         pre_graph_text = self.create_stats(part)
         if details:
