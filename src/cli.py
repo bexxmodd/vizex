@@ -70,10 +70,14 @@ def cli(chart, path, every, details, exclude, header, style, text, graph, mark):
     chart = "barh"
 
     options: Options = Options()
-    options.symbol = mark
-    options.header_color = str(header)
-    options.text_color = str(text)
-    options.graph_color = graph
+    if mark:
+        options.symbol = mark
+    if header:
+        options.header_color = header
+    if text:
+        options.text_color = text
+    if graph:
+        options.graph_color = graph
 
     chart = chart
     style = style
