@@ -3,7 +3,6 @@
 from math import ceil
 from colored import fg, attr, stylize
 
-
 class Options:
     """Options"""
 
@@ -98,7 +97,6 @@ class Options:
 
 class Chart:
     """Abstract base object for charts"""
-
     options: Options = None
 
     def __init__(self, options: Options = None):
@@ -120,18 +118,16 @@ class BarChart(Chart):
         maximum: float,
         current: float,
     ):
-
         print(stylize(title, self.options.header_color))
 
         if pre_graph_text:
             print(stylize(pre_graph_text, self.options.pre_graph_color))
 
         print(
-            "["
-            + stylize(
+            "[%s]"
+            % stylize(
                 self.draw_horizontal_bar(maximum, current), self.options.graph_color
-            )
-            + "]",
+            ),
             end=" ",
         )
         if post_graph_text:
