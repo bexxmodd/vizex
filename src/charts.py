@@ -8,6 +8,7 @@ class Options:
 
     _graph_color = fg("white")
     _header_color = fg("red")
+    _header_style = attr('bold')
     _pre_graph_color = fg("white")
     _post_graph_color = fg("white")
     _footer_color = fg("white")
@@ -24,7 +25,7 @@ class Options:
         return self._graph_color
 
     @graph_color.setter
-    def graph_color(self, color):
+    def graph_color(self, color: str):
         self._graph_color = fg(color)
 
     @property
@@ -33,8 +34,16 @@ class Options:
         return self._header_color
 
     @header_color.setter
-    def header_color(self, color):
+    def header_color(self, color: str):
         self._header_color = fg(color)
+
+    @property
+    def header_style(self):
+        return self._header_style
+    
+    @header_style.setter
+    def header_style(self, style: str):
+        self._header_style = attr(style)
 
     @property
     def pre_graph_color(self):
@@ -42,7 +51,7 @@ class Options:
         return self._pre_graph_color
 
     @pre_graph_color.setter
-    def pre_graph_color(self, color):
+    def pre_graph_color(self, color: str):
         self._pre_graph_color = fg(color)
 
     @property
@@ -51,7 +60,7 @@ class Options:
         return self._post_graph_color
 
     @post_graph_color.setter
-    def post_graph_color(self, color):
+    def post_graph_color(self, color: str):
         self._post_graph_color = fg(color)
 
     @property
@@ -60,7 +69,7 @@ class Options:
         return self._footer_color
 
     @footer_color.setter
-    def footer_color(self, color):
+    def footer_color(self, color: str):
         self._footer_color = fg(color)
 
     @property
@@ -69,7 +78,7 @@ class Options:
         return [self._fsymbol, self._msymbol, self.esymbol]
 
     @symbol.setter
-    def symbol(self, symbol):
+    def symbol(self, symbol: str):
         if symbol:
             self._fsymbol = symbol
             self._msymbol = ">"
@@ -118,15 +127,17 @@ class BarChart(Chart):
         maximum: float,
         current: float,
     ):
-        print(stylize(title, self.options.header_color))
+        print(stylize(title,
+            self.options.header_color + self.options.header_style))
 
         if pre_graph_text:
             print(stylize(pre_graph_text, self.options.pre_graph_color))
 
         print(
-            "[%s]"
+            " %s"
             % stylize(
-                self.draw_horizontal_bar(maximum, current), self.options.graph_color
+                self.draw_horizontal_bar(maximum, current),
+                self.options.graph_color
             ),
             end=" ",
         )

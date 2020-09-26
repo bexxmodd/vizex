@@ -45,18 +45,18 @@ class DiskUsage:
         for partname in parts:
             self.print_disk_chart(ch, partname, parts[partname])
 
-    def print_disk_chart(self, chart: Chart, partname: str, part: dict, details: bool = False):
+    def print_disk_chart(self, chart: Chart, partname: str, part: dict) -> None:
         ch = chart
         title = (partname,)
         pre_graph_text = self.create_stats(part)
-        if details:
+        if self.details:
             footer = self.create_details_text(part)
         else:
             footer = None
 
         maximum = part["total"]
         current = part["used"]
-        post_graph_text = self.create_pct_used(ch.options, current, maximum)
+        post_graph_text = self.create_pct_used(part['percent'])
 
         ch.chart(
             post_graph_text=post_graph_text,
@@ -89,16 +89,17 @@ class DiskUsage:
         chart = ChartPrint(self.graph, self.symbol)
         print(
             "",
-            chart.draw_horizontal_bar(capacity=disk["total"], used=disk["used"]),
-            self.create_warning(disk["percent"]),
+            chart.draw_horizontal_bar(capacity=disk["total"],
+                                used=disk["used"]),
+                                self.create_warning(disk["percent"]),
         )
         if self.details:
             print(self.details_text(disk))
             print()
 
-    def grab_partitions(self, exclude: list = None, every: bool = False) -> dict:
+    def grab_partitions(self) -> dict:
         """Grabs all the partitions from the user's PC."""
-        if exclude is None:
+        if self.exclude is None:
             exclude = []
         disks = {}
         # First append the root partition
@@ -110,7 +111,7 @@ class DiskUsage:
             "fstype": psutil.disk_partitions(all=False)[0][2],
             "mountpoint": "/",
         }
-        disk_parts = psutil.disk_partitions(all=every)
+        disk_parts = psutil.disk_partitions(all=self.every)
         for disk in disk_parts[1:]:
             # Exclude mounpoints created by snap
             if disk.device.startswith("/dev/loop"):
@@ -154,19 +155,15 @@ class DiskUsage:
         res = ints_to_human_readable(disk)
         return f"Total: {res['total']}\t Used: {res['used']}\t Free: {res['free']}"
 
-    def create_pct_used(self, options: Options, current: int, maximum: int) -> str:
+    def create_pct_used(self, usage) -> str:
         """Create disk usage percent with warning color"""
-        usage = ceil(1000 * (current / maximum)) / 10
-        use = str(usage) + "% full"
+        use = str(usage) + '% full'
         if usage >= 80:
-            options.post_graph_color = "red"
-            options.graph_color = "red"
+            return f"{stylize(use, attr('blink') + fg(9))}"                  
         elif usage >= 60:
-            options.post_graph_color = "yellow"
+            return f"{stylize(use, fg(214))}"
         else:
-            options.post_graph_color = "green"
-        return str(use)
-
+            return f"{stylize(use, fg(82))}"
 
 if __name__ == "__main__":
     self = DiskUsage()
@@ -180,7 +177,7 @@ if __name__ == "__main__":
         footer = self.create_details_text(part)
         maximum = part["total"]
         current = part["used"]
-        post_graph_text = self.create_pct_used(ch.options, current, maximum)
+        post_graph_text = self.create_pct_used(part['percent'])
 
         ch.chart(
             post_graph_text=post_graph_text,

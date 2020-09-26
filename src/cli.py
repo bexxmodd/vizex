@@ -23,11 +23,14 @@ from colored import fg, attr, stylize
     multiple=True,
     help="Select partition you want to exclude",
 )
-@click.option("--every", is_flag=True, help="Display information for all the disks")
+@click.option(
+    "--every",
+    is_flag=True,
+    help="Display information for all the disks"
+)
 @click.option(
     "--details",
     is_flag=True,
-    default=False,
     help="Display additinal details like fstype and mountpoint",
 )
 @click.option(
@@ -68,7 +71,6 @@ from colored import fg, attr, stylize
 def cli(chart, path, every, details, exclude, header, style, text, graph, mark):
     """ Displays charts in the terminal, graphically """
     chart = "barh"
-
     options: Options = Options()
     if mark:
         options.symbol = mark
@@ -78,9 +80,10 @@ def cli(chart, path, every, details, exclude, header, style, text, graph, mark):
         options.text_color = text
     if graph:
         options.graph_color = graph
+    if style:
+        options.header_style = style
 
     chart = chart
-    style = style
     exclude_list = list(exclude)
 
     renderer = None
