@@ -4,9 +4,11 @@
 	<br>
 	<br>
 </p>
-
-
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/bexxmodd/vizex?color=beige&style=flat-square) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/vizex?color=orange&style=flat-square) ![PyPI - Downloads](https://img.shields.io/pypi/dw/vizex?color=red&style=flat-square) ![LICENSE](https://img.shields.io/pypi/l/vizex?color=g&style=flat-square)
+<p>
+	<a href="https://pypi.org/project/vizex/"><img src="https://img.shields.io/github/v/release/bexxmodd/vizex?color=beige&style=flat-square"></a>
+	<a href="https://paypal.me/bexxmodd?locale.x=en_US"><img src="https://img.shields.io/badge/donate-paypal-blue?style=flat"> </a>
+	<a href="./LICENSE.md"><img src="https://img.shields.io/pypi/l/vizex?color=g&style=flat-square"></a>
+</p>
 
 **vizex** is the terminal program for the UNIX/Linux systems which helps the user to visualize the disk space usage for every partition and media on the user's machine. **vizex** is highly customizable and can fit any user's taste and preferences.
 
