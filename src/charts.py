@@ -24,7 +24,7 @@ class Options:
 
     @graph_color.setter
     def graph_color(self, color: str):
-        self._graph_color = fg(color)
+        self._graph_color = self._safe_fg(color, self._graph_color)
 
     @property
     def header_color(self):
@@ -33,7 +33,7 @@ class Options:
 
     @header_color.setter
     def header_color(self, color: str):
-        self._header_color = fg(color)
+        self._header_color = self._safe_fg(color, self._header_color)
 
     @property
     def header_style(self):
@@ -51,7 +51,7 @@ class Options:
 
     @text_color.setter
     def text_color(self, color: str):
-        self._text_color = fg(color)
+        self._text_color = self._safe_fg(color, self._text_color)
 
     @property
     def symbol(self):
@@ -83,6 +83,12 @@ class Options:
     def msymbol(self):
         """ The middle symbol """
         return self._msymbol
+
+    def _safe_fg(self, color: str, default_color: str="white"):
+        try:
+            return fg(color)
+        except KeyError:
+            return default_color
 
 
 class Chart:
