@@ -111,6 +111,11 @@ If you want to contribute to the project you are more than a welcome! But first,
 ```
 
 # Release History
+- v1.3.5:
+	- Major refactoring
+	- Now charts can print string data
+	- Options class is separated with all the correct getters and setters
+	
 - v1.3.2:
 	- Refactored module disks.py
 	- Unit Tests created
