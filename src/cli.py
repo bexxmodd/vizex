@@ -6,9 +6,14 @@ from disks import DiskUsage
 from charts import Options
 from colored import fg, attr, stylize
 
-# Command line arguments for cli
+# Command line arguments and options for cli
 @click.command()
-@click.argument("chart", nargs=1, default="barh", metavar="[CHART_TYPE]")
+@click.argument(
+    "chart",
+    nargs=1,
+    default="barh",
+    metavar="[CHART_TYPE]"
+)
 @click.option(
     "-P",
     "--path",
@@ -66,10 +71,29 @@ from colored import fg, attr, stylize
     help="Change the color of the bar graph",
 )
 @click.option(
-    "-m", "--mark", default=None, help="Choose the symbols used for the graph"
+    "-m",
+    "--mark",
+    default=None,
+    help="Choose the symbols used for the graph"
 )
-def cli(chart, path, every, details, exclude, header, style, text, graph, mark):
-    """ Displays charts in the terminal, graphically """
+def cli(chart, path, every, details, exclude,
+        header, style, text, graph, mark) -> None:
+    """
+    ** Displays Disk Usage in the terminal, graphically. **
+
+    Customize visuals by setting colors and attributes.
+
+    Select one of the available graph types:
+        barv : Vertical Bars
+        *barh : Horizontal Bars (buggy)
+        *pie : Pie Chart (coming soon)
+
+    COLORS: light_red, red, dark_red, dark_blue, blue,
+        cyan, yellow, green, pink, white, black, purple,
+        neon, grey, beige, orange, magenta, peach.
+
+    ATTRIBUTES: bold, dim, underlined, blink, reverse.
+    """
     chart = "barh"
     options: Options = Options()
     if mark:
@@ -91,7 +115,6 @@ def cli(chart, path, every, details, exclude, header, style, text, graph, mark):
         renderer = DiskUsage(
             path=path, exclude=exclude_list, details=details, every=every
         )
-
     renderer.print_charts(options)
 
 
