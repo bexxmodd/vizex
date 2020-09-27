@@ -162,7 +162,7 @@ class VerticalBarChart(Chart):
 
 
 if __name__ == "__main__":
-    ch = BarChart()
+    ch = HorizontalBarChart()
     ch.options.post_graph_color = "green"
     ch.options.pre_graph_color = "blue"
     ch.options.footer_color = "yellow"
