@@ -24,7 +24,7 @@ class Options:
 
     @graph_color.setter
     def graph_color(self, color: str):
-        self._graph_color = self._safe_fg(color, self._graph_color)
+        self._graph_color = self._check_color(color, self._graph_color)
 
     @property
     def header_color(self):
@@ -33,7 +33,7 @@ class Options:
 
     @header_color.setter
     def header_color(self, color: str):
-        self._header_color = self._safe_fg(color, self._header_color)
+        self._header_color = self._check_color(color, self._header_color)
 
     @property
     def header_style(self):
@@ -42,7 +42,7 @@ class Options:
     
     @header_style.setter
     def header_style(self, style: str):
-        self._header_style = attr(style)
+        self._header_style = self._check_attr(style, self._header_style)
 
     @property
     def text_color(self):
@@ -51,7 +51,7 @@ class Options:
 
     @text_color.setter
     def text_color(self, color: str):
-        self._text_color = self._safe_fg(color, self._text_color)
+        self._text_color = self._check_color(color, self._text_color)
 
     @property
     def symbol(self):
@@ -84,11 +84,19 @@ class Options:
         """ The middle symbol """
         return self._msymbol
 
-    def _safe_fg(self, color: str, default_color: str="white"):
+    def _check_color(self, color: str, default_color: str="white"):
+        """Checks if set color is valid"""
         try:
             return fg(color)
         except KeyError:
             return default_color
+
+    def _check_attr(self, style: str, default_attr: str="bold"):
+        """Checks if set attribute is valid"""
+        try:
+            return attr(style)
+        except KeyError:
+            return default_attr
 
 
 class Chart:
