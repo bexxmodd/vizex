@@ -6,7 +6,8 @@
 </p>
 <p>
 	<a href="https://pypi.org/project/vizex/"><img src="https://img.shields.io/github/v/release/bexxmodd/vizex?color=beige&style=flat-square"></a>
-	<a href="https://paypal.me/bexxmodd?locale.x=en_US"><img src="https://img.shields.io/badge/donate-paypal-blue?style=flat"> </a>
+	<a href=""><img src="https://img.shields.io/pypi/pyversions/vizex?color=orange&style=flat-square"></a>
+	<a href="https://paypal.me/bexxmodd?locale.x=en_US"><img src="https://img.shields.io/badge/donate-paypal-blue?style=flat-square"> </a>
 	<a href="./LICENSE.md"><img src="https://img.shields.io/pypi/l/vizex?color=g&style=flat-square"></a>
 </p>
 
