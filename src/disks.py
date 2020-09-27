@@ -1,7 +1,7 @@
 import psutil
 
 from math import ceil
-from charts import Chart, BarChart, Options
+from charts import Chart, HorizontalBarChart, Options
 from colored import fg, attr, stylize
 from tools import bytes_to_human_readable, ints_to_human_readable
 
@@ -16,16 +16,11 @@ class DiskUsage:
         pie: visualize as a pie charts
     """
 
-    exclude = None
-    details = True
-
-    def __init__(
-        self,
-        path: str = "",
-        exclude: list = None,
-        details: bool = False,
-        every: bool = False,
-    ) -> None:
+    def __init__(self,
+                path: str = "",
+                exclude: list=None,
+                details: bool=False,
+                every: bool=False) -> None:
         self.path = path
         if exclude is None:
             self.exclude = []
@@ -34,29 +29,35 @@ class DiskUsage:
         self.details = details
         self.every = every
 
-    def print_charts(self, options: Options = None) -> None:
+    def print_charts(self, options: Options=None) -> None:
         """Prints the charts based on user selection type"""
         if options is None:
             options = Options()
 
-        parts = self.grab_partitions()
+        if self.path:
+            parts = self.grab_specific(self.path[0])
+        else:
+            parts = self.grab_partitions(exclude=self.exclude,
+                                        every=self.every)
 
-        ch = BarChart(options)
+        chrt = HorizontalBarChart(options)
         for partname in parts:
-            self.print_disk_chart(ch, partname, parts[partname])
+            self.print_disk_chart(chrt, partname, parts[partname])
 
-    def print_disk_chart(self, chart: Chart, partname: str, part: dict, details: bool = False):
+    def print_disk_chart(
+            self, chart: Chart, partname: str, part: dict
+        ) -> None:
         ch = chart
         title = (partname,)
         pre_graph_text = self.create_stats(part)
-        if details:
+        if self.details:
             footer = self.create_details_text(part)
         else:
             footer = None
 
         maximum = part["total"]
         current = part["used"]
-        post_graph_text = self.create_pct_used(ch.options, current, maximum)
+        post_graph_text = self.create_pct_used(part['percent'])
 
         ch.chart(
             post_graph_text=post_graph_text,
@@ -68,18 +69,6 @@ class DiskUsage:
         )
         print()
 
-    def switch(self) -> None:
-        """
-        Switch between printing all the
-        partitions or only user specified.
-        """
-        if self.path:
-            disks = self.grab_specific_disk(self.path[0])
-        else:
-            disks = self.grab_partitions(exclude=self.exclude, every=self.every)
-        for disk in disks:
-            self.print_horizontal_barchart(disk, disks[disk])
-
     def print_barchart(self, disk_name: str, disk: dict) -> None:
         """
         Prints disk usage in the Terminal with horizontal bars
@@ -89,20 +78,17 @@ class DiskUsage:
         chart = ChartPrint(self.graph, self.symbol)
         print(
             "",
-            chart.draw_horizontal_bar(capacity=disk["total"], used=disk["used"]),
-            self.create_warning(disk["percent"]),
+            chart.draw_horizontal_bar(capacity=disk["total"],
+                                used=disk["used"]),
+                                self.create_warning(disk["percent"]),
         )
         if self.details:
             print(self.details_text(disk))
             print()
 
-    def grab_partitions(self, exclude: list = None, every: bool = False) -> dict:
-        """Grabs all the partitions from the user's PC."""
-        if exclude is None:
-            exclude = []
-        disks = {}
-        # First append the root partition
-        disks["root"] = {
+    def grab_root(self) -> dict:
+        """Grab the data about the root partition"""
+        root = {
             "total": psutil.disk_usage("/").total,
             "used": psutil.disk_usage("/").used,
             "free": psutil.disk_usage("/").free,
@@ -110,13 +96,22 @@ class DiskUsage:
             "fstype": psutil.disk_partitions(all=False)[0][2],
             "mountpoint": "/",
         }
+        return root
+
+    def grab_partitions(self, exclude: list, every: bool) -> dict:
+        """Grabs all the partitions from the user's PC."""
+        if self.exclude is None:
+            exclude = []
+        disks = {}
+        if not every:
+            disks['root'] = self.grab_root()
         disk_parts = psutil.disk_partitions(all=every)
         for disk in disk_parts[1:]:
             # Exclude mounpoints created by snap
             if disk.device.startswith("/dev/loop"):
                 continue
             # Check that part name is not in the excluded list
-            if disk[1].split("/")[-1] in self.exclude:
+            if disk[1].split("/")[-1] in exclude:
                 continue
             try:
                 if psutil.disk_usage(disk[1]).total > 0:
@@ -132,16 +127,16 @@ class DiskUsage:
                 continue
         return disks
 
-    def grab_specific_disk(self, path: str) -> dict:
+    def grab_specific(self, disk_path: str) -> dict:
         """
         Grabs data for the partition of the user specified path
         """
         disks = {}
-        disks[path] = {
-            "total": psutil.disk_usage(path).total,
-            "used": psutil.disk_usage(path).used,
-            "free": psutil.disk_usage(path).free,
-            "percent": psutil.disk_usage(path).percent,
+        disks[disk_path] = {
+            "total": psutil.disk_usage(disk_path).total,
+            "used": psutil.disk_usage(disk_path).used,
+            "free": psutil.disk_usage(disk_path).free,
+            "percent": psutil.disk_usage(disk_path).percent,
             "fstype": "N/A",
             "mountpoint": "N/A",
         }
@@ -151,36 +146,33 @@ class DiskUsage:
         return f"fstype={disk['fstype']}\tmountpoint={disk['mountpoint']}"
 
     def create_stats(self, disk: dict) -> str:
-        res = ints_to_human_readable(disk)
-        return f"Total: {res['total']}\t Used: {res['used']}\t Free: {res['free']}"
+        r = ints_to_human_readable(disk)
+        return f"Total: {r['total']}\t Used: {r['used']}\t Free: {r['free']}"
 
-    def create_pct_used(self, options: Options, current: int, maximum: int) -> str:
+    def create_pct_used(self, usage) -> str:
         """Create disk usage percent with warning color"""
-        usage = ceil(1000 * (current / maximum)) / 10
-        use = str(usage) + "% full"
+        use = str(usage) + '% full'
         if usage >= 80:
-            options.post_graph_color = "red"
-            options.graph_color = "red"
+            return f"{stylize(use, attr('blink') + fg(9))}"                  
         elif usage >= 60:
-            options.post_graph_color = "yellow"
+            return f"{stylize(use, fg(214))}"
         else:
-            options.post_graph_color = "green"
-        return str(use)
+            return f"{stylize(use, fg(82))}"
 
 
 if __name__ == "__main__":
     self = DiskUsage()
-    parts = self.grab_partitions()
+    parts = self.grab_partitions(exclude=[], every=False)
 
     for partname in parts:
         part = parts[partname]
-        ch = BarChart()
+        ch = HorizontalBarChart()
         title = (partname,)
         pre_graph_text = self.create_stats(part)
         footer = self.create_details_text(part)
         maximum = part["total"]
         current = part["used"]
-        post_graph_text = self.create_pct_used(ch.options, current, maximum)
+        post_graph_text = self.create_pct_used(part['percent'])
 
         ch.chart(
             post_graph_text=post_graph_text,

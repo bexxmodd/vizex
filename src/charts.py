@@ -8,9 +8,8 @@ class Options:
 
     _graph_color = fg("white")
     _header_color = fg("red")
-    _pre_graph_color = fg("white")
-    _post_graph_color = fg("white")
-    _footer_color = fg("white")
+    _header_style = attr('bold')
+    _text_color = fg("white")
     _fsymbol = "█"
     _msymbol = "▒"
     _esymbol = "░"
@@ -24,7 +23,7 @@ class Options:
         return self._graph_color
 
     @graph_color.setter
-    def graph_color(self, color):
+    def graph_color(self, color: str):
         self._graph_color = fg(color)
 
     @property
@@ -33,43 +32,34 @@ class Options:
         return self._header_color
 
     @header_color.setter
-    def header_color(self, color):
+    def header_color(self, color: str):
         self._header_color = fg(color)
 
     @property
-    def pre_graph_color(self):
-        """ pre_graph_color """
-        return self._pre_graph_color
-
-    @pre_graph_color.setter
-    def pre_graph_color(self, color):
-        self._pre_graph_color = fg(color)
-
-    @property
-    def post_graph_color(self):
-        """ post_graph_color """
-        return self._post_graph_color
-
-    @post_graph_color.setter
-    def post_graph_color(self, color):
-        self._post_graph_color = fg(color)
+    def header_style(self):
+        """ header style """
+        return self._header_style
+    
+    @header_style.setter
+    def header_style(self, style: str):
+        self._header_style = attr(style)
 
     @property
-    def footer_color(self):
-        """ footer_color """
-        return self._footer_color
+    def text_color(self):
+        """ text color """
+        return self._text_color
 
-    @footer_color.setter
-    def footer_color(self, color):
-        self._footer_color = fg(color)
+    @text_color.setter
+    def text_color(self, color: str):
+        self._text_color = fg(color)
 
     @property
     def symbol(self):
         """ graph symbols to use """
-        return [self._fsymbol, self._msymbol, self.esymbol]
+        return (self._fsymbol, self._msymbol, self.esymbol)
 
     @symbol.setter
-    def symbol(self, symbol):
+    def symbol(self, symbol: str):
         if symbol:
             self._fsymbol = symbol
             self._msymbol = ">"
@@ -81,7 +71,7 @@ class Options:
 
     @property
     def fsymbol(self):
-        """ The final symbol """
+        """ The full symbol """
         return self._fsymbol
 
     @property
@@ -91,13 +81,12 @@ class Options:
 
     @property
     def msymbol(self):
-        """ The used symbol """
+        """ The middle symbol """
         return self._msymbol
 
 
 class Chart:
     """Abstract base object for charts"""
-    options: Options = None
 
     def __init__(self, options: Options = None):
         if options is None:
@@ -106,50 +95,49 @@ class Chart:
             self.options = options
 
 
-class BarChart(Chart):
-    """Draws chart with user selected color and symbol"""
+class HorizontalBarChart(Chart):
+    """
+    Draws horizontal chart with user selected color and symbol
+    """
 
-    def chart(
-        self,
-        title: str,
-        pre_graph_text: str,
-        post_graph_text: str,
-        footer: str,
-        maximum: float,
-        current: float,
-    ):
-        print(stylize(title, self.options.header_color))
+    def chart(self,
+            title: str,
+            pre_graph_text: str,
+            post_graph_text: str,
+            footer: str,
+            maximum: float,
+            current: float) -> None:
+        print(
+            stylize(title, self.options.header_color + self.options.header_style)
+        )
 
         if pre_graph_text:
-            print(stylize(pre_graph_text, self.options.pre_graph_color))
+            print(stylize(pre_graph_text, self.options.text_color))
 
         print(
-            "[%s]"
+            "%s"
             % stylize(
-                self.draw_horizontal_bar(maximum, current), self.options.graph_color
+                self.draw_horizontal_bar(maximum, current),
+                self.options.graph_color
             ),
             end=" ",
         )
         if post_graph_text:
-            print(stylize(post_graph_text, self.options.post_graph_color))
+            print(stylize(post_graph_text, self.options.text_color))
         else:
             print()
 
         if footer:
-            print(stylize(footer, self.options.footer_color))
+            print(stylize(footer, self.options.text_color))
 
     def draw_horizontal_bar(self, maximum: int, current: int) -> str:
-        """Draw a horizontal bar chart
-
-        Return:
-            drawn horizontal bar chart
-        """
+        """Draw a horizontal bar chart"""
         textBar = ""
-        usage = int((current / maximum) * 36)
+        usage = int((current / maximum) * 38)
         for i in range(1, usage + 1):
             textBar += self.options.fsymbol
         textBar += self.options.msymbol
-        for i in range(1, 37 - usage):
+        for i in range(1, 39 - usage):
             textBar += self.options.esymbol
         # check if the user set up graph color
         if "█" not in self.options.fsymbol:
@@ -157,13 +145,10 @@ class BarChart(Chart):
         return textBar
 
 
-class verticalBarChar(Chart):
-    def draw_vertical_bar(self, capacity: int, used: int) -> str:
-        """Draw a vertical bar chart
+class VerticalBarChart(Chart):
 
-        Returns:
-            drawn vertical bar chart
-        """
+    def draw_vertical_bar(self, capacity: int, used: int) -> str:
+        """Draw a vertical bar chart"""
         textBar = "\n"
         n = (used / capacity) * 8
         # If the usage is below 1% print empty chart
