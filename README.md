@@ -121,15 +121,13 @@ If you want to contribute to the project you are more than a welcome! But first,
 - v1.3.2:
 	- Refactored module disks.py
 	- Unit Tests created
-	- Handling of unavailable colors/attributes Pie-chart option
 	- Set up the color for all the text
 	- Updated docstrings
 
 - v1.1.0:
 	- Displayes media and network partitions
-	- Print all the partitions with `--every` command
+	- Print all the partitions with `--every` cmd
 	- Print additional (fstype and mount point) with `--details`
-	- Refactored for a better reusability
 
 ----
 ## Special Thanks to the Contributors!
@@ -137,7 +135,6 @@ If you want to contribute to the project you are more than a welcome! But first,
 <a href="https://github.com/bexxmodd/vizex/graphs/contributors">
   <img src="https://contributors-img.web.app/image?repo=bexxmodd/vizex" />
 </a>
-
 
 ------
 ## Follow Me on Social Media
