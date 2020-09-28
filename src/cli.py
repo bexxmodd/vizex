@@ -8,12 +8,6 @@ from colored import fg, attr, stylize
 
 # Command line arguments and options for cli
 @click.command()
-@click.argument(
-    "chart",
-    nargs=1,
-    default="barh",
-    metavar="[CHART_TYPE]"
-)
 @click.option(
     "-P",
     "--path",
@@ -76,17 +70,12 @@ from colored import fg, attr, stylize
     default=None,
     help="Choose the symbols used for the graph"
 )
-def cli(chart, path, every, details, exclude,
+def cli(path, every, details, exclude,
         header, style, text, graph, mark) -> None:
     """
     ** Displays Disk Usage in the terminal, graphically. **
 
     Customize visuals by setting colors and attributes.
-
-    Select one of the available graph types:
-        barv : Vertical Bars
-        *barh : Horizontal Bars (buggy)
-        *pie : Pie Chart (coming soon)
 
     COLORS: light_red, red, dark_red, dark_blue, blue,
         cyan, yellow, green, pink, white, black, purple,
@@ -94,7 +83,6 @@ def cli(chart, path, every, details, exclude,
 
     ATTRIBUTES: bold, dim, underlined, blink, reverse.
     """
-    chart = "barh"
     options: Options = Options()
     if mark:
         options.symbol = mark
@@ -107,14 +95,12 @@ def cli(chart, path, every, details, exclude,
     if style:
         options.header_style = style
 
-    chart = chart
     exclude_list = list(exclude)
 
-    renderer = None
-    if chart == "barh":
-        renderer = DiskUsage(
-            path=path, exclude=exclude_list, details=details, every=every
-        )
+    # renderer = None
+    renderer = DiskUsage(
+        path=path, exclude=exclude_list, details=details, every=every
+    )
     renderer.print_charts(options)
 
 

@@ -51,7 +51,6 @@ yay -S vizex
 
 After installing run the program with a single command `vizex` in your terminal. This will graphically display disk space and usage:
 
-Change the graph type from horizontal bars or to the vertical bars or to the *pie charts (in works).
 ```
 vizex
 ```

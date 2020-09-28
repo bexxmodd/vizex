@@ -69,23 +69,6 @@ class DiskUsage:
         )
         print()
 
-    def print_barchart(self, disk_name: str, disk: dict) -> None:
-        """
-        Prints disk usage in the Terminal with horizontal bars
-        """
-        print(f"{stylize(disk_name, self.header + self.style)}")
-        print(self.create_stats(disk))
-        chart = ChartPrint(self.graph, self.symbol)
-        print(
-            "",
-            chart.draw_horizontal_bar(capacity=disk["total"],
-                                used=disk["used"]),
-                                self.create_warning(disk["percent"]),
-        )
-        if self.details:
-            print(self.details_text(disk))
-            print()
-
     def grab_root(self) -> dict:
         """Grab the data about the root partition"""
         root = {
@@ -149,12 +132,12 @@ class DiskUsage:
         r = ints_to_human_readable(disk)
         return f"Total: {r['total']}\t Used: {r['used']}\t Free: {r['free']}"
 
-    def create_pct_used(self, usage) -> str:
+    def create_pct_used(self, usage_pct: float) -> str:
         """Create disk usage percent with warning color"""
-        use = str(usage) + '% full'
-        if usage >= 80:
+        use = str(usage_pct) + '% full'
+        if usage_pct >= 80:
             return f"{stylize(use, attr('blink') + fg(9))}"                  
-        elif usage >= 60:
+        elif usage_pct >= 60:
             return f"{stylize(use, fg(214))}"
         else:
             return f"{stylize(use, fg(82))}"

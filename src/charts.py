@@ -111,7 +111,7 @@ class Chart:
 
 class HorizontalBarChart(Chart):
     """
-    Draws horizontal chart with user selected color and symbol
+    Create horizontal chart with user selected color and symbol
     """
 
     def chart(self,
@@ -160,6 +160,9 @@ class HorizontalBarChart(Chart):
 
 
 class VerticalBarChart(Chart):
+    """
+    Create vertical chart with user selected color and symbol
+    """
 
     def draw_vertical_bar(self, capacity: int, used: int) -> str:
         """Draw a vertical bar chart"""
