@@ -8,6 +8,8 @@ def bytes_to_human_readable(bytes: int, suffix='B') -> str:
     Converts bytes into the appropriate human
     readable unit with a relevant suffix.
     """
+    if not bytes:
+        return
     for unit in ['','K','M','G','T','P','E','Z']:
         if abs(bytes) < 1024.0:
             return f'{bytes:3.1f} {unit}{suffix}'
