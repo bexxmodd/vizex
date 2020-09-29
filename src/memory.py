@@ -15,8 +15,6 @@ class Memory:
         self._memory = psutil.virtual_memory()
         self._swap = psutil.swap_memory()
 
-        return
-
     def print_charts(self, options: Options = None) -> None:
         """Prints the charts based on user selection type"""
         if options is None:
@@ -52,7 +50,7 @@ class Memory:
         post_graph_text = self.create_pct_used(current / maximum)
         footer = self.create_details_text(maximum, current, free, available)
 
-        ch.chart(
+        chart.chart(
             post_graph_text=post_graph_text,
             pre_graph_text=None,
             title=title,
@@ -65,12 +63,14 @@ class Memory:
     def create_pct_used(self, usage_pct: float) -> str:
         """Create memory usage percent with warning color"""
         use = str(ceil(10000 * usage_pct) / 100) + "% full"
+        ret: str = None
         if usage_pct >= 80:
-            return f"{stylize(use, attr('blink') + fg(9))}"
+            ret = f"{stylize(use, attr('blink') + fg(9))}"
         elif usage_pct >= 60:
-            return f"{stylize(use, fg(214))}"
+            ret = f"{stylize(use, fg(214))}"
         else:
-            return f"{stylize(use, fg(82))}"
+            ret = f"{stylize(use, fg(82))}"
+        return ret
 
     def create_details_text(self, maximum, current, free, available) -> str:
         """ Create details about memory usage """
@@ -89,10 +89,10 @@ class Memory:
 
 
 if __name__ == "__main__":
-    self = Memory()
-    self.print_charts()
+    mem = Memory()
+    mem.print_charts()
     # Example output:
-    
+
     # Physical Memory
     # █████████████▒░░░░░░░░░░░░░░░░░░░░░░░░░ 35.46% full
     # Total: 15.4 GB Used: 5.5 GB  Free: 988.3 MB Avail: 7.3 GB
