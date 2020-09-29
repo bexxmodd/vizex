@@ -55,14 +55,14 @@ class Battery:
 
 
 if __name__ == "__main__":
-    self = Battery()
-    self.print_charts()
+    battery = Battery()
+    battery.print_charts()
     # Example output:
 
-    # Physical Memory
-    # █████████████▒░░░░░░░░░░░░░░░░░░░░░░░░░ 35.46% full
-    # Total: 15.4 GB Used: 5.5 GB  Free: 988.3 MB Avail: 7.3 GB
+    # Battery
+    # █████████████▒░░░░░░░░░░░░░░░░░░░░░░░░░ 34.23%
+    # Charging
 
-    # Swap Space
-    # ▒░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0.03% full
-    # Total: 15.7 GB Used: 4.5 MB  Free: 15.7 GB
+    # Battery
+    # █████████████▒░░░░░░░░░░░░░░░░░░░░░░░░░ 34.51%
+    # Plugged in: False       Discharging: 0:48:24
