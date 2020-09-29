@@ -1,10 +1,10 @@
 """ Memory module for vizex """
-import psutil
 
 from math import ceil
-from charts import Chart, HorizontalBarChart, Options
+import psutil
 from colored import fg, attr, stylize
-from tools import bytes_to_human_readable, ints_to_human_readable
+from charts import Chart, HorizontalBarChart, Options
+from tools import bytes_to_human_readable
 
 
 class Memory:
