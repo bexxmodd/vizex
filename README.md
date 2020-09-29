@@ -131,10 +131,11 @@ If you want to contribute to the project you are more than a welcome! But first,
 
 ----
 ## Special Thanks to the Contributors!
-
-<a href="https://github.com/bexxmodd/vizex/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=bexxmodd/vizex" />
-</a>
+<p>
+	<a href="https://github.com/bexxmodd/vizex/graphs/contributors">
+  		<img src="https://contributors-img.web.app/image?repo=bexxmodd/vizex" />
+	</a>
+</p>
 
 ------
 ## Follow Me on Social Media
