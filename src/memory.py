@@ -8,14 +8,7 @@ from tools import bytes_to_human_readable
 
 
 class Memory:
-    """
-    Personalize and visualize the memory usage in the terminal
-
-    options:
-        barh: visualize values as a horizontal bar
-        barv: visualiz disk space as a vertical bar
-        pie: visualize as a pie charts
-    """
+    """ Personalize and visualize the memory usage in the terminal """
 
     def __init__(self) -> None:
         """ Create a new Battery Object """
@@ -55,7 +48,7 @@ class Memory:
         free: int,
         available: int,
     ) -> None:
-        ch = chart
+        """ Print information about memory usage """
         post_graph_text = self.create_pct_used(current / maximum)
         footer = self.create_details_text(maximum, current, free, available)
 
@@ -80,6 +73,7 @@ class Memory:
             return f"{stylize(use, fg(82))}"
 
     def create_details_text(self, maximum, current, free, available) -> str:
+        """ Create details about memory usage """
         ret = format(
             "Total: %s Used: %s  Free: %s"
             % (
