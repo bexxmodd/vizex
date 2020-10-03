@@ -81,21 +81,32 @@ class DiskUsage:
         }
         return root
 
-    def grab_partitions(self, exclude: list, every: bool) -> dict:
-        """Grabs all the partitions from the user's PC."""
+    def grab_partitions(self,
+                        exclude: list,
+                        every: bool) -> dict:
+        """Grabs all the partitions"""
         if self.exclude is None:
             exclude = []
         disks = {}
+        
+        # If we don't need every part we grab root seperately
         if not every:
             disks['root'] = self.grab_root()
         disk_parts = psutil.disk_partitions(all=every)
         for disk in disk_parts[1:]:
+
             # Exclude mounpoints created by snap
             if disk.device.startswith("/dev/loop"):
                 continue
+
+            # Check that tmp is not slipping as partition
+            if disk.mountpoint.startswith("/tmp"):
+                continue
+
             # Check that part name is not in the excluded list
             if disk[1].split("/")[-1] in exclude:
                 continue
+
             try:
                 if psutil.disk_usage(disk[1]).total > 0:
                     disks[disk[1].split("/")[-1]] = {
