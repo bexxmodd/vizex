@@ -1,8 +1,9 @@
 """ Battery module for vizex """
 
 import datetime
-from math import ceil
 import psutil
+
+from math import ceil
 from charts import Chart, HorizontalBarChart, Options
 
 

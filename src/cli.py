@@ -3,9 +3,9 @@
 import click
 
 from disks import DiskUsage
+from battery import Battery
 from charts import Options
 from colored import fg, attr, stylize
-from battery import Battery
 
 # Command line arguments and options for cli
 @click.command()
