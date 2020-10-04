@@ -5,9 +5,14 @@ import click
 from disks import DiskUsage
 from charts import Options
 from colored import fg, attr, stylize
+from battery import Battery
 
 # Command line arguments and options for cli
 @click.command()
+@click.argument(
+    'arg',
+    default='disk'
+)
 @click.option(
     "-P",
     "--path",
@@ -70,8 +75,9 @@ from colored import fg, attr, stylize
     default=None,
     help="Choose the symbols used for the graph"
 )
-def cli(path, every, details, exclude,
-        header, style, text, graph, mark) -> None:
+def cli(arg, path, every, details,
+        exclude, header, style,
+        text, graph, mark) -> None:
     """
     ** Displays Disk Usage in the terminal, graphically. **
 
@@ -83,6 +89,8 @@ def cli(path, every, details, exclude,
 
     ATTRIBUTES: bold, dim, underlined, blink, reverse.
     """
+
+
     options: Options = Options()
     if mark:
         options.symbol = mark
@@ -95,6 +103,13 @@ def cli(path, every, details, exclude,
     if style:
         options.header_style = style
 
+    if arg == 'battery':
+        try:
+            battery = Battery()
+            battery.print_charts()
+        except:
+            print('Battery not found!')
+    
     exclude_list = list(exclude)
 
     # renderer = None
