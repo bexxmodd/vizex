@@ -3,16 +3,13 @@ import unittest
 import unittest.mock
 
 from colored import fg, attr, stylize
-from charts import Options, Chart, HorizontalBarChart
+from charts import Options, Chart, HorizontalBarChart, VerticalBarChart
 
 class TestOptions(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
         cls.opts = Options()
-        # cls.opts.graph_color = 'cyan'
-        # cls.opts.header_style = 'underlined'
-        # cls.opts.text_color = 'yellow'
 
     def test_symbol_setter(self):
         self.opts.symbol = '@'
@@ -53,6 +50,7 @@ class TestChart(unittest.TestCase):
 
 
 class TestHorizontalBarChart(unittest.TestCase):
+    """Test Horizontal Bar Chart printing"""
 
     @classmethod
     def setUpClass(cls):
@@ -74,7 +72,7 @@ class TestHorizontalBarChart(unittest.TestCase):
     def test_chart(self):
         compare = f"{stylize('Test Title', fg('red') + attr('bold'))}\n" \
             + f"{stylize('This looks sweet', fg('white'))}\n" \
-            + f"{stylize('███████████████████▒░░░░░░░░░░░░░░░░░░░', fg('white'))}"
+            + f"{stylize('███████████████████▒░░░░░░░░░░░░░░░░░░░', fg('white'))} \n"
         
         self.assert_stdout(compare)
 
@@ -85,42 +83,20 @@ class TestHorizontalBarChart(unittest.TestCase):
 
         compare_02 = '▒░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░'
         self.assertEqual(
-            compare_02, self.horizontal_chart.draw_horizontal_bar(10, 0)
-        )
+            compare_02, self.horizontal_chart.draw_horizontal_bar(10, 0))
 
 
-# class TestChartPrint(unittest.TestCase):
-#     """Test Printing of Charts in the terminal"""
+class TestVerticalBarChart(unittest.TestCase):
+    """Test Printing of Vertical bars in the terminal"""
 
-#     @classmethod
-#     def setUpClass(cls):
-#         cls.chart01 = ChartPrint(graph=Color.RED)
-#         cls.chart02 = ChartPrint(symbol='@')
+    @classmethod
+    def setUpClass(cls):
+        cls.chart = VerticalBarChart()
 
-#     def test_grap_color(self):
-#         self.assertIsInstance(self.chart01,
-#                                 ChartPrint)
-#         self.assertIsInstance(self.chart02,
-#                                 ChartPrint)
-#         self.assertEqual(self.chart01.graph,
-#                                 fg('red'))
-#         self.assertEqual(self.chart01.msymbol,
-#                             stylize('▒', fg('red')))
-#         self.assertEqual(self.chart02.fsymbol, '@')
-#         self.assertEqual(self.chart02.esymbol, '-')
-        
-#     def test_draw_horizontal_bar(self):
-#         compare = '[@@@@@@@@@@@@@@@@@@>------------------]'
-#         self.assertEqual(
-#             self.chart02.draw_horizontal_bar(10, 5),
-#             compare
-#         )
-
-#     def test_draw_vertical_bar(self):
-#         self.assertEqual(
-#             self.chart02.draw_vertical_bar(10, 5)[:22],
-#             '\n---------  \n---------'
-#         )
+    def test_draw_vertical_bar(self):
+        self.assertEqual(
+            self.chart.draw_vertical_bar(10, 5)[:22],
+            '\n░░░░░░░░░  \n░░░░░░░░░')
 
 
 if __name__ == '__main__':
