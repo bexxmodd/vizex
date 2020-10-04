@@ -146,6 +146,17 @@ class HorizontalBarChart(Chart):
 
     def draw_horizontal_bar(self, maximum: int, current: int) -> str:
         """Draw a horizontal bar chart"""
+
+        # Sanity check that numbers add up
+        if current > maximum:
+            current = maximum
+
+        if current < 0:
+            current = 0
+
+        if maximum < 0:
+            maximum = 0
+
         textBar = ""
         usage = int((current / maximum) * 38)
         for i in range(1, usage + 1):
@@ -153,7 +164,8 @@ class HorizontalBarChart(Chart):
         textBar += self.options.msymbol
         for i in range(1, 39 - usage):
             textBar += self.options.esymbol
-        # check if the user set up graph color
+
+        # Check if the user set up graph color
         if "█" not in self.options.fsymbol:
             return f"[{textBar}]"
         return textBar
@@ -180,9 +192,10 @@ class VerticalBarChart(Chart):
 
 if __name__ == "__main__":
     ch = HorizontalBarChart()
-    ch.options.post_graph_color = "green"
-    ch.options.pre_graph_color = "blue"
-    ch.options.footer_color = "yellow"
+    ch.options.graph_color = 'cyan'
+    ch.options.text_color = 'yellow'
+    ch.options.header_color = 'red'
+    ch.options.header_style = 'underlined'
     ch.chart(
         title="Test Content",
         maximum=100,
