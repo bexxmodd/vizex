@@ -3,7 +3,7 @@ import psutil
 from math import ceil
 from charts import Chart, HorizontalBarChart, Options
 from colored import fg, attr, stylize
-from tools import bytes_to_human_readable, ints_to_human_readable
+import tools
 
 
 class DiskUsage:
@@ -57,7 +57,8 @@ class DiskUsage:
 
         maximum = part["total"]
         current = part["used"]
-        post_graph_text = self.create_pct_used(part['percent'])
+        post_graph_text = tools.create_usage_warning(
+                                part['percent'], 80, 60)
 
         ch.chart(
             post_graph_text=post_graph_text,
@@ -140,18 +141,18 @@ class DiskUsage:
         return f"fstype={disk['fstype']}\tmountpoint={disk['mountpoint']}"
 
     def create_stats(self, disk: dict) -> str:
-        r = ints_to_human_readable(disk)
+        r = tools.ints_to_human_readable(disk)
         return f"Total: {r['total']}\t Used: {r['used']}\t Free: {r['free']}"
 
-    def create_pct_used(self, usage_pct: float) -> str:
-        """Create disk usage percent with warning color"""
-        use = str(usage_pct) + '% full'
-        if usage_pct >= 80:
-            return f"{stylize(use, attr('blink') + fg(9))}"                  
-        elif usage_pct >= 60:
-            return f"{stylize(use, fg(214))}"
-        else:
-            return f"{stylize(use, fg(82))}"
+    # def create_pct_used_warning(self, usage_pct: float) -> str:
+    #     """Create disk usage percent with warning color"""
+    #     use = str(usage_pct) + '% full'
+    #     if usage_pct >= 80:
+    #         return f"{stylize(use, attr('blink') + fg(9))}"                  
+    #     elif usage_pct >= 60:
+    #         return f"{stylize(use, fg(214))}"
+    #     else:
+    #         return f"{stylize(use, fg(82))}"
 
 
 if __name__ == "__main__":
@@ -166,7 +167,8 @@ if __name__ == "__main__":
         footer = self.create_details_text(part)
         maximum = part["total"]
         current = part["used"]
-        post_graph_text = self.create_pct_used(part['percent'])
+        post_graph_text = tools.create_usage_warning(
+                                    part['percent'], 80, 60)
 
         ch.chart(
             post_graph_text=post_graph_text,

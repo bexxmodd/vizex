@@ -185,8 +185,8 @@ class VerticalBarChart(Chart):
             n = 0
         else:
             n = ceil(n)
-        textBar += f"{self.esymbol * 9}  \n" * (8 - n)
-        textBar += f"{self.fsymbol * 9}  \n" * n
+        textBar += f"{self.options.esymbol * 9}  \n" * (8 - n)
+        textBar += f"{self.options.fsymbol * 9}  \n" * n
         return textBar
 
 

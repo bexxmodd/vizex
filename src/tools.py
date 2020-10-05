@@ -44,3 +44,22 @@ def printml(folder: list, cols: int = 1) -> None:
             print(*line, sep='  ')
         print()
         start = end
+
+def create_usage_warning(usage_pct: float,
+                        red_flag: int,
+                        yellow_flag: int) -> str:
+    """Create disk usage percent with warning color"""
+    if usage_pct < 0:
+        usage_pct = 0
+
+    if usage_pct > 100:
+        usage_pct = 100
+
+    use = str(usage_pct) + '% used'
+
+    if usage_pct >= red_flag:
+        return f"{stylize(use, attr('blink') + fg(9))}"
+    elif usage_pct >= yellow_flag:
+        return f"{stylize(use, fg(214))}"
+    else:
+        return f"{stylize(use, fg(82))}"
