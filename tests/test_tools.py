@@ -3,7 +3,8 @@ import random
 import unittest
 import unittest.mock
 
-from tools import bytes_to_human_readable
+from colored import fg, attr, stylize
+from tools import bytes_to_human_readable, create_usage_warning
 from tools import ints_to_human_readable, printml
 
 class TestTools(unittest.TestCase):
@@ -56,6 +57,32 @@ class TestTools(unittest.TestCase):
 '''
         self.assert_stdout(arts, 1, expected1)
         self.assert_stdout(arts, 2, expected2)
+
+    def test_create_usage_warning(self):
+        # Test blinking red warning
+        compare_red = f"{stylize('39.5% used', attr('blink') + fg(9))}"
+        self.assertEqual(
+            create_usage_warning(39.5, 39.4, 39), compare_red)
+
+        # Test orange medium level warning
+        compare_orange = f"{stylize('0.1% used', fg(214))}"
+        self.assertEqual(
+            create_usage_warning(0.1, 0.2, 0.1), compare_orange)
+
+        # Test green low-level warning
+        compare_green = f"{stylize('99.5% used', fg(82))}"
+        self.assertEqual(
+            create_usage_warning(99.5, 99.9, 99.6), compare_green)
+
+        # Test negative number
+        compare_negative = f"{stylize('0% used', fg(82))}"
+        self.assertEqual(
+            create_usage_warning(-15.5, 1.1, 1.0), compare_negative)
+
+        # Test over 100% usage
+        compare_over100 = f"{stylize('100% used', attr('blink') + fg(9))}"
+        self.assertEqual(
+            create_usage_warning(101.1, 99.9, 99.8), compare_over100)
 
 
 if __name__ == '__main__':
