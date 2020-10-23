@@ -103,20 +103,20 @@ def cli(arg, path, every, details,
     if style:
         options.header_style = style
 
+    exclude_list = list(exclude)
+
     if arg == 'battery':
         try:
             battery = Battery()
             battery.print_charts()
         except:
             print('Battery not found!')
-    
-    exclude_list = list(exclude)
-
-    # renderer = None
-    renderer = DiskUsage(
-        path=path, exclude=exclude_list, details=details, every=every
-    )
-    renderer.print_charts(options)
+    else:
+        # renderer = None
+        renderer = DiskUsage(
+            path=path, exclude=exclude_list, details=details, every=every
+        )
+        renderer.print_charts(options)
 
 
 if __name__ == "__main__":

@@ -144,16 +144,6 @@ class DiskUsage:
         r = tools.ints_to_human_readable(disk)
         return f"Total: {r['total']}\t Used: {r['used']}\t Free: {r['free']}"
 
-    # def create_pct_used_warning(self, usage_pct: float) -> str:
-    #     """Create disk usage percent with warning color"""
-    #     use = str(usage_pct) + '% full'
-    #     if usage_pct >= 80:
-    #         return f"{stylize(use, attr('blink') + fg(9))}"                  
-    #     elif usage_pct >= 60:
-    #         return f"{stylize(use, fg(214))}"
-    #     else:
-    #         return f"{stylize(use, fg(82))}"
-
 
 if __name__ == "__main__":
     self = DiskUsage()
