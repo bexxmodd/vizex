@@ -3,7 +3,9 @@ import psutil
 from math import ceil
 from charts import Chart, HorizontalBarChart, Options
 from colored import fg, attr, stylize
+
 import tools
+import pandas as pd
 
 
 class DiskUsage:
@@ -144,10 +146,17 @@ class DiskUsage:
         r = tools.ints_to_human_readable(disk)
         return f"Total: {r['total']}\t Used: {r['used']}\t Free: {r['free']}"
 
+    def save_to_csv(self, filename: str) -> None:
+        """Outputs disks/partitions data as a CSV file"""
+        data = self.grab_partitions(self.exclude, self.every)
+        df = pd.DataFrame.from_dict(data, orient='index')
+        df.to_csv(filename)
+
 
 if __name__ == "__main__":
     self = DiskUsage()
     parts = self.grab_partitions(exclude=[], every=False)
+    self.save_to_csv('disk_usage.csv')
 
     for partname in parts:
         part = parts[partname]
