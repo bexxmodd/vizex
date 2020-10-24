@@ -1,5 +1,7 @@
 """ Utility function for vizex """
 
+import pandas as pd
+
 from math import ceil
 from colored import fg, attr, stylize
 
@@ -63,3 +65,8 @@ def create_usage_warning(usage_pct: float,
         return f"{stylize(use, fg(214))}"
     else:
         return f"{stylize(use, fg(82))}"
+
+def save_to_csv(data:dict, filename: str) -> None:
+    """Outputs disks/partitions data as a CSV file"""
+    df = pd.DataFrame.from_dict(data, orient='index')
+    df.to_csv(filename)

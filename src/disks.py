@@ -149,14 +149,12 @@ class DiskUsage:
     def save_to_csv(self, filename: str) -> None:
         """Outputs disks/partitions data as a CSV file"""
         data = self.grab_partitions(self.exclude, self.every)
-        df = pd.DataFrame.from_dict(data, orient='index')
-        df.to_csv(filename)
+        tools.save_to_csv(data, filename)
 
 
 if __name__ == "__main__":
     self = DiskUsage()
     parts = self.grab_partitions(exclude=[], every=False)
-    self.save_to_csv('disk_usage.csv')
 
     for partname in parts:
         part = parts[partname]

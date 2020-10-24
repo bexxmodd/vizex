@@ -9,9 +9,11 @@ from colored import fg, attr, stylize
 
 # Command line arguments and options for cli
 @click.command()
-@click.argument(
-    'arg',
-    default='disk'
+@click.argument('arg', default='disk')
+@click.option(
+    "--save",
+    help="Save your disk usage data into a csv file:" \
+        + "Takes a full path with a file name as an argument"
 )
 @click.option(
     "-P",
@@ -75,8 +77,8 @@ from colored import fg, attr, stylize
     default=None,
     help="Choose the symbols used for the graph"
 )
-def cli(arg, path, every, details,
-        exclude, header, style,
+def cli(arg, save, path, every,
+        details, exclude, header, style,
         text, graph, mark) -> None:
     """
     ** Displays Disk Usage in the terminal, graphically. **
@@ -116,8 +118,8 @@ def cli(arg, path, every, details,
         renderer = DiskUsage(
             path=path, exclude=exclude_list, details=details, every=every
         )
-        if arg == 'save':
-            renderer.save_to_csv('~/disk_usage.csv')
+        if save:
+            renderer.save_data(save)
         renderer.print_charts(options)
 
 
