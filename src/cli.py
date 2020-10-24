@@ -116,6 +116,8 @@ def cli(arg, path, every, details,
         renderer = DiskUsage(
             path=path, exclude=exclude_list, details=details, every=every
         )
+        if arg == 'save':
+            renderer.save_to_csv('~/disk_usage.csv')
         renderer.print_charts(options)
 
 
