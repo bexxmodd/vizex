@@ -5,7 +5,9 @@ import click
 from disks import DiskUsage
 from battery import Battery
 from charts import Options
+from cpu import CPUFreq
 from colored import fg, attr, stylize
+
 
 # Command line arguments and options for cli
 @click.command()
@@ -113,6 +115,9 @@ def cli(arg, save, path, every,
             battery.print_charts()
         except:
             print('Battery not found!')
+    elif arg == 'cpu':
+        cpus = CPUFreq()
+        cpus.display_separately()
     else:
         # renderer = None
         renderer = DiskUsage(

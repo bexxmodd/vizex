@@ -1,0 +1,7 @@
+,total,used,free,percent,fstype,mountpoint
+root,502467059712,277300846592,199570894848,58.1,ext4,/
+efi,535805952,4096,535801856,0.0,vfat,/boot/efi
+OldSSD,120003198976,32768,120003166208,0.0,vfat,/media/bexx/OldSSD
+New Volume,523235328,18051072,505184256,3.4,fuseblk,/media/bexx/New Volume
+All That,475390799872,48529346560,426861453312,10.2,fuseblk,/media/bexx/All That
+Mainly Games,524286947328,346612449280,177674498048,66.1,fuseblk,/media/bexx/Mainly Games

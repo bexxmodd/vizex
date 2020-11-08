@@ -146,7 +146,7 @@ class DiskUsage:
         r = tools.ints_to_human_readable(disk)
         return f"Total: {r['total']}\t Used: {r['used']}\t Free: {r['free']}"
 
-    def save_to_csv(self, filename: str) -> None:
+    def save_data(self, filename: str) -> None:
         """Outputs disks/partitions data as a CSV file"""
         data = self.grab_partitions(self.exclude, self.every)
         tools.save_to_csv(data, filename)

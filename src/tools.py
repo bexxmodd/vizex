@@ -16,7 +16,7 @@ def bytes_to_human_readable(bytes: int, suffix='B') -> str:
         bytes /= 1024.0
     return f'{bytes:.1f} {"Y"}{suffix}'
 
-def ints_to_human_readable(disk: dict[int]) -> dict:
+def ints_to_human_readable(disk: dict) -> dict:
     """
     Converts the dictionary of integers
     into the human readable strings.
@@ -29,7 +29,7 @@ def ints_to_human_readable(disk: dict[int]) -> dict:
         result[key] = disk[key]
     return result
 
-def printml(folder: list[str], cols: int = 1) -> None:
+def printml(folder: list, cols: int = 1) -> None:
     """Prints multiline strings side by side."""
     size = len(folder)
     incr = ceil(size / cols)
@@ -66,7 +66,7 @@ def create_usage_warning(usage_pct: float,
     else:
         return f"{stylize(use, fg(82))}"
 
-def save_to_csv(data: dict[str],
+def save_to_csv(data: dict,
                 filename: str,
                 orient: str='index') -> None:
     """Outputs disks/partitions data as a CSV file"""
