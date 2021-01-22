@@ -1,5 +1,6 @@
 """ Utility function for vizex """
 
+import json
 import pandas as pd
 
 from math import ceil
@@ -72,3 +73,10 @@ def save_to_csv(data: dict,
     """Outputs disks/partitions data as a CSV file"""
     df = pd.DataFrame.from_dict(data, orient=orient)
     df.to_csv(filename, mode='a')
+
+def save_to_json(data: dict,
+                filename: str,
+                indent: int=4) -> None:
+    """Saves disk/partitions data as a JSON file"""
+    with open(filename, "w") as f:
+        json.dump(data, f, indent=indent)

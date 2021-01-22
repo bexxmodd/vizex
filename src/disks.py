@@ -1,11 +1,11 @@
 import psutil
+import tools
+import platform
+import pandas as pd
 
 from math import ceil
 from charts import Chart, HorizontalBarChart, Options
 from colored import fg, attr, stylize
-
-import tools
-import pandas as pd
 
 
 class DiskUsage:
@@ -30,6 +30,7 @@ class DiskUsage:
             self.exclude = exclude
         self.details = details
         self.every = every
+        self.platform = platform.system() # Check on which platform vizex operates
 
     def print_charts(self, options: Options=None) -> None:
         """Prints the charts based on user selection type"""
@@ -93,9 +94,10 @@ class DiskUsage:
         disks = {}
         
         # If we don't need every part we grab root seperately
-        if not every:
+        if not every and self.platform != 'Windows':
             disks['root'] = self.grab_root()
         disk_parts = psutil.disk_partitions(all=every)
+        
         for disk in disk_parts[1:]:
 
             # Exclude mounpoints created by snap
@@ -149,7 +151,13 @@ class DiskUsage:
     def save_data(self, filename: str) -> None:
         """Outputs disks/partitions data as a CSV file"""
         data = self.grab_partitions(self.exclude, self.every)
-        tools.save_to_csv(data, filename)
+        file_type = filename.split(".")[-1]
+        if file_type.lower() == 'csv':
+            tools.save_to_csv(data, filename)
+        elif file_type.lower() == 'json':
+            tools.save_to_json(data, filename)
+        else:
+            print("Not support file type")
 
 
 if __name__ == "__main__":
