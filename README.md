@@ -82,6 +82,11 @@ You can also exclude any combination of partitions/disks with multiple `-X` or f
 vizex -X <PartitionName1> -X <PartitionName2> ...
 ```
 
+You can also save the partitions full information in `csv` or in `json` file, just by calling `--save` option with the full path where you want your output to be saved:
+```
+vizex --save "/home/user/disk_info.json"
+```
+
 For a full list of the available options please check:
 ```
 vizex --help
