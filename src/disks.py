@@ -11,11 +11,6 @@ from colored import fg, attr, stylize
 class DiskUsage:
     """
     Personalize and visualize the disk space usage in the terminal
-
-    options:
-        barh: visualize values as a horizontal bar
-        barv: visualiz disk space as a vertical bar
-        pie: visualize as a pie charts
     """
 
     def __init__(self,
@@ -30,7 +25,7 @@ class DiskUsage:
             self.exclude = exclude
         self.details = details
         self.every = every
-        self.platform = platform.system() # Check on which platform vizex operates
+        self._platform = platform.system() # Check on which platform vizex operates
 
     def print_charts(self, options: Options=None) -> None:
         """Prints the charts based on user selection type"""
@@ -94,7 +89,7 @@ class DiskUsage:
         disks = {}
         
         # If we don't need every part we grab root seperately
-        if not every and self.platform != 'Windows':
+        if not every and self._platform != 'Windows':
             disks['root'] = self.grab_root()
         disk_parts = psutil.disk_partitions(all=every)
         
