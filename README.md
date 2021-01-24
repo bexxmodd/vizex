@@ -118,6 +118,11 @@ If you want to contribute to the project you are more than a welcome! But first,
 ```
 
 # Release History
+- v1.5.1:
+	- Added battery information  display
+	- Now you can save output in csv or json formats
+	- Small bug corrections
+
 - v1.3.5:
 	- Major refactoring
 	- Now charts can print string data
