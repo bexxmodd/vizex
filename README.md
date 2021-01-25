@@ -87,6 +87,11 @@ You can also save the partitions full information in `csv` or in `json` file, ju
 vizex --save "/home/user/disk_info.json"
 ```
 
+And if you are on laptopt you can even call your battery information with simple argument:
+```
+vizex battery
+```
+
 For a full list of the available options please check:
 ```
 vizex --help
