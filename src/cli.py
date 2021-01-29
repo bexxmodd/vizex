@@ -14,8 +14,9 @@ from colored import fg, attr, stylize
 @click.argument('arg', default='disk')
 @click.option(
     "--save",
-    help="Save your disk usage data into a csv file:" \
-        + "Takes a full path with a file name as an argument"
+    help="Save your disk usage data into a CSV or JSON file:" \
+        + "Takes a full path with a file name as an argument. "\
+        + "File type will be defined based on the <.type> you give to the filename"
 )
 @click.option(
     "-P",
@@ -92,6 +93,11 @@ def cli(arg, save, path, every,
         neon, grey, beige, orange, magenta, peach.
 
     ATTRIBUTES: bold, dim, underlined, blink, reverse.
+
+    You can also give *args like [BATTERY] and [CPU]
+    
+    battery --> will display the battery information if found.
+    cpu --> will visualize the usage of each cpu in live format **(beta mode)
     """
 
 
