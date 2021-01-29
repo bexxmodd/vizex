@@ -14,7 +14,7 @@ from colored import fg, attr, stylize
 @click.argument('arg', default='disk')
 @click.option(
     "--save",
-    help="Save your disk usage data into a CSV or JSON file:" \
+    help="Export your disk usage data into a CSV or JSON file:" \
         + "Takes a full path with a file name as an argument. "\
         + "File type will be defined based on the <.type> you give to the filename"
 )
