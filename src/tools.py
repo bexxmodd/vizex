@@ -6,12 +6,12 @@ import pandas as pd
 from math import ceil
 from colored import fg, attr, stylize
 
-def bytes_to_human_readable(bytes: int, suffix='B') -> str:
+def bytes_to_human_readable(bytes: int, suffix='b') -> str:
     """
     Converts bytes into the appropriate human
     readable unit with a relevant suffix.
     """
-    for unit in ['','K','M','G','T','P','E','Z']:
+    for unit in ['','k','m','g','t','p','e','z']:
         if abs(bytes) < 1024.0:
             return f'{bytes:3.1f} {unit}{suffix}'
         bytes /= 1024.0

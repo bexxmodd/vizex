@@ -5,79 +5,119 @@ import time
 import magic
 
 from tabulate import tabulate
-from collections import defaultdict
 from tools import bytes_to_human_readable
 from colored import fg, bg, stylize, attr
 
-def get_usage(path: str=None, ignore_hidden: bool=True) -> list:
-    """Returns the size of the folders and files in a given path"""
-    if path is None:
+class DirectorySize():
+    """
+    Creates the tabular listing of all the folders and files in a given path.
+    This module can be seen as a substitute for a du/df linux terminal commands.
+    """
+
+    def __init__(self, path: str=None, ignore_hidden: bool=True,
+                sort_by: str='type', desc: bool=False) -> None:
         path = os.getcwd()
-    data = []
-    with os.scandir(path) as it:
-        for entry in it:
-            try:
-                if ignore_hidden and entry.name.startswith('.'):
+        if path: self.path = path
+        self.ignore_hidden = ignore_hidden
+        self.sort_by = sort_by
+        self.desc = desc
+
+    def get_usage(self) -> list:
+        """."""
+        data = []
+        with os.scandir(self.path) as it:
+            for entry in it:
+                try:
+                    if self.ignore_hidden and entry.name.startswith('.'):
+                        continue
+                    current = []
+                    entry_name = entry.name[:32] # Truncate the name string to 32 chars
+                    size = 0
+                    file_type = '-'
+                    if entry.is_file():
+                        size = os.stat(entry).st_size
+                        file_type = magic.from_file(entry_name, mime=True)
+                        # Gives yellow color to the string
+                        entry_name = stylize("» " + entry_name, fg(226))
+                    elif entry.is_dir():
+                        # Gives orange color to the string
+                        entry_name = stylize("■ " + entry_name + "/", fg(202))
+                        # Calculates the total size of a given folder recursivly
+                        size = self._get_size(entry)
+                    dt = time.strftime(
+                            '%h %d %Y %H:%M',
+                            time.localtime(os.stat(entry).st_mtime))
+                    # Append all the collected data of a current entry
+                    current.append(entry_name)
+                    current.append(dt)
+                    current.append(bytes_to_human_readable(size))
+                    current.append(file_type[:24])
+                    # Add current list to the main list
+                    data.append(current)
+                except FileNotFoundError:
                     continue
-                current = []
-                entry_name = entry.name[:32]
-                size = 0
-                file_type = '-'
-                if entry.is_file():
-                    size = os.stat(entry).st_size
-                    file_type = magic.from_file(entry_name, mime=True)
-                    entry_name = stylize("» " + entry_name, fg(226))
-                elif entry.is_dir():
-                    entry_name = stylize("■ " + entry_name + "/", fg(202))
-                    size = get_size(entry)
-                dt = time.strftime(
-                        '%h %d %Y %H:%M',
-                        time.localtime(os.stat(entry).st_mtime))
-                current.append(entry_name)
-                current.append(dt)
-                current.append(bytes_to_human_readable(size))
-                current.append(file_type[:24])
-                # add current list to the main list
-                data.append(current)
-            except FileNotFoundError:
-                continue
-    return data     
+        return data     
 
-def get_size(start_path: str) -> int:
-    total_size = 0
-    for dirpath, dirnames, filenames in os.walk(start_path):
-        for f in filenames:
-            fp = os.path.join(dirpath, f)
-            total_size += os.path.getsize(fp)
-    return total_size
+    def _get_size(self, start_path: str) -> int:
+        """
+        Calculates the cumulative size of a given directory in bytes
 
-def sort_data(path: str=None,
-            sort_by: str='type',
-            desc: bool=False) -> list:
-    key = -1
-    if sort_by == 'name':
-        key = 0
-    elif sort_by == 'last modified':
-        key = 1
-    elif sort_by == 'size':
-        key = 2
-    # Grab the path data and sort inplace based on users input and name
-    return sorted(get_usage(path), 
-                key=lambda x: (x[key], x[0]),
-                reverse=desc)
+        Args:
+            start_path (str): path to the folder who's
+            cumulative file size is calulated.
 
-def tabulate_disk(path: str=None,
-                sort_by: str='type',
-                desc: bool=False) -> tabulate:
-    headers = [
-        'name ' + stylize('-n', attr("blink")),
-        'last modified ' + stylize('-dt', attr("blink")), 
-        'size ' + stylize('-z', attr("blink")),
-        'type ' + stylize('-t', attr("blink"))
-    ]
-    result = sort_data(path, sort_by, desc)
-    return tabulate(result, headers, tablefmt="rst")
+        Returns:
+            int: size of all files in a given path
+        """
+        total_size = 0
+        for dirpath, dirnames, filenames in os.walk(start_path):
+            for f in filenames:
+                fp = os.path.join(dirpath, f)
+                total_size += os.path.getsize(fp)
+        return total_size
+
+    def sort_data(self) -> list:
+        """
+        Sorts data, which is inputed as a list, 
+        based on given index(key) and reverses if 
+        user has selected descending ordering.
+
+        Returns:
+            list: sorted based on given arg as key
+        """
+        key = -1
+        if self.sort_by == '-n': key = 0
+        elif self.sort_by == '-dt': key = 1
+        elif self.sort_by == '-z': key = 2
+        # Sort and return data based on user's choice
+        return sorted(self.get_usage(), 
+                    key=lambda x: (x[key], x[0]),
+                    reverse=self.desc)
+
+    def tabulate_disk(self) -> tabulate:
+        """
+        Creates the tabular representation of the data.
+        Adds headers and sorts list's data as rows.
+
+        Returns:
+            tabulate: tabulated form of the current 
+                      directory's folders and files.
+        """
+        headers = [
+            'name ' + stylize('-n', attr("blink")),
+            'last modified ' + stylize('-dt', attr("blink")), 
+            'size ' + stylize('-z', attr("blink")),
+            'type ' + stylize('-t', attr("blink"))
+        ]
+        result = self.sort_data()
+        return tabulate(result, headers, tablefmt="rst")
+
+    def print_tables(self) -> None:
+        """Prints tabular data in the terminal"""
+        print(self.tabulate_disk())
+        print(" - sort by blinking arguments above or sort in descending order with -desc")
 
 
 if __name__ == '__main__':
-    print(tabulate_disk())
+    files = DirectorySize()
+    files.print_tables()
