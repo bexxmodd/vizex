@@ -11,6 +11,9 @@ py>=1.9.0
 pyparsing>=2.4.7
 pytest>=6.1.1
 python-dateutil>=2.8.1
+python-magic>=0.4.18
 pytz>=2020.1
 six>=1.15.0
+tabulate>=0.8.7
 toml>=0.10.1
+
