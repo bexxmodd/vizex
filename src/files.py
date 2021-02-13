@@ -23,7 +23,17 @@ class DirectorySize():
         self.desc = desc
 
     def get_usage(self) -> list:
-        """."""
+        """
+        Collects the data for a given path like name of a file/folder 
+         and calculates its size if it's a directory, otherwise 
+         just grabs a file size. If the current entry in a given 
+         path is a file method evaluates its type. Finally, gives 
+         us the date when given file/folder was last modified.
+
+        Returns:
+            list: which is a collection of each entry
+                  (files and folders) in a given path.
+        """
         data = []
         with os.scandir(self.path) as it:
             for entry in it:
@@ -34,8 +44,10 @@ class DirectorySize():
                     entry_name = entry.name[:32] # Truncate the name string to 32 chars
                     size = 0
                     file_type = '-'
+
                     if entry.is_file():
                         size = os.stat(entry).st_size
+                        # Evaluate the file type
                         file_type = magic.from_file(entry_name, mime=True)
                         # Gives yellow color to the string
                         entry_name = stylize("» " + entry_name, fg(226))
@@ -44,9 +56,13 @@ class DirectorySize():
                         entry_name = stylize("■ " + entry_name + "/", fg(202))
                         # Calculates the total size of a given folder recursivly
                         size = self._get_size(entry)
+                    
+                    # Convert last modified time (which is in nanoseconds)
+                    #  in to a human readable time
                     dt = time.strftime(
                             '%h %d %Y %H:%M',
                             time.localtime(os.stat(entry).st_mtime))
+
                     # Append all the collected data of a current entry
                     current.append(entry_name)
                     current.append(dt)
@@ -89,6 +105,7 @@ class DirectorySize():
         if self.sort_by == '-n': key = 0
         elif self.sort_by == '-dt': key = 1
         elif self.sort_by == '-z': key = 2
+
         # Sort and return data based on user's choice
         return sorted(self.get_usage(), 
                     key=lambda x: (x[key], x[0]),
