@@ -11,7 +11,11 @@ from colored import fg, attr, stylize
 
 # ----- vizexdf options and arguments -----
 @click.version_option('1.5.5', message='%(prog)s version %(version)s')
-@click.command()
+@click.command(options_metavar='[options]')
+@click.argument('path', 
+            type=click.Path(exists=True),
+            default='.',
+            metavar='[path]')
 @click.option('-s', '--sort',
             type=click.Choice(['type', 'size', 'name', 'dt']),
             default='type',
@@ -22,9 +26,6 @@ from colored import fg, attr, stylize
 @click.option('-d', '--desc',
             is_flag=True,
             help='Sort columns in descending order')
-@click.argument('path', 
-            type=click.Path(exists=True),
-            default='.')
 def dirs_files(sort: str, all: str,
             desc: str, path: str) -> None:
     '''
@@ -37,17 +38,20 @@ def dirs_files(sort: str, all: str,
   ╚═══╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝
     Made by: Beka Modebadze
 
-The command line program `vizexdf` is a branch of the `vizex` that 
+The command-line program `vizexdf` is a branch of the `vizex` that 
 displays directories and files information in a tabular form.
 
 `vizexdf` Prints data of current working path in a tabular form.
-You can also pass the full PATH for a specific directory you want to print
+You can pass a path for a specific directory you want to print.
 
     Example: vizexdf /home/bexx/test
 
-You can also chain options for --sort --all and --desc.
+You can also chain options for --all --desc --sort.
 
-    Eexample: vizexdf -ads name
+    Example: vizexdf -ads name
+
+This will sort in descending order by name and show all the hidden files and folders.
+!Just make sure 's' is placed at the end of the options chain!
     '''
     show = all
     desc_sort = desc
@@ -62,8 +66,10 @@ You can also chain options for --sort --all and --desc.
 
 # ----- vizex options and arguments -----
 @click.version_option('1.5.5', message='%(prog)s version %(version)s')
-@click.command()
-@click.argument('arg', default='disk')
+@click.command(options_metavar='[options]')
+@click.argument('arg',
+                default='disk',
+                metavar='command')
 @click.option(
     "--save",
     help="Export your disk usage data into a CSV or JSON file:" \
@@ -161,7 +167,7 @@ You can also give *args like [BATTERY] and [CPU]
 
 \b
 battery --> will display the battery information if found.
-cpu --> will visualize the usage of each cpu in live time *(beta mode)
+cpu --> will visualize the usage of each CPU in live time *(beta mode)
     """
 
 
@@ -199,4 +205,4 @@ cpu --> will visualize the usage of each cpu in live time *(beta mode)
 
 
 if __name__ == "__main__":
-    disk_usage()
+    dirs_files()

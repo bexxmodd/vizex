@@ -11,7 +11,7 @@ from colored import fg, bg, stylize, attr
 class DirectoryFiles():
     """
     Creates the tabular listing of all the folders and files in a given path.
-    This module can be seen as a substitute for a du/df linux terminal commands.
+    This module can be seen as a substitute for du/df Linux terminal commands.
     """
 
     def __init__(self, dpath: str=None, show_hidden: bool=False,
@@ -24,11 +24,11 @@ class DirectoryFiles():
 
     def get_usage(self) -> list:
         """
-        Collects the data for a given path like name of a file/folder 
+        Collects the data for a given path like the name of a file/folder 
          and calculates its size if it's a directory, otherwise 
          just grabs a file size. If the current entry in a given 
          path is a file method evaluates its type. Finally, gives 
-         us the date when given file/folder was last modified.
+         us the date when the given file/folder was last modified.
 
         Returns:
             list: which is a collection of each entry
@@ -86,11 +86,11 @@ class DirectoryFiles():
         Calculates the cumulative size of a given directory in bytes
 
         Args:
-            start_path (str): path to the folder who's
-            cumulative file size is calulated.
+            start_path (str): a path to the folder that's
+            the cumulative file size is calculated.
 
         Returns:
-            int: size of all files in a given path
+            int: the size of all files in a given path
         """
         total_size = 0
         for dirpath, dirnames, filenames in os.walk(start_path):
@@ -101,12 +101,12 @@ class DirectoryFiles():
 
     def sort_data(self, data: list) -> list:
         """
-        Sorts data, which is inputed as a list, 
+        Sorts data inplace, which is inputed as a list, 
         based on given index(key) and reverses if 
         user has selected descending ordering.
 
-        Returns:
-            list: sorted based on given arg as key
+        Args:
+            list: list of data with several columns
         """
         key = -1
         if self.sort_by == 'name': key = 0
