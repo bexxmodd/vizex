@@ -126,10 +126,10 @@ class DirectoryFiles():
                       directory's folders and files.
         """
         headers = [
-            'name ' + stylize('-n', attr("blink")),
-            'last modified ' + stylize('-dt', attr("blink")), 
-            'size ' + stylize('-z', attr("blink")),
-            'type ' + stylize('-t', attr("blink"))
+            'name',
+            'last modified (dt)', 
+            'size',
+            'type'
         ]
         result = self.get_usage()
         self.sort_data(result)

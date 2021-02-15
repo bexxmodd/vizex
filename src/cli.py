@@ -9,46 +9,74 @@ from charts import Options
 from cpu import CPUFreq
 from colored import fg, attr, stylize
 
-'''
-The command line implementation of a 'vizexdf' which is a branch of the 'vizex'
-that displays directories and files with their size, type, and last modified date.
-'''
-
-@click.command()
-
 # ----- vizexdf options and arguments -----
-@click.option('--sort', type=click.Choice(['type', 'size', 'name', 'dt']))
-@click.option('--all', '-a', is_flag=True)
-@click.argument('path', type=click.Path(exists=True), default='.')
-@click.argument('order', default='asc')
-def dirs_files(sort, all, order, path):
-    sort_by = 'type'
-    show = False
-    desc_sort = False
-    dirpath = None
-    if order == 'desc': desc_sort = True
-    if all: show = all
-    if sort: sort_by = sort
-    if path: dirpath = path
+@click.version_option('1.5.5', message='%(prog)s version %(version)s')
+@click.command()
+@click.option('-s', '--sort',
+            type=click.Choice(['type', 'size', 'name', 'dt']),
+            default='type',
+            help='Sort table with one of four given columns')
+@click.option('-a', '--all',
+            is_flag=True,
+            help='Include hidden files and folders')
+@click.option('-d', '--desc',
+            is_flag=True,
+            help='Sort columns in descending order')
+@click.argument('path', 
+            type=click.Path(exists=True),
+            default='.')
+def dirs_files(sort: str, all: str,
+            desc: str, path: str) -> None:
+    '''
+\b
+██╗   ██╗██╗███████╗███████╗██╗  ██╗     _  __ 
+██║   ██║██║╚══███╔╝██╔════╝╚██╗██╔╝  __| |/ _|
+██║   ██║██║  ███╔╝ █████╗   ╚███╔╝  / _` | |_ 
+╚██╗ ██╔╝██║ ███╔╝  ██╔══╝   ██╔██╗ | (_| |  _|
+ ╚████╔╝ ██║███████╗███████╗██╔╝ ██╗ \__,_|_|  
+  ╚═══╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝
+    Made by: Beka Modebadze
+
+The command line program `vizexdf` is a branch of the `vizex` that 
+displays directories and files information in a tabular form.
+
+`vizexdf` Prints data of current working path in a tabular form.
+You can also pass the full PATH for a specific directory you want to print
+
+    Example: vizexdf /home/bexx/test
+
+You can also chain options for --sort --all and --desc.
+
+    Eexample: vizexdf -ads name
+    '''
+    show = all
+    desc_sort = desc
+    sort_by = sort
+    dirpath = path
+
     # Execute vizexdf
-    dir_files = DirectoryFiles(sort_by=sort_by, show_hidden=show, desc=desc_sort, dpath=dirpath)
+    dir_files = DirectoryFiles(sort_by=sort_by, show_hidden=show,
+                                desc=desc_sort, dpath=dirpath)
     dir_files.print_tables()
 
 
+# ----- vizex options and arguments -----
+@click.version_option('1.5.5', message='%(prog)s version %(version)s')
 @click.command()
 @click.argument('arg', default='disk')
 @click.option(
     "--save",
     help="Export your disk usage data into a CSV or JSON file:" \
         + "Takes a full path with a file name as an argument. "\
-        + "File type will be defined based on the <.type> you give to the filename"
+        + "File type will be defined based on a <.type> of the filename"
 )
 @click.option(
     "-P",
     "--path",
     default=None,
     multiple=True,
-    help="Print only specific partition/disk",
+    help="Print directory for a provided path."
+        + " It can be both, full and relative path",
 )
 @click.option(
     "-X",
@@ -109,20 +137,31 @@ def disk_usage(arg, save, path, every,
         details, exclude, header, style,
         text, graph, mark) -> None:
     """
-    ** Displays Disk Usage in the terminal, graphically. **
+\b                                            
+██╗   ██╗██╗███████╗███████╗██╗  ██╗
+██║   ██║██║╚══███╔╝██╔════╝╚██╗██╔╝
+██║   ██║██║  ███╔╝ █████╗   ╚███╔╝ 
+╚██╗ ██╔╝██║ ███╔╝  ██╔══╝   ██╔██╗ 
+ ╚████╔╝ ██║███████╗███████╗██╔╝ ██╗
+  ╚═══╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝
+    Made by: Beka Modebadze
 
-    Customize visuals by setting colors and attributes.
+<< Customize and display Disk Usage in the terminal >>
 
-    COLORS: light_red, red, dark_red, dark_blue, blue,
-        cyan, yellow, green, pink, white, black, purple,
-        neon, grey, beige, orange, magenta, peach.
+\b
+COLORS: light_red, red, dark_red, dark_blue, blue,
+    cyan, yellow, green, pink, white, black, purple,
+    neon, grey, beige, orange, magenta, peach.
 
-    ATTRIBUTES: bold, dim, underlined, blink, reverse.
+\b
+ATTRIBUTES: bold, dim, underlined, blink, reverse.
 
-    You can also give *args like [BATTERY] and [CPU]
-    
-    battery --> will display the battery information if found.
-    cpu --> will visualize the usage of each cpu in live format **(beta mode)
+\b
+You can also give *args like [BATTERY] and [CPU]
+
+\b
+battery --> will display the battery information if found.
+cpu --> will visualize the usage of each cpu in live time *(beta mode)
     """
 
 
@@ -160,4 +199,4 @@ def disk_usage(arg, save, path, every,
 
 
 if __name__ == "__main__":
-    dirs_files()
+    disk_usage()

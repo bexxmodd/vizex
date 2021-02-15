@@ -1,7 +1,7 @@
 class DecoratedData():
     """
-    Custom class to compare numerical data for sorting which is stylized
-    and appears to the end user in the form of a decorated string.
+    Custom class to compare numerical data for sorting
+    which appears in the stylized representation of a string.
     """
 
     def __init__(self, size: int, to_string: str) -> None:
