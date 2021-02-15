@@ -1,15 +1,39 @@
-"""cli.py - Command line interface for vizex"""
+"""cli.py - Command line interface for vizex and vizexdf"""
 
 import click
 
 from disks import DiskUsage
+from files import DirectoryFiles
 from battery import Battery
 from charts import Options
 from cpu import CPUFreq
 from colored import fg, attr, stylize
 
+'''
+The command line implementation of a 'vizexdf' which is a branch of the 'vizex'
+that displays directories and files with their size, type, and last modified date.
+'''
 
-# Command line arguments and options for cli
+@click.command()
+
+# --- Options ---
+@click.option('--sort', type=click.Choice(['type', 'size', 'name', 'dt']))
+@click.option('--all', '-a', is_flag=True)
+@click.argument('order', default='asc')
+def dirs_files(sort, all, order):
+    sort_by = 'type'
+    show = False
+    desc_sort = False
+    if order == 'desc':
+        desc_sort = True
+    if all:
+        show = all
+    if sort:
+        sort_by = sort
+    dir_files = DirectoryFiles(sort_by=sort_by, show_hidden=show, desc=desc_sort)
+    dir_files.print_tables()
+
+
 @click.command()
 @click.argument('arg', default='disk')
 @click.option(
@@ -80,7 +104,7 @@ from colored import fg, attr, stylize
     default=None,
     help="Choose the symbols used for the graph"
 )
-def cli(arg, save, path, every,
+def disk_usage(arg, save, path, every,
         details, exclude, header, style,
         text, graph, mark) -> None:
     """
@@ -135,4 +159,4 @@ def cli(arg, save, path, every,
 
 
 if __name__ == "__main__":
-    cli()
+    dirs_files()

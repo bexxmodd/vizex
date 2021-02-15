@@ -16,7 +16,7 @@ setup(
     long_description_content_type ='text/markdown',
     url='https://github.com/bexxmodd/vizex',
     package_dir={'': 'src'},
-    py_modules=['cli', 'disks', 'tools', 'charts', 'battery', 'cpu'],
+    py_modules=['cli', 'disks', 'tools', 'charts', 'battery', 'cpu', 'files'],
     packages = find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3.7",
@@ -29,6 +29,7 @@ setup(
     python_requires='>=3.7',
     entry_points='''
         [console_scripts]
-        vizex=cli:cli
+        vizex=cli:disk_usage
+        vizexdf=cli:dirs_files
     '''
 )
