@@ -16,7 +16,7 @@ setup(
     long_description_content_type ='text/markdown',
     url='https://github.com/bexxmodd/vizex',
     package_dir={'': 'src'},
-    py_modules=['cli', 'disks', 'tools', 'charts', 'battery', 'cpu', 'files'],
+    py_modules=['cli', 'disks', 'tools', 'charts', 'battery', 'cpu', 'files', 'helpers'],
     packages = find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3.7",

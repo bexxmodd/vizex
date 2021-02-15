@@ -14,10 +14,10 @@ class DirectoryFiles():
     This module can be seen as a substitute for a du/df linux terminal commands.
     """
 
-    def __init__(self, path: str=None, show_hidden: bool=False,
+    def __init__(self, dpath: str=None, show_hidden: bool=False,
                 sort_by: str='type', desc: bool=False) -> None:
-        path = os.getcwd()
-        if path: self.path = path
+        self.path = os.getcwd()
+        if dpath: self.path = dpath
         self.show_hidden = show_hidden
         self.sort_by = sort_by
         self.desc = desc
@@ -51,7 +51,8 @@ class DirectoryFiles():
                         b = os.stat(entry).st_size
                         size = DecoratedData(b, bytes_to_human_readable(b))
                         # Evaluate the file type
-                        file_type = magic.from_file(entry_name, mime=True)
+                        file_type = magic.from_file(
+                            self.path + "/" + entry_name, mime=True)
                         # Gives yellow color to the string
                         entry_name = stylize("» " + entry_name, fg(226))
                     elif entry.is_dir():
@@ -137,8 +138,6 @@ class DirectoryFiles():
     def print_tables(self) -> None:
         """Prints tabular data in the terminal"""
         print(self.tabulate_disk())
-        print(" - sort by blinking arguments above or sort in descending order with -desc")
-
 
 if __name__ == '__main__':
     files = DirectoryFiles(sort_by='dt')

@@ -1,16 +1,3 @@
-'''
- # Gives yellow color to the string
-entry_name = stylize("» " + entry_name, fg(226))
-
-# Gives orange color to the string
-entry_name = stylize("■ " + entry_name + "/", fg(202))
-
-# Convert last modified time (which is in nanoseconds)
-                    #  in to a human readable format
-                    dt = time.strftime(
-                            '%h %d %Y %H:%M',
-                            time.localtime(os.stat(entry).st_mtime))
-'''
 class DecoratedData():
     """
     Custom class to compare numerical data for sorting which is stylized
@@ -22,25 +9,32 @@ class DecoratedData():
         self.to_string = to_string
 
     def __eq__(self, other) -> bool:
+        """Equals"""
         return self.size == other.size
 
     def __ne__(self, other) -> bool:
+        """Not equals"""
         return self.size != other.size
 
     def __gt__(self, other) -> bool:
+        """Greater than"""
         return self.size > other.size
     
-    def __gt__(self, other) -> bool:
+    def __ge__(self, other) -> bool:
+        """Greater than or equals to"""
         return self.size >= other.size
     
     def __lt__(self, other) -> bool:
+        """Less than"""
         return self.size < other.size
 
     def __le__(self, other) -> bool:
+        """Less than or equals to"""
         return self.size <= other.size
 
-    def __repr__(self):
-        return self.to_string + " :: " + str(self.size)
+    def __str__(self):
+        """String representation of the class"""
+        return self.to_string
 
 
 if __name__ == '__main__':

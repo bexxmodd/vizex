@@ -16,21 +16,22 @@ that displays directories and files with their size, type, and last modified dat
 
 @click.command()
 
-# --- Options ---
+# ----- vizexdf options and arguments -----
 @click.option('--sort', type=click.Choice(['type', 'size', 'name', 'dt']))
 @click.option('--all', '-a', is_flag=True)
+@click.argument('path', type=click.Path(exists=True), default='.')
 @click.argument('order', default='asc')
-def dirs_files(sort, all, order):
+def dirs_files(sort, all, order, path):
     sort_by = 'type'
     show = False
     desc_sort = False
-    if order == 'desc':
-        desc_sort = True
-    if all:
-        show = all
-    if sort:
-        sort_by = sort
-    dir_files = DirectoryFiles(sort_by=sort_by, show_hidden=show, desc=desc_sort)
+    dirpath = None
+    if order == 'desc': desc_sort = True
+    if all: show = all
+    if sort: sort_by = sort
+    if path: dirpath = path
+    # Execute vizexdf
+    dir_files = DirectoryFiles(sort_by=sort_by, show_hidden=show, desc=desc_sort, dpath=dirpath)
     dir_files.print_tables()
 
 
