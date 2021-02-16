@@ -152,7 +152,7 @@ class DiskUsage:
         elif file_type.lower() == 'json':
             tools.save_to_json(data, filename)
         else:
-            print("Not support file type")
+            print("Not supported file type")
 
 
 if __name__ == "__main__":

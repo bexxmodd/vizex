@@ -101,9 +101,9 @@ class DirectoryFiles():
 
     def sort_data(self, data: list) -> list:
         """
-        Sorts data inplace, which is inputed as a list, 
-        based on given index(key) and reverses if 
-        user has selected descending ordering.
+        Sorts data in place, which is inputted as a list, 
+        based on a given index(key) and reverses if 
+        user has selected descending order.
 
         Args:
             list: list of data with several columns
@@ -119,11 +119,11 @@ class DirectoryFiles():
     def tabulate_disk(self) -> tabulate:
         """
         Creates the tabular representation of the data.
-        Adds headers and sorts list's data as rows.
+        Adds headers and sorts the list's data as rows.
 
         Returns:
-            tabulate: tabulated form of the current 
-                      directory's folders and files.
+            tabulate: a tabulated form of the current 
+                      the directory's folders and files.
         """
         headers = [
             'name',

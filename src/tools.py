@@ -20,7 +20,7 @@ def bytes_to_human_readable(bytes: int, suffix='b') -> str:
 def ints_to_human_readable(disk: dict) -> dict:
     """
     Converts the dictionary of integers
-    into the human readable strings.
+    into the human readable size formats.
     """
     result = {}
     try:
@@ -71,8 +71,12 @@ def save_to_csv(data: dict,
                 filename: str,
                 orient: str='index') -> None:
     """Outputs disks/partitions data as a CSV file"""
-    df = pd.DataFrame.from_dict(data, orient=orient)
-    df.to_csv(filename, mode='a')
+    file_type = filename.split(".")[-1]
+    if file_type.lower() == 'csv':
+        df = pd.DataFrame.from_dict(data, orient=orient)
+        df.to_csv(filename, mode='a')
+    else:
+        raise NameError('Please include ".csv" in the filename')
 
 def save_to_json(data: dict,
                 filename: str,
@@ -80,3 +84,12 @@ def save_to_json(data: dict,
     """Saves disk/partitions data as a JSON file"""
     with open(filename, "w") as f:
         json.dump(data, f, indent=indent)
+
+if __name__ == '__mian__':
+    data = {
+            'test_01': [11, 33, 55],
+            'test_02': [22, 44, 66],
+            'test_03': [33, 77, 99]
+        }
+    filename = 'notafullname'
+    save_to_csv(data=data, filename=filename)
