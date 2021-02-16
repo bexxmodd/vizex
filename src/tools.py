@@ -82,14 +82,13 @@ def save_to_json(data: dict,
                 filename: str,
                 indent: int=4) -> None:
     """Saves disk/partitions data as a JSON file"""
-    with open(filename, "w") as f:
-        json.dump(data, f, indent=indent)
+    file_type = filename.split(".")[-1]
+    if file_type.lower() == 'json':
+        with open(filename, "w") as f:
+            json.dump(data, f, indent=indent)
+    else:
+        raise NameError('Please include ".json" in the filename')
+
 
 if __name__ == '__mian__':
-    data = {
-            'test_01': [11, 33, 55],
-            'test_02': [22, 44, 66],
-            'test_03': [33, 77, 99]
-        }
-    filename = 'notafullname'
-    save_to_csv(data=data, filename=filename)
+    print('hey!')

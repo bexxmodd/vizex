@@ -1,17 +1,17 @@
 import io
 import os
+import json
 import random
+import tempfile
 import unittest
 import unittest.mock
 
 from colored import fg, attr, stylize
+
+# --- Modules to be tested ---
 from tools import bytes_to_human_readable, create_usage_warning
 from tools import ints_to_human_readable, printml
 from tools import save_to_csv, save_to_json
-
-'''
--[ ] Finish testing save_to_csv and save_to_json
-'''
 
 
 class TestTools(unittest.TestCase):
@@ -139,32 +139,32 @@ class TestTools(unittest.TestCase):
             self.fail(f"Exception occured when trying to create a 100% usage warning {e}")
 
     def test_save_to_csv_wrong_filename(self):
-        data = {
-            'test_01': [11, 33, 55],
-        }
-        filename = 'wrongwrongwrong'
+        data = {'test_01': [11, 33, 55]}
         try:
-            save_to_csv(data=data, filename=filename)
-            self.assertFalse(os.path.isfile(filename),
-                        msg=f'{filename} was still created')
+            self.assertRaises(NameError, save_to_csv, data, 'wrongformat')
         except Exception as e:
-            os.remove(filename)
             self.fail(f'Exception occured when trying to create a file without full name {e}')
 
-    def test_save_to_csv_empty_file(self):
+    def test_save_to_csv_create_file(self):
         data = {}
-        filename = 'test.csv'
-
         try:
-            save_to_csv(data=data, filename=filename)
-            self.assertTrue(os.path.isfile(filename),
-                            msg=f'{filename} was not created')
-            self.assertTrue(os.path.getsize(filename),
-                            msg=f'{filename} is not empty')
-            os.remove(filename)
+            with tempfile.NamedTemporaryFile(mode='w+', suffix='.csv') as tmpf:
+                filename = tmpf.name
+                save_to_csv(data=data, filename=filename)
+                self.assertTrue(os.path.isfile(filename),
+                                msg=f'{filename} was not created')
+                self.assertTrue(os.path.getsize(filename),
+                                msg=f'{filename} is not empty')
         except Exception as e:
             self.fail(f'Exception occured when trying to save an empty CSV file {e}')
-
+    
+    @unittest.skip('Waiting for correction: test is not importing updated module')
+    def test_save_to_json_wrong_filename(self):
+        data = {'test_01': [11, 33, 55]}
+        try:
+            self.assertRaises(NameError, save_to_json, data, 'wrongformat')
+        except Exception as e:
+            self.fail(f'Exception occured when trying to create a file without full name {e}')
 
     def test_save_to_csv_full_data(self):
         data = {
@@ -172,27 +172,57 @@ class TestTools(unittest.TestCase):
             'test_02': [22, 44, 66],
             'test_03': [33, 77, 99]
         }
-        filename = 'test_file.csv'
-
         try:
-            save_to_csv(data=data, filename=filename, orient='index')
-            self.assertTrue(os.path.isfile(filename))
+            with tempfile.NamedTemporaryFile(mode='w+', suffix='.csv') as tmpf:
+                save_to_csv(data=data, filename=tmpf.name, orient='index')
+                self.assertTrue(os.path.isfile(tmpf.name))
 
-            other_f = [
-                ['', '0', '1', '2\n'],
-                ['test_01', '11', '33', '55\n'],
-                ['test_02', '22', '44', '66\n'],
-                ['test_03', '33', '77', '99\n']
-            ]
-            
-            with open('test_file.csv') as f:
-                for line, other in zip(f, other_f):
-                    self.assertListEqual(other, line.split(','),
-                                msg='Given two rows in a CSV files are not the same')
-
-            os.remove(filename)
+                other_f = [
+                    ['', '0', '1', '2\n'],
+                    ['test_01', '11', '33', '55\n'],
+                    ['test_02', '22', '44', '66\n'],
+                    ['test_03', '33', '77', '99\n']
+                ]
+                
+                with open(tmpf.name) as f:
+                    for line, other in zip(f, other_f):
+                        self.assertListEqual(other, line.split(','),
+                                    msg='Given two rows in a CSV files are not the same')
         except Exception as e:
             self.fail(f'Exception occured when trying to save a CSV file {e}')
+
+    def test_save_to_json_create_file(self):
+        data = {}
+        try:
+            with tempfile.NamedTemporaryFile(mode='w+', suffix='.json') as tmpf:
+                filename = tmpf.name
+                save_to_json(data=data, filename=filename)
+                self.assertTrue(os.path.isfile(filename),
+                                msg=f'{filename} was not created')
+                self.assertTrue(os.path.getsize(filename),
+                                msg=f'{filename} is not empty')
+        except Exception as e:
+            self.fail(f'Exception occured when trying to create an empty JSON file {e}')
+
+    def test_save_to_json_full_data(self):
+        data = {
+            'test_01': [11, 22, 33],
+            'test_02': [44, 55, 66],
+            'test_03': [77, 88, 99]
+        }
+        try:
+            with tempfile.NamedTemporaryFile(mode='w+', suffix='.json') as tmpf:
+                save_to_json(data=data, filename=tmpf.name)
+                self.assertTrue(os.path.isfile(tmpf.name))
+                
+                with open(tmpf.name) as f:
+                    loaded = json.load(tmpf)
+                    for key in data.keys():
+                        for i, o in zip(loaded[key], data[key]):
+                            self.assertEqual(o, i,
+                                    msg='Given two rows in a JSON files are not the same')
+        except Exception as e:
+            self.fail(f'Exception occured when trying to save a JSON file {e}')
 
 
 if __name__ == '__main__':
