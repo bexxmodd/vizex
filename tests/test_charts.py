@@ -27,6 +27,11 @@ class TestOptions(unittest.TestCase):
         self.assertEqual(
             fg('magenta'), self.opts._check_color('magenta'))
 
+    def test_check_color_key_error(self):
+        color = self.opts._check_color('notcolor')
+        self.assertEqual('white', color, 
+                    msg='When unavailable color is given this function should return "white"')
+
     def test_check_attr(self):
         self.opts.header_style = 'underlined'
         self.assertEqual(
@@ -36,6 +41,11 @@ class TestOptions(unittest.TestCase):
             'bold', self.opts._check_attr('notattr'))
         self.assertEqual(
             attr('blink'), self.opts._check_attr('blink'))
+
+    def test_check_attr_key_error(self):
+        color = self.opts._check_attr('notarr')
+        self.assertEqual('bold', color, 
+                    msg='When unavailable attribute is given this function should return "bold"')
 
 
 class TestChart(unittest.TestCase):
@@ -70,20 +80,37 @@ class TestHorizontalBarChart(unittest.TestCase):
         self.assertEqual(mock_stdout.getvalue(), expected_output)
 
     def test_chart(self):
-        compare = f"{stylize('Test Title', fg('red') + attr('bold'))}\n" \
-            + f"{stylize('This looks sweet', fg('white'))}\n" \
-            + f"{stylize('███████████████████▒░░░░░░░░░░░░░░░░░░░', fg('white'))} \n"
-        
-        self.assert_stdout(compare)
+        try:
+            compare = f"{stylize('Test Title', fg('red') + attr('bold'))}\n" \
+                + f"{stylize('This looks sweet', fg('white'))}\n" \
+                + f"{stylize('███████████████████▒░░░░░░░░░░░░░░░░░░░', fg('white'))} \n"
+            self.assert_stdout(compare)
+        except Exception as e:
+            self.fail(f"Exception occured when trying to print horizontal chart {e}")
 
-    def test_draw_horizontal_bar(self):
-        compare = '███████████████████▒░░░░░░░░░░░░░░░░░░░'
-        self.assertEqual(
-            compare, self.horizontal_chart.draw_horizontal_bar(10, 5))
+    def test_draw_horizontal_bar_half_full(self):
+        try:
+            compare = '███████████████████▒░░░░░░░░░░░░░░░░░░░'
+            self.assertEqual(
+                compare, self.horizontal_chart.draw_horizontal_bar(10, 5))
+        except Exception as e:
+            self.fail(f'Exception occured when trying to draw half full bar chart {e}')
 
-        compare_02 = '▒░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░'
-        self.assertEqual(
-            compare_02, self.horizontal_chart.draw_horizontal_bar(10, 0))
+    def test_draw_horizontal_bar_empty(self):
+        try:
+            compare_02 = '▒░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░'
+            self.assertEqual(
+                compare_02, self.horizontal_chart.draw_horizontal_bar(10, 0))
+        except Exception as e:
+            self.fail(f'Exception occured when trying to draw an empty bar chart {e}')
+
+    def test_draw_horizontal_bar_full(self):
+        try:
+            compare_02 = '██████████████████████████████████████▒'
+            self.assertEqual(
+                compare_02, self.horizontal_chart.draw_horizontal_bar(10, 10))
+        except Exception as e:
+            self.fail(f'Exception occured when trying to draw a full bar chart {e}')
 
 
 class TestVerticalBarChart(unittest.TestCase):
