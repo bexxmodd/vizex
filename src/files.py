@@ -22,6 +22,43 @@ class DirectoryFiles():
         self.sort_by = sort_by
         self.desc = desc
 
+    @staticmethod
+    def _get_size(start_path: str) -> int:
+        """
+        Calculates the cumulative size of a given directory recursively
+
+        Args:
+            start_path (str): a path to the folder that's
+            the cumulative file size is calculated.
+
+        Returns:
+            int: the size of all files in a given path in bytes
+        """
+        total_size = 0
+        for dirpath, dirnames, filenames in os.walk(start_path):
+            for f in filenames:
+                fp = os.path.join(dirpath, f)
+                total_size += os.path.getsize(fp)
+        return total_size
+
+    @staticmethod
+    def sort_data(data: list, by: str, desc: bool) -> list:
+        """
+        Sorts data in place, which is inputted as a list, 
+        based on a given index(key) and reverses if 
+        user has selected descending order.
+
+        Args:
+            list: data with several columns
+        """
+        key = -1
+        if by == 'name': key = 0
+        elif by == 'dt': key = 1
+        elif by == 'dt': key = 2
+
+        # Sort and return data based on user's choice
+        data.sort(key=lambda x: (x[key], x[-1]), desc=desc)
+
     def get_usage(self) -> list:
         """
         Collects the data for a given path like the name of a file/folder 
@@ -32,7 +69,7 @@ class DirectoryFiles():
 
         Returns:
             list: which is a collection of each entry
-                  (files and folders) in a given path.
+                (files and folders) in a given path.
         """
         data = []
         with os.scandir(self.path) as it:
@@ -59,7 +96,7 @@ class DirectoryFiles():
                         # Gives orange color to the string
                         entry_name = stylize("■ " + entry_name + "/", fg(202))
                         # recursivly calculates the total size of a folder 
-                        b = self._get_size(entry)
+                        b = DirectoryFiles()._get_size(entry)
                         size = DecoratedData(b, bytes_to_human_readable(b))
                     
                     # Convert last modified time (which is in nanoseconds)
@@ -79,42 +116,7 @@ class DirectoryFiles():
                     data.append(current)
                 except FileNotFoundError:
                     continue
-        return data     
-
-    def _get_size(self, start_path: str) -> int:
-        """
-        Calculates the cumulative size of a given directory in bytes
-
-        Args:
-            start_path (str): a path to the folder that's
-            the cumulative file size is calculated.
-
-        Returns:
-            int: the size of all files in a given path
-        """
-        total_size = 0
-        for dirpath, dirnames, filenames in os.walk(start_path):
-            for f in filenames:
-                fp = os.path.join(dirpath, f)
-                total_size += os.path.getsize(fp)
-        return total_size
-
-    def sort_data(self, data: list) -> list:
-        """
-        Sorts data in place, which is inputted as a list, 
-        based on a given index(key) and reverses if 
-        user has selected descending order.
-
-        Args:
-            list: list of data with several columns
-        """
-        key = -1
-        if self.sort_by == 'name': key = 0
-        elif self.sort_by == 'dt': key = 1
-        elif self.sort_by == 'size': key = 2
-
-        # Sort and return data based on user's choice
-        data.sort(key=lambda x: (x[key], x[-1]), reverse=self.desc)
+        return data
 
     def tabulate_disk(self) -> tabulate:
         """
@@ -123,7 +125,7 @@ class DirectoryFiles():
 
         Returns:
             tabulate: a tabulated form of the current 
-                      the directory's folders and files.
+                    the directory's folders and files.
         """
         headers = [
             'name',
@@ -132,7 +134,7 @@ class DirectoryFiles():
             'type'
         ]
         result = self.get_usage()
-        self.sort_data(result)
+        self.sort_data(result, self.sort_by, self.desc)
         return tabulate(result, headers, tablefmt="rst")
 
     def print_tables(self) -> None:
