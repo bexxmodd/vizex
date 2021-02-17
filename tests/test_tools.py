@@ -9,6 +9,7 @@ import unittest.mock
 from colored import fg, attr, stylize
 
 # --- Modules to be tested ---
+from tools import DecoratedData
 from tools import bytes_to_human_readable, create_usage_warning
 from tools import ints_to_human_readable, printml
 from tools import save_to_csv, save_to_json
@@ -223,6 +224,47 @@ class TestTools(unittest.TestCase):
                                     msg='Given two rows in a JSON files are not the same')
         except Exception as e:
             self.fail(f'Exception occured when trying to save a JSON file {e}')
+
+    def test_decorated_data_constructor(self):
+        testing = DecoratedData(33, 'Thirteen Three')
+        self.assertEqual(33, testing.size,
+                        msg='int value was not initialized properly')
+        self.assertEqual('Thirteen Three', testing.to_string,
+                        msg='to_string of a object was not initialized properly')
+
+    def test_decorated_data_str_printing(self):
+        testing = DecoratedData(8, 'E1gh7@')
+        self.assertEqual('E1gh7@', str(testing))
+
+    def test_decorated_data_equal(self):
+        test_a = DecoratedData(5, 'five')
+        test_b = DecoratedData(5, 'five but same')
+        self.assertEqual(test_a, test_b)
+
+    def test_decorated_notequal(self):
+        test_a = DecoratedData(7, 'five')
+        test_b = DecoratedData(5, 'seven')
+        self.assertNotEqual(test_a, test_b)
+
+    def test_decorated_greater(self):
+        test_a = DecoratedData(7, 'five')
+        test_b = DecoratedData(5, 'seven')
+        self.assertGreater(test_a, test_b)
+    
+    def test_decorated_greater_equal(self):
+        test_a = DecoratedData(7, 'five')
+        test_b = DecoratedData(5, 'seven')
+        self.assertGreaterEqual(test_a, test_b)
+
+    def test_decorated_less(self):
+        test_a = DecoratedData(3, 'three')
+        test_b = DecoratedData(5, 'five and three')
+        self.assertLess(test_a, test_b)
+
+    def test_decorated_less_equal(self):
+        test_a = DecoratedData(3, 'three')
+        test_b = DecoratedData(5, 'five and three')
+        self.assertLess(test_a, test_b)
 
 
 if __name__ == '__main__':

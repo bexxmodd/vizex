@@ -3,7 +3,7 @@ import getpass
 import time
 import magic
 
-from helpers import DecoratedData
+from tools import DecoratedData
 from tabulate import tabulate
 from tools import bytes_to_human_readable
 from colored import fg, bg, stylize, attr
@@ -142,6 +142,7 @@ class DirectoryFiles():
     def print_tables(self) -> None:
         """Prints tabular data in the terminal"""
         print(self.tabulate_disk())
+
 
 if __name__ == '__main__':
     files = DirectoryFiles(sort_by='dt')
