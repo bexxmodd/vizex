@@ -1,5 +1,6 @@
 """ Utility functions and Classes for vizex/vizexdf """
 
+import os
 import json
 import pandas as pd
 
@@ -89,6 +90,15 @@ def save_to_json(data: dict,
             json.dump(data, f, indent=indent)
     else:
         raise NameError('Please include ".json" in the filename')
+
+def set_alias(alias: str, line: str) -> None:
+    """
+    Saves terminal command line as an alias in .bashrc for reuse
+    """
+    bash_aliases = os.path.expanduser("~") + '/.bash_aliases'
+    with open(bash_aliases, 'a+') as f:
+        f.write('alias ' + alias + f"='{line}'")
+
 
 class DecoratedData():
     """

@@ -1,12 +1,14 @@
 """cli.py - Command line interface for vizex and vizexdf"""
 
 import click
+import sys
 
 from main.disks import DiskUsage
 from main.files import DirectoryFiles
 from main.battery import Battery
 from main.charts import Options
 from main.cpu import CPUFreq
+from main.tools import set_alias
 from colored import fg, attr, stylize
 
 # ----- vizexdf options and arguments -----
@@ -26,8 +28,12 @@ from colored import fg, attr, stylize
 @click.option('-d', '--desc',
             is_flag=True,
             help='Sort columns in descending order')
+@click.option('-l', '--alias',
+            is_flag=True,
+            help='Store customized terminal command for vizexdf as an alias so you don\'t have to repeat the line everytime.'
+                + '<-l> should always be the last command in the line')
 def dirs_files(sort: str, all: str,
-            desc: str, path: str) -> None:
+            desc: str, path: str, alias: str) -> None:
     '''
 \b
 ██╗   ██╗██╗███████╗███████╗██╗  ██╗     _  __ 
@@ -53,6 +59,10 @@ You can also chain options for --all --desc --sort.
 This will sort in descending order by name and show all the hidden files and folders.
 !Just make sure 's' is placed at the end of the options chain!
     '''
+    if alias:
+        # Set vizexdf as alias
+        line = 'vizexdf ' + ' '.join(sys.argv[1:-1])
+        set_alias('vizexdf', line)
     show = all
     desc_sort = desc
     sort_by = sort
@@ -139,9 +149,15 @@ This will sort in descending order by name and show all the hidden files and fol
     default=None,
     help="Choose the symbols used for the graph"
 )
+@click.option(
+    '-l', '--alias',
+    is_flag=True,
+    help='Store customized terminal command for vizexdf as an alias so you don\'t have to repeat the line everytime.'
+        + '<-l> should always be the last command in the line'
+)
 def disk_usage(arg, save, path, every,
         details, exclude, header, style,
-        text, graph, mark) -> None:
+        text, graph, mark, alias) -> None:
     """
 \b                                            
 ██╗   ██╗██╗███████╗███████╗██╗  ██╗
@@ -169,7 +185,10 @@ You can also give *args like [BATTERY] and [CPU]
 battery --> will display the battery information if found.
 cpu --> will visualize the usage of each CPU in live time *(beta mode)
     """
-
+    if alias:
+        # Set vizex as alias
+        line = 'vizex ' + ' '.join(sys.argv[1:-1])
+        set_alias('vizex', line)
 
     options: Options = Options()
     if mark:
