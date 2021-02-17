@@ -13,20 +13,19 @@ class Battery:
     def __init__(self) -> None:
         """ Create a new Battery Object """
         self._battery = psutil.sensors_battery()
-        if self._battery is None:
+        if not self._battery:
             raise Exception("Battery information currently unavailable")
 
-    def print_charts(self, options: Options = None) -> None:
+    def print_charts(self, options: Options=None) -> None:
         """ Prints battery information """
-        if options is None:
-            options = Options()
-
+        if not options: options = Options()
         chart = HorizontalBarChart(options)
         self.print_battery_chart(chart)
 
     def print_battery_chart(self, chart: Chart) -> None:
         """ Prints battery information chart """
-        post_graph_text = str(ceil(100 * self._battery.percent) / 100) + "%"
+        post_graph_text = str(
+                        ceil(100 * self._battery.percent) / 100) + "%"
         footer = self.create_details_text()
 
         chart.chart(
@@ -48,8 +47,7 @@ class Battery:
         if plugged:
             ret = format("Charging")
         else:
-            ret = format("Plugged in: %s\tDischarging: %s\t" % (plugged, time_left))
-
+            ret = f"Plugged in: {plugged}\tDischarging: {time_left}\t"
         return ret
 
 
