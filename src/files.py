@@ -25,11 +25,11 @@ class DirectoryFiles():
     @staticmethod
     def _get_size(start_path: str) -> int:
         """
-        Calculates the cumulative size of a given directory recursively
+        Calculates the cumulative size of a given directory.
 
         Args:
             start_path (str): a path to the folder that's
-            the cumulative file size is calculated.
+                    the cumulative file size is calculated.
 
         Returns:
             int: the size of all files in a given path in bytes
@@ -42,7 +42,7 @@ class DirectoryFiles():
         return total_size
 
     @staticmethod
-    def sort_data(data: list, by: str, desc: bool) -> list:
+    def sort_data(data: list, by: str, desc: bool) -> None:
         """
         Sorts data in place, which is inputted as a list, 
         based on a given index(key) and reverses if 
@@ -50,6 +50,8 @@ class DirectoryFiles():
 
         Args:
             list: data with several columns
+            by: key as a string to sort by
+            desc: to sort in descending order
         """
         key = -1
         if by == 'name': key = 0
@@ -57,7 +59,7 @@ class DirectoryFiles():
         elif by == 'dt': key = 2
 
         # Sort and return data based on user's choice
-        data.sort(key=lambda x: (x[key], x[-1]), desc=desc)
+        data.sort(key=lambda x: (x[key], x[-1]), reverse=desc)
 
     def get_usage(self) -> list:
         """

@@ -7,6 +7,7 @@ import warnings
 
 from files import DirectoryFiles
 
+
 class TestDirectoryFiles(unittest.TestCase):
 
     @classmethod
@@ -51,7 +52,7 @@ class TestDirectoryFiles(unittest.TestCase):
                 f = tempfile.NamedTemporaryFile(mode='wb',
                                                 dir=nested_nested_tmp.name,
                                                 delete=False)
-                f.write(b'1' * 1024 * 1024) 
+                f.write(b'0' * 1024 * 1024) 
             size = DirectoryFiles()._get_size(self.tmpd.name)
             self.assertEqual(10485760, size,
                             msg='Total size of directory should be 10485760')
@@ -75,16 +76,16 @@ class TestDirectoryFiles(unittest.TestCase):
                 ['X-file', 34192773817333, 445522, 'x-files']
             ]
 
-            DirectoryFiles().sort_data(data=data, desc=True)
+            DirectoryFiles().sort_data(data, 'type', True)
             self.assertListEqual(['X-file', 34192773817333, 445522, 'x-files'], data[0])
 
-            DirectoryFiles().sort_data(data=data, by='name', desc=True)
+            DirectoryFiles().sort_data(data, 'name', True)
             self.assertListEqual(['X-file', 34192773817333, 445522, 'x-files'], data[0])
 
-            DirectoryFiles().sort_data(data=data, by='size', desc=False)
+            DirectoryFiles().sort_data(data, 'size', False)
             self.assertListEqual(['folder1', 3419273173817333, 333, 'dir'], data[0])
 
-            DirectoryFiles().sort_data(data=data, by='dt', desc=True)
+            DirectoryFiles().sort_data(data, 'dt', True)
             self.assertListEqual(['file1', 3419273173817333, 9081231, 'file'], data[0])
         except Exception as e:
             self.fail(f'Exception occured when trying to sort data {e}')
