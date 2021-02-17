@@ -1,5 +1,4 @@
 """ Text Chart Printing Functions """
-
 from math import ceil
 from colored import fg, attr, stylize
 

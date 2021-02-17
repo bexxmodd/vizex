@@ -6,10 +6,10 @@
 import os
 import time
 import psutil
-import tools
 import getpass
+import main.tools
 
-from charts import HorizontalBarChart, Chart, Options
+from main.charts import HorizontalBarChart, Chart, Options
 
 
 class CPUFreq:

@@ -3,10 +3,9 @@ import getpass
 import time
 import magic
 
-from tools import DecoratedData
 from tabulate import tabulate
-from tools import bytes_to_human_readable
 from colored import fg, bg, stylize, attr
+from main.tools import bytes_to_human_readable, DecoratedData
 
 class DirectoryFiles():
     """
@@ -145,5 +144,5 @@ class DirectoryFiles():
 
 
 if __name__ == '__main__':
-    files = DirectoryFiles(sort_by='dt')
+    files = DirectoryFiles(sort_by='type', desc=True)
     files.print_tables()

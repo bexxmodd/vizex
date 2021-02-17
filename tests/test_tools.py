@@ -8,11 +8,10 @@ import unittest.mock
 
 from colored import fg, attr, stylize
 
-# --- Modules to be tested ---
-from tools import DecoratedData
-from tools import bytes_to_human_readable, create_usage_warning
-from tools import ints_to_human_readable, printml
-from tools import save_to_csv, save_to_json
+# --- Tools methods to be tested ---
+from main.tools import DecoratedData, save_to_csv, save_to_json
+from main.tools import bytes_to_human_readable, create_usage_warning
+from main.tools import ints_to_human_readable, printml
 
 
 class TestTools(unittest.TestCase):

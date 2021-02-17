@@ -1,10 +1,10 @@
 import psutil
-import tools
 import platform
+import main.tools
 import pandas as pd
 
 from math import ceil
-from charts import Chart, HorizontalBarChart, Options
+from main.charts import Chart, HorizontalBarChart, Options
 from colored import fg, attr, stylize
 
 

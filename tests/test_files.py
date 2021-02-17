@@ -5,7 +5,7 @@ import random
 import os
 import warnings
 
-from files import DirectoryFiles
+from main.files import DirectoryFiles
 
 
 class TestDirectoryFiles(unittest.TestCase):
@@ -73,17 +73,17 @@ class TestDirectoryFiles(unittest.TestCase):
                 ['file1', 3419273173817333, 9081231, 'file'],
                 ['folder2', 921231938192, 12313744908, 'dir'],
                 ['file2', 1238193123, 22, 'file'],
-                ['X-file', 34192773817333, 445522, 'x-files']
+                ['x-file', 34192773817333, 445522, 'x-files']
             ]
 
             DirectoryFiles().sort_data(data, 'type', True)
-            self.assertListEqual(['X-file', 34192773817333, 445522, 'x-files'], data[0])
+            self.assertEqual('x-file', data[0][0])
 
             DirectoryFiles().sort_data(data, 'name', True)
-            self.assertListEqual(['X-file', 34192773817333, 445522, 'x-files'], data[0])
+            self.assertListEqual(['x-file', 34192773817333, 445522, 'x-files'], data[0])
 
             DirectoryFiles().sort_data(data, 'size', False)
-            self.assertListEqual(['folder1', 3419273173817333, 333, 'dir'], data[0])
+            self.assertEqual(12313744908, data[0][2])
 
             DirectoryFiles().sort_data(data, 'dt', True)
             self.assertListEqual(['file1', 3419273173817333, 9081231, 'file'], data[0])
