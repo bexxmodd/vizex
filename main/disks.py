@@ -1,11 +1,12 @@
 import psutil
 import platform
-import main.tools
 import pandas as pd
 
 from math import ceil
 from main.charts import Chart, HorizontalBarChart, Options
 from colored import fg, attr, stylize
+from main.tools import create_usage_warning, ints_to_human_readable
+from main.tools import save_to_csv, save_to_json, create_usage_warning
 
 
 class DiskUsage:
@@ -55,7 +56,7 @@ class DiskUsage:
 
         maximum = part["total"]
         current = part["used"]
-        post_graph_text = tools.create_usage_warning(
+        post_graph_text = create_usage_warning(
                                 part['percent'], 80, 60)
 
         ch.chart(
@@ -140,7 +141,7 @@ class DiskUsage:
         return f"fstype={disk['fstype']}\tmountpoint={disk['mountpoint']}"
 
     def create_stats(self, disk: dict) -> str:
-        r = tools.ints_to_human_readable(disk)
+        r = ints_to_human_readable(disk)
         return f"Total: {r['total']}\t Used: {r['used']}\t Free: {r['free']}"
 
     def save_data(self, filename: str) -> None:
@@ -148,9 +149,9 @@ class DiskUsage:
         data = self.grab_partitions(self.exclude, self.every)
         file_type = filename.split(".")[-1]
         if file_type.lower() == 'csv':
-            tools.save_to_csv(data, filename)
+            save_to_csv(data, filename)
         elif file_type.lower() == 'json':
-            tools.save_to_json(data, filename)
+            save_to_json(data, filename)
         else:
             print("Not supported file type")
 
@@ -167,8 +168,8 @@ if __name__ == "__main__":
         footer = self.create_details_text(part)
         maximum = part["total"]
         current = part["used"]
-        post_graph_text = tools.create_usage_warning(
-                                    part['percent'], 80, 60)
+        post_graph_text = create_usage_warning(
+                                part['percent'], 80, 60)
 
         ch.chart(
             post_graph_text=post_graph_text,
