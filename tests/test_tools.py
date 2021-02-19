@@ -224,6 +224,7 @@ class TestTools(unittest.TestCase):
         except Exception as e:
             self.fail(f'Exception occured when trying to save a JSON file {e}')
 
+    @unittest.skip("Need to add part of removing the line after testing if it was added")
     def test_set_alias(self):
         bash_aliases = os.path.expanduser("~") + '/.bash_aliases'
         try:

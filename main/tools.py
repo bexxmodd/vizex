@@ -95,11 +95,29 @@ def set_alias(alias: str, line: str) -> None:
     """
     Saves terminal command line as an alias in .bashrc for reuse
     """
-    bash_aliases = os.path.expanduser("~") + '/.bash_aliases'
-    with open(bash_aliases, 'a+') as f:
+    bash = os.path.expanduser("~") + '/.bash_aliases'
+    line_number = check_if_alias_exists(bash, 'pipreqs')
+    # if line_number != -1:
+    #     with open(bash, 'w')
+    # else:
+    #     print(-1)
+    with open(bash, 'a+') as f:
+            # if line.startswith(f'alias {alias}')
         f.write('alias ' + alias + f"='{line}'")
 
+def check_if_alias_exists(path: str, alias: str) -> bool:
+    """Checks if the alias already exists in bash file"""
+    if not os.path.exists(path):
+        return -1
+    with open(path, 'r') as f:
+        for n, line in enumerate(f, 0):
+            print(n, line)
+            if line.strip().startswith(f'alias {alias}'):
+                print('FOUND!', n)
+                return n
+    return -1
 
+    
 class DecoratedData():
     """
     Custom class to compare numerical data for sorting
@@ -140,6 +158,7 @@ class DecoratedData():
 
 
 if __name__ == '__main__':
-    file1 = DecoratedData(55456, '54.2 kb')
-    file2 = DecoratedData(123233419, '117.5 mb')
-    print(f'{file1} is less than {file2} : {file1 < file2}')
+    # file1 = DecoratedData(55456, '54.2 kb')
+    # file2 = DecoratedData(123233419, '117.5 mb')
+    # print(f'{file1} is less than {file2} : {file1 < file2}')
+    set_alias('test', 'something -set -like -this')

@@ -14,24 +14,33 @@ from colored import fg, attr, stylize
 # ----- vizexdf options and arguments -----
 @click.version_option('1.5.5', message='%(prog)s version %(version)s')
 @click.command(options_metavar='[options]')
-@click.argument('path', 
-            type=click.Path(exists=True),
-            default='.',
-            metavar='[path]')
-@click.option('-s', '--sort',
-            type=click.Choice(['type', 'size', 'name', 'dt']),
-            default='type',
-            help='Sort table with one of four given columns')
-@click.option('-a', '--all',
-            is_flag=True,
-            help='Include hidden files and folders')
-@click.option('-d', '--desc',
-            is_flag=True,
-            help='Sort columns in descending order')
-@click.option('-l', '--alias',
-            is_flag=True,
-            help='Store customized terminal command for vizexdf as an alias so you don\'t have to repeat the line everytime.'
-                + '<-l> should always be the last command in the line')
+@click.argument(
+    'path', 
+    type=click.Path(exists=True),
+    default='.',
+    metavar='[path]'
+)
+@click.option(
+    '-s', '--sort',
+    type=click.Choice(['type', 'size', 'name', 'dt']),
+    default='type',
+    help='Sort table with one of four given columns'
+)
+@click.option(
+    '-a', '--all',
+    is_flag=True,
+    help='Include hidden files and folders'
+)
+@click.option(
+    '-d', '--desc',
+    is_flag=True,
+    help='Sort columns in descending order')
+@click.option(
+    '-l', '--alias',
+    is_flag=True,
+    help='Store customized terminal command for vizexdf as an alias so you don\'t have to repeat the line everytime.'
+        + '<-l> should always be the last command in the line'
+)
 def dirs_files(sort: str, all: str,
             desc: str, path: str, alias: str) -> None:
     '''
@@ -82,8 +91,8 @@ This will sort in descending order by name and show all the hidden files and fol
                 metavar='command')
 @click.option(
     "--save",
-    help="Export your disk usage data into a CSV or JSON file:" \
-        + "Takes a full path with a file name as an argument. "\
+    help="Export your disk usage data into a CSV or JSON file:"
+        + "Takes a full path with a file name as an argument. "
         + "File type will be defined based on a <.type> of the filename"
 )
 @click.option(
