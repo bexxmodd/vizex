@@ -11,7 +11,7 @@ from colored import fg, attr, stylize
 # --- Tools methods to be tested ---
 from main.tools import DecoratedData, save_to_csv, save_to_json
 from main.tools import bytes_to_human_readable, create_usage_warning
-from main.tools import ints_to_human_readable, printml, set_alias
+from main.tools import ints_to_human_readable, printml, append_to_bash
 
 
 class TestTools(unittest.TestCase):
@@ -225,11 +225,11 @@ class TestTools(unittest.TestCase):
             self.fail(f'Exception occured when trying to save a JSON file {e}')
 
     @unittest.skip("Need to add part of removing the line after testing if it was added")
-    def test_set_alias(self):
+    def test_append_to_bash(self):
         bash_aliases = os.path.expanduser("~") + '/.bash_aliases'
         try:
             alias_line= "this will be here temporarily"
-            # set_alias('test', alias_line)
+            # append_to_bash('test', alias_line)
             match = True
             self.assertTrue(match)
         except Exception as e:
@@ -272,9 +272,9 @@ class TestTools(unittest.TestCase):
         self.assertLess(test_a, test_b)
 
     def test_decorated_less_equal(self):
-        test_a = DecoratedData(3, 'three')
-        test_b = DecoratedData(5, 'five and three')
-        self.assertLess(test_a, test_b)
+        test_a = DecoratedData(6, 'three')
+        test_b = DecoratedData(6, 'five and three')
+        self.assertLessEqual(test_a, test_b)
 
 
 if __name__ == '__main__':

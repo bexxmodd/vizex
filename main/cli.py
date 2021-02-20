@@ -1,4 +1,4 @@
-"""cli.py - Command line interface for vizex and vizexdf"""
+# Command line interface for VIZEX and VIZEXdf
 
 import click
 import sys
@@ -68,10 +68,9 @@ You can also chain options for --all --desc --sort.
 This will sort in descending order by name and show all the hidden files and folders.
 !Just make sure 's' is placed at the end of the options chain!
     '''
-    if alias:
-        # Set vizexdf as alias
+    if alias: # Set vizexdf as alias
         line = 'vizexdf ' + ' '.join(sys.argv[1:-1])
-        set_alias('vizexdf', line)
+        append_to_bash('vizexdf', line)
     show = all
     desc_sort = desc
     sort_by = sort
@@ -194,12 +193,12 @@ You can also give *args like [BATTERY] and [CPU]
 battery --> will display the battery information if found.
 cpu --> will visualize the usage of each CPU in live time *(beta mode)
     """
-    if alias:
-        # Set vizex as alias
+    if alias: # Set vizex as alias
         line = 'vizex ' + ' '.join(sys.argv[1:-1])
         append_to_bash('vizex', line)
 
     options: Options = Options()
+
     if mark:
         options.symbol = mark
     if header:
@@ -210,20 +209,18 @@ cpu --> will visualize the usage of each CPU in live time *(beta mode)
         options.graph_color = graph
     if style:
         options.header_style = style
-
     exclude_list = list(exclude)
 
     if arg == 'battery':
         try:
             battery = Battery()
             battery.print_charts()
-        except:
+        except Exception:
             print('Battery not found!')
     elif arg == 'cpu':
         cpus = CPUFreq()
         cpus.display_separately()
     else:
-        # renderer = None
         renderer = DiskUsage(
             path=path, exclude=exclude_list, details=details, every=every
         )

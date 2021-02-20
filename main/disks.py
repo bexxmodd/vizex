@@ -1,3 +1,5 @@
+# Class to retrieve, organize, and print disk usage/disk space data
+
 import psutil
 import platform
 import pandas as pd
@@ -46,6 +48,7 @@ class DiskUsage:
     def print_disk_chart(
             self, chart: Chart, partname: str, part: dict
         ) -> None:
+        """Prints the disk data as a chart"""
         ch = chart
         title = (partname,)
         pre_graph_text = self.create_stats(part)
@@ -118,7 +121,8 @@ class DiskUsage:
                         "fstype": disk.fstype,
                         "mountpoint": disk.mountpoint,
                     }
-            except:
+            except Exception as e:
+                print(e)
                 continue
         return disks
 
@@ -138,9 +142,11 @@ class DiskUsage:
         return disks
 
     def create_details_text(self, disk: dict) -> str:
+        """Creates a string representation of a disk"""
         return f"fstype={disk['fstype']}\tmountpoint={disk['mountpoint']}"
 
     def create_stats(self, disk: dict) -> str:
+        """Creates statistics as string for a disk"""
         r = ints_to_human_readable(disk)
         return f"Total: {r['total']}\t Used: {r['used']}\t Free: {r['free']}"
 
@@ -153,7 +159,8 @@ class DiskUsage:
         elif file_type.lower() == 'json':
             save_to_json(data, filename)
         else:
-            print("Not supported file type")
+            raise NameError("Not supported file type, please indicate "
+                            + ".CSV or .JSON at the end of the filename")
 
 
 if __name__ == "__main__":

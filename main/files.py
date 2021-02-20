@@ -1,3 +1,5 @@
+# Class to collect and organize data about files and directories
+
 import os
 import getpass
 import time
@@ -5,7 +7,7 @@ import magic
 
 from tabulate import tabulate
 from colored import fg, bg, stylize, attr
-from main.tools import bytes_to_human_readable, DecoratedData, normalize_date
+from main.tools import DecoratedData, bytes_to_human_readable,  normalize_date
 
 class DirectoryFiles():
     """
@@ -15,8 +17,10 @@ class DirectoryFiles():
 
     def __init__(self, dpath: str=None, show_hidden: bool=False,
                 sort_by: str='type', desc: bool=False) -> None:
+        # Path is a current working directory if not stated otherwise
         self.path = os.getcwd()
         if dpath: self.path = dpath
+
         self.show_hidden = show_hidden
         self.sort_by = sort_by
         self.desc = desc
@@ -55,7 +59,7 @@ class DirectoryFiles():
         key = -1
         if by == 'name': key = 0
         elif by == 'dt': key = 1
-        elif by == 'dt': key = 2
+        elif by == 'size': key = 2
 
         # Sort and return data based on user's choice
         data.sort(key=lambda x: (x[key], x[-1]), reverse=desc)
@@ -69,9 +73,11 @@ class DirectoryFiles():
         collects everything and returns as a list.
         """
         current = []
+
         # Gives orange color to the string & truncate to 32 chars
         current.append(
-            stylize("■ " + entry.name[:33] + "/", fg(202)))
+            stylize("■ " + entry.name[:33] + "/", fg(202))
+        )
 
         # Get date and convert in to a human readable format
         date = os.stat(entry).st_mtime
@@ -81,7 +87,9 @@ class DirectoryFiles():
 
         # recursivly calculates the total size of a folder
         b = DirectoryFiles()._get_dir_size(entry)
-        current.append(DecoratedData(b, bytes_to_human_readable(b)))
+        current.append(
+            DecoratedData(b, bytes_to_human_readable(b))
+        )
         
         current.append('-') # Append type 
         return current
@@ -96,8 +104,10 @@ class DirectoryFiles():
         """
         current = []
 
-        # Gives yellow color to the string
-        current.append(stylize("» " + entry.name[:33], fg(226)))
+        # Gives yellow color to the string & truncate to 32 chars
+        current.append(
+            stylize("» " + entry.name[:33], fg(226))
+        )
 
         # Convert last modified time (which is in nanoseconds)
         date = os.stat(entry).st_mtime
@@ -106,21 +116,24 @@ class DirectoryFiles():
         ) 
 
         b = os.stat(entry).st_size
-        current.append(DecoratedData(b, bytes_to_human_readable(b)))
+        current.append(
+            DecoratedData(b, bytes_to_human_readable(b))
+        )
 
         # Evaluate the file type
-        current.append(magic.from_file(entry.path, mime=True))
-
+        current.append(
+            magic.from_file(entry.path, mime=True)
+        )
         return current
 
 
     def get_usage(self) -> list:
         """
         Collects the data for a given path like the name of a file/folder 
-         and calculates its size if it's a directory, otherwise 
-         just grabs a file size. If the current entry in a given 
-         path is a file method evaluates its type. Finally, gives 
-         us the date when the given file/folder was last modified.
+        and calculates its size if it's a directory, otherwise 
+        just grabs a file size. If the current entry in a given 
+        path is a file method evaluates its type. Finally, gives 
+        us the date when the given file/folder was last modified.
 
         Returns:
             list: which is a collection of each entry

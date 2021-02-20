@@ -1,4 +1,4 @@
-""" Utility functions and Classes for vizex/vizexdf """
+# Utility functions and Classes for vizex/vizexdf
 
 import os
 import json
@@ -13,6 +13,14 @@ def bytes_to_human_readable(bytes: int, suffix='b') -> str:
     """
     Converts bytes into the appropriate human
     readable unit with a relevant suffix.
+
+    Args:
+        bytes (int): to convert
+        suffix (str, optional): suffix of a size string.
+                                Defaults to 'b'.
+
+    Returns:
+        str: [description]
     """
     for unit in ['','k','m','g','t','p','e','z']:
         if abs(bytes) < 1024.0:
@@ -21,20 +29,31 @@ def bytes_to_human_readable(bytes: int, suffix='b') -> str:
     return f'{bytes:.1f} {"Y"}{suffix}'
 
 def ints_to_human_readable(disk: dict) -> dict:
-    """
-    Converts the dictionary of integers
+    """Converts the dictionary of integers
     into the human readable size formats.
+
+    Args:
+        disk [dict]: of large byte numbers
+
+    Returns:
+        dict: same dict but in human readable format
     """
     result = {}
     try:
         for key in disk:
             result[key] = bytes_to_human_readable(disk[key])
-    except:
-        result[key] = disk[key]
+    except Exception:
+        result[key] = disk[key] # If not able to convert return input back
     return result
 
 def printml(folder: list, cols: int = 1) -> None:
-    """Prints multiline strings side by side."""
+    """Prints multiline strings side by side.
+
+    Args:
+        folder (list): list of folders to print
+        cols (int, optional): On how many lines should it be printed.
+                            Defaults to 1.
+    """
     size = len(folder)
     incr = ceil(size / cols)
     end, start = 0, 0
@@ -54,7 +73,16 @@ def printml(folder: list, cols: int = 1) -> None:
 def create_usage_warning(usage_pct: float,
                         red_flag: int,
                         yellow_flag: int) -> str:
-    """Create disk usage percent with warning color"""
+    """Create disk usage percent with warning color
+
+    Args:
+        usage_pct (float): of a given space
+        red_flag (int): threshold that decides if print should be red
+        yellow_flag (int): threshold that decides if print is yellow
+
+    Returns:
+        str: [description]
+    """
     if usage_pct < 0:
         usage_pct = 0
 
@@ -73,7 +101,17 @@ def create_usage_warning(usage_pct: float,
 def save_to_csv(data: dict,
                 filename: str,
                 orient: str='index') -> None:
-    """Outputs disks/partitions data as a CSV file"""
+    """Outputs disks/partitions data as a CSV file
+
+    Args:
+        data (dict): to be saved to a CSV file
+        filename (str): to name a saved file
+        orient (str, optional): how lines are saved.
+                                Defaults to 'index'.
+
+    Raises:
+        NameError: [description]
+    """
     file_type = filename.split(".")[-1]
     if file_type.lower() == 'csv':
         df = pd.DataFrame.from_dict(data, orient=orient)
@@ -84,7 +122,17 @@ def save_to_csv(data: dict,
 def save_to_json(data: dict,
                 filename: str,
                 indent: int=4) -> None:
-    """Saves disk/partitions data as a JSON file"""
+    """Saves disk/partitions data as a JSON file
+
+    Args:
+        data (dict): to be saved to a JSON file
+        filename (str): to name a saved file
+        indent (int, optional): of each new line.
+                                Defaults to 4.
+
+    Raises:
+        NameError: [description]
+    """
     file_type = filename.split(".")[-1]
     if file_type.lower() == 'json':
         with open(filename, "w") as f:
@@ -95,6 +143,10 @@ def save_to_json(data: dict,
 def append_to_bash(alias: str, line: str) -> None:
     """
     Appends terminal command line as an alias in .bashrc for reuse
+
+    Args:
+        alias[str]: To set up in the bash
+        line[str]: line which will be assigned to an alias
     """
     bash = os.path.expanduser("~") + '/.bash_aliases'
     print(remove_if_exists(alias, bash))
@@ -102,14 +154,21 @@ def append_to_bash(alias: str, line: str) -> None:
             # if line.startswith(f'alias {alias}')
         f.write('alias ' + alias + f"='{line}'")
 
-def remove_if_exists(alias: str, path: str) -> bool:
-    """Removes if the given line/alias exists in a given file"""
+def remove_if_exists(alias: str, path: str) -> None:
+    """
+    Removes if the given line/alias exists in a given file
+
+    Args:
+        alias (str): to check if exists in bash
+        path (str): path to the file to read
+    """
     if not os.path.exists(path):
         return
     with open(path, "r") as f:
         lines = f.readlines()
     with open(path, "w") as f:
         for line in lines:
+            # We only write back lines which is not alias
             if f'alias {alias}' not in line.strip("\n"):
                 f.write(line)
 

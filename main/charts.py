@@ -1,4 +1,5 @@
-""" Text Chart Printing Functions """
+# Text Chart Coloring and Printing Functions
+
 from math import ceil
 from colored import fg, attr, stylize
 
@@ -156,18 +157,21 @@ class HorizontalBarChart(Chart):
         if maximum < 0:
             maximum = 0
 
-        textBar = ""
+        text_bar = ""
         usage = int((current / maximum) * 38)
+
         for i in range(1, usage + 1):
-            textBar += self.options.fsymbol
-        textBar += self.options.msymbol
+            text_bar += self.options.fsymbol
+        text_bar += self.options.msymbol
+
         for i in range(1, 39 - usage):
-            textBar += self.options.esymbol
+            text_bar += self.options.esymbol
 
         # Check if the user set up graph color
         if "█" not in self.options.fsymbol:
-            return f"[{textBar}]"
-        return textBar
+            return f"[{text_bar}]"
+
+        return text_bar
 
 
 class VerticalBarChart(Chart):
@@ -177,16 +181,16 @@ class VerticalBarChart(Chart):
 
     def draw_vertical_bar(self, capacity: int, used: int) -> str:
         """Draw a vertical bar chart"""
-        textBar = "\n"
+        text_bar = "\n"
         n = (used / capacity) * 8
         # If the usage is below 1% print empty chart
         if n < 0.1:
             n = 0
         else:
             n = ceil(n)
-        textBar += f"{self.options.esymbol * 9}  \n" * (8 - n)
-        textBar += f"{self.options.fsymbol * 9}  \n" * n
-        return textBar
+        text_bar += f"{self.options.esymbol * 9}  \n" * (8 - n)
+        text_bar += f"{self.options.fsymbol * 9}  \n" * n
+        return text_bar
 
 
 if __name__ == "__main__":

@@ -1,4 +1,5 @@
-""" Battery module for vizex """
+# Battery module for vizex
+
 import datetime
 import psutil
 
@@ -7,7 +8,7 @@ from main.charts import Chart, HorizontalBarChart, Options
 
 
 class Battery:
-    """ Personalize and visualize the Battery usage in the terminal """
+    """Personalize and visualize the Battery usage in the terminal"""
 
     def __init__(self) -> None:
         """ Create a new Battery Object """
