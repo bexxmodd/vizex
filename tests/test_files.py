@@ -40,7 +40,7 @@ class TestDirectoryFiles(unittest.TestCase):
         except Exception as e:
             self.fail(f'Exception occured when tried to get_usage of an empty directory {e}')
 
-    def test_get_size(self):
+    def test_get_dir_size(self):
         try:
             warnings.filterwarnings('ignore') # suppress tempfile warnings
             # Nest folders three times
@@ -53,15 +53,15 @@ class TestDirectoryFiles(unittest.TestCase):
                                                 dir=nested_nested_tmp.name,
                                                 delete=False)
                 f.write(b'0' * 1024 * 1024) 
-            size = DirectoryFiles()._get_size(self.tmpd.name)
+            size = DirectoryFiles()._get_dir_size(self.tmpd.name)
             self.assertEqual(10485760, size,
                             msg='Total size of directory should be 10485760')
         except Exception as e:
             self.fail(f'Exception occured when tried to get_size nested files {e}')
 
-    def test_get_size_empty_dir(self):
+    def test_get_dir_size_empty_dir(self):
         try:
-            size = DirectoryFiles()._get_size(self.tmpd.name)
+            size = DirectoryFiles()._get_dir_size(self.tmpd.name)
             self.assertEqual(0, size, msg='Size 0 was expected')
         except Exception as e:
             self.fail(f'Exception occured when tried to get_size for an empty folder {e}')
@@ -89,6 +89,12 @@ class TestDirectoryFiles(unittest.TestCase):
             self.assertListEqual(['file1', 3419273173817333, 9081231, 'file'], data[0])
         except Exception as e:
             self.fail(f'Exception occured when trying to sort data {e}')
+
+    def test_decorate_dir(self):
+        self.fail("TODO")
+
+    def test_decorate_file(self):
+        self.fail("TODO")
 
 
 if __name__ == '__main__':

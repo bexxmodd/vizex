@@ -5,7 +5,7 @@ import magic
 
 from tabulate import tabulate
 from colored import fg, bg, stylize, attr
-from main.tools import bytes_to_human_readable, DecoratedData
+from main.tools import bytes_to_human_readable, DecoratedData, normalize_date
 
 class DirectoryFiles():
     """
@@ -22,7 +22,7 @@ class DirectoryFiles():
         self.desc = desc
 
     @staticmethod
-    def _get_size(start_path: str) -> int:
+    def _get_dir_size(start_path: str) -> int:
         """
         Calculates the cumulative size of a given directory.
 
@@ -40,8 +40,8 @@ class DirectoryFiles():
                 total_size += os.path.getsize(fp)
         return total_size
 
-    @staticmethod
-    def sort_data(data: list, by: str, desc: bool) -> None:
+    @classmethod
+    def sort_data(cls, data: list, by: str, desc: bool) -> None:
         """
         Sorts data in place, which is inputted as a list, 
         based on a given index(key) and reverses if 
@@ -60,6 +60,60 @@ class DirectoryFiles():
         # Sort and return data based on user's choice
         data.sort(key=lambda x: (x[key], x[-1]), reverse=desc)
 
+    @classmethod
+    def _decorate_dir_entry(cls, entry) -> list:
+        """
+        Decorates given entry for a directory. Decorate means that creates 
+        a colored representation of a name of the entry, grabs 
+        the date it was last modified and size in bytes and decorates.
+        collects everything and returns as a list.
+        """
+        current = []
+        # Gives orange color to the string & truncate to 32 chars
+        current.append(
+            stylize("■ " + entry.name[:33] + "/", fg(202)))
+
+        # Get date and convert in to a human readable format
+        date = os.stat(entry).st_mtime
+        current.append(
+            DecoratedData(date, normalize_date('%h %d %Y %H:%M', date))
+        ) 
+
+        # recursivly calculates the total size of a folder
+        b = DirectoryFiles()._get_dir_size(entry)
+        current.append(DecoratedData(b, bytes_to_human_readable(b)))
+        
+        current.append('-') # Append type 
+        return current
+
+    @classmethod
+    def _decorate_file_entry(cls, entry) -> list:
+        """
+        Decorates given entryfor a file. By decorate it means that creates 
+        a colored representation of a name of the entry, grabs 
+        the date it was last modified and size in bytes and decorates,
+        determins file type. collects everything and returns as a list.
+        """
+        current = []
+
+        # Gives yellow color to the string
+        current.append(stylize("» " + entry.name[:33], fg(226)))
+
+        # Convert last modified time (which is in nanoseconds)
+        date = os.stat(entry).st_mtime
+        current.append(
+            DecoratedData(date, normalize_date('%h %d %Y %H:%M', date))
+        ) 
+
+        b = os.stat(entry).st_size
+        current.append(DecoratedData(b, bytes_to_human_readable(b)))
+
+        # Evaluate the file type
+        current.append(magic.from_file(entry.path, mime=True))
+
+        return current
+
+
     def get_usage(self) -> list:
         """
         Collects the data for a given path like the name of a file/folder 
@@ -77,41 +131,14 @@ class DirectoryFiles():
             for entry in it:
                 try:
                     current = []
-                    entry_name = entry.name[:33] # Truncate the name string to 32 chars
-                    size = 0
-                    file_type = '-'
 
                     # Deal with hidden files and folders
                     if entry.name.startswith('.') and not self.show_hidden:
                         continue
-
-                    if entry.is_file():
-                        b = os.stat(entry).st_size
-                        size = DecoratedData(b, bytes_to_human_readable(b))
-                        # Evaluate the file type
-                        file_type = magic.from_file(
-                            self.path + "/" + entry_name, mime=True)
-                        # Gives yellow color to the string
-                        entry_name = stylize("» " + entry_name, fg(226))
+                    elif entry.is_file():
+                        current = self._decorate_file_entry(entry)
                     elif entry.is_dir():
-                        # Gives orange color to the string
-                        entry_name = stylize("■ " + entry_name + "/", fg(202))
-                        # recursivly calculates the total size of a folder 
-                        b = DirectoryFiles()._get_size(entry)
-                        size = DecoratedData(b, bytes_to_human_readable(b))
-                    
-                    # Convert last modified time (which is in nanoseconds)
-                    #  in to a human readable format
-                    raw_dt = os.stat(entry).st_mtime
-                    dt = DecoratedData(raw_dt, time.strftime(
-                            '%h %d %Y %H:%M',
-                            time.localtime(raw_dt)))
-
-                    # Append all the collected data of a current entry
-                    current.append(entry_name)
-                    current.append(dt)
-                    current.append(size)
-                    current.append(file_type[:26])
+                        current = self._decorate_dir_entry(entry)
 
                     # Add current list to the main list
                     data.append(current)

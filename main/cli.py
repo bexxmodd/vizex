@@ -8,7 +8,7 @@ from main.files import DirectoryFiles
 from main.battery import Battery
 from main.charts import Options
 from main.cpu import CPUFreq
-from main.tools import set_alias
+from main.tools import append_to_bash
 from colored import fg, attr, stylize
 
 # ----- vizexdf options and arguments -----
@@ -197,7 +197,7 @@ cpu --> will visualize the usage of each CPU in live time *(beta mode)
     if alias:
         # Set vizex as alias
         line = 'vizex ' + ' '.join(sys.argv[1:-1])
-        set_alias('vizex', line)
+        append_to_bash('vizex', line)
 
     options: Options = Options()
     if mark:

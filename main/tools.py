@@ -2,6 +2,7 @@
 
 import os
 import json
+import time
 import pandas as pd
 
 from math import ceil
@@ -91,33 +92,41 @@ def save_to_json(data: dict,
     else:
         raise NameError('Please include ".json" in the filename')
 
-def set_alias(alias: str, line: str) -> None:
+def append_to_bash(alias: str, line: str) -> None:
     """
-    Saves terminal command line as an alias in .bashrc for reuse
+    Appends terminal command line as an alias in .bashrc for reuse
     """
     bash = os.path.expanduser("~") + '/.bash_aliases'
-    line_number = check_if_alias_exists(bash, 'pipreqs')
-    # if line_number != -1:
-    #     with open(bash, 'w')
-    # else:
-    #     print(-1)
+    print(remove_if_exists(alias, bash))
     with open(bash, 'a+') as f:
             # if line.startswith(f'alias {alias}')
         f.write('alias ' + alias + f"='{line}'")
 
-def check_if_alias_exists(path: str, alias: str) -> bool:
-    """Checks if the alias already exists in bash file"""
+def remove_if_exists(alias: str, path: str) -> bool:
+    """Removes if the given line/alias exists in a given file"""
     if not os.path.exists(path):
-        return -1
-    with open(path, 'r') as f:
-        for n, line in enumerate(f, 0):
-            print(n, line)
-            if line.strip().startswith(f'alias {alias}'):
-                print('FOUND!', n)
-                return n
-    return -1
+        return
+    with open(path, "r") as f:
+        lines = f.readlines()
+    with open(path, "w") as f:
+        for line in lines:
+            if f'alias {alias}' not in line.strip("\n"):
+                f.write(line)
 
-    
+def normalize_date(format: str, date: int) -> str:
+    """
+    Converts date from nanoseconds to the fuman readable form
+
+    Args:
+        format (str): example %h-%d-%Y for mm-dd-yyyy
+        date_as_nanosecs (int): date in nanoseconds
+
+    Returns:
+        str: Human readable format of a date
+    """
+    return time.strftime(format, time.localtime(date))
+
+
 class DecoratedData():
     """
     Custom class to compare numerical data for sorting
@@ -158,7 +167,6 @@ class DecoratedData():
 
 
 if __name__ == '__main__':
-    # file1 = DecoratedData(55456, '54.2 kb')
-    # file2 = DecoratedData(123233419, '117.5 mb')
-    # print(f'{file1} is less than {file2} : {file1 < file2}')
-    set_alias('test', 'something -set -like -this')
+    file1 = DecoratedData(55456, '54.2 kb')
+    file2 = DecoratedData(123233419, '117.5 mb')
+    print(f'{file1} is less than {file2} : {file1 < file2}')
