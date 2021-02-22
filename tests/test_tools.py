@@ -11,7 +11,8 @@ from colored import fg, attr, stylize
 # --- Tools methods to be tested ---
 from main.tools import DecoratedData, save_to_csv, save_to_json
 from main.tools import bytes_to_human_readable, create_usage_warning
-from main.tools import ints_to_human_readable, printml, append_to_bash
+from main.tools import ints_to_human_readable, printml
+from main.tools import append_to_bash, remove_if_exists
 
 
 class TestTools(unittest.TestCase):
@@ -158,7 +159,6 @@ class TestTools(unittest.TestCase):
         except Exception as e:
             self.fail(f'Exception occured when trying to save an empty CSV file {e}')
     
-    @unittest.skip('Waiting for correction: test is not importing updated module')
     def test_save_to_json_wrong_filename(self):
         data = {'test_01': [11, 33, 55]}
         try:
@@ -224,16 +224,33 @@ class TestTools(unittest.TestCase):
         except Exception as e:
             self.fail(f'Exception occured when trying to save a JSON file {e}')
 
-    @unittest.skip("Need to add part of removing the line after testing if it was added")
     def test_append_to_bash(self):
         bash_aliases = os.path.expanduser("~") + '/.bash_aliases'
         try:
             alias_line= "this will be here temporarily"
-            # append_to_bash('test', alias_line)
-            match = True
-            self.assertTrue(match)
+            append_to_bash('toolstest', alias_line)
+            with open(bash_aliases, 'r') as f:
+                for line in f:
+                    if 'toolstest' in line:
+                        self.assertTrue(1 == 1)
+                        return
+                remove_if_exists('toolstest', bash_aliases)
+                self.fail('Alias was not appended!')
         except Exception as e:
             self.fail(f'Exception occured when tried to set alias {e}')
+
+    def test_remove_if_exists(self):
+        bash_aliases = os.path.expanduser("~") + '/.bash_aliases'
+        try:
+            append_to_bash('toolstest', 'this line is a test for remove_if_exists')
+            remove_if_exists('toolstest', bash_aliases)
+            with open(bash_aliases, 'r') as f:
+                for line in f:
+                    if 'tooltest' in line:
+                        self.fail('alias was note removed')
+            self.assertTrue(1 == 1)
+        except Exception as e:
+            self.fail(e)
 
     def test_decorated_data_constructor(self):
         testing = DecoratedData(33, 'Thirteen Three')
