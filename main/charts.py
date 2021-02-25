@@ -103,7 +103,7 @@ class Chart:
     """Abstract base object for charts"""
 
     def __init__(self, options: Options = None):
-        if options is None:
+        if not options:
             self.options = Options()
         else:
             self.options = options
@@ -183,6 +183,7 @@ class VerticalBarChart(Chart):
         """Draw a vertical bar chart"""
         text_bar = "\n"
         n = (used / capacity) * 8
+
         # If the usage is below 1% print empty chart
         if n < 0.1:
             n = 0
@@ -199,6 +200,7 @@ if __name__ == "__main__":
     ch.options.text_color = 'yellow'
     ch.options.header_color = 'red'
     ch.options.header_style = 'underlined'
+    
     ch.chart(
         title="Test Content",
         maximum=100,

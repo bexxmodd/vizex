@@ -13,11 +13,17 @@ class DirectoryFiles():
     """
     Creates the tabular listing of all the folders and files in a given path.
     This module can be seen as a substitute for du/df Linux terminal commands.
+
+    Args:
+        path (str): to the file or directory
+        shoiw_hidden (bool): if program'd show hidden files and folders
+        sort_by (str): at which column folders and files should be sorted
+        desc (bool): if the sorting should be descending or ascending
     """
 
     def __init__(self, dpath: str=None, show_hidden: bool=False,
                 sort_by: str='type', desc: bool=False) -> None:
-        # Path is a current working directory if not stated otherwise
+        # Path is the current working directory if not stated otherwise
         self.path = os.getcwd()
         if dpath: self.path = dpath
 
@@ -26,7 +32,7 @@ class DirectoryFiles():
         self.desc = desc
 
     @staticmethod
-    def _get_dir_size(start_path: str) -> int:
+    def get_dir_size(start_path: str) -> int:
         """
         Calculates the cumulative size of a given directory.
 
@@ -86,7 +92,7 @@ class DirectoryFiles():
         ) 
 
         # recursivly calculates the total size of a folder
-        b = DirectoryFiles()._get_dir_size(entry)
+        b = DirectoryFiles().get_dir_size(entry)
         current.append(
             DecoratedData(b, bytes_to_human_readable(b))
         )

@@ -53,7 +53,7 @@ class TestDirectoryFiles(unittest.TestCase):
                                                 dir=nested_nested_tmp.name,
                                                 delete=False)
                 f.write(b'0' * 1024 * 1024) 
-            size = DirectoryFiles()._get_dir_size(self.tmpd.name)
+            size = DirectoryFiles().get_dir_size(self.tmpd.name)
             self.assertEqual(10485760, size,
                             msg='Total size of directory should be 10485760')
         except Exception as e:
@@ -61,7 +61,7 @@ class TestDirectoryFiles(unittest.TestCase):
 
     def test_get_dir_size_empty_dir(self):
         try:
-            size = DirectoryFiles()._get_dir_size(self.tmpd.name)
+            size = DirectoryFiles().get_dir_size(self.tmpd.name)
             self.assertEqual(0, size, msg='Size 0 was expected')
         except Exception as e:
             self.fail(f'Exception occured when tried to get_size for an empty folder {e}')

@@ -5,8 +5,8 @@ import platform
 import pandas as pd
 
 from math import ceil
-from main.charts import Chart, HorizontalBarChart, Options
 from colored import fg, attr, stylize
+from main.charts import Chart, HorizontalBarChart, Options
 from main.tools import create_usage_warning, ints_to_human_readable
 from main.tools import save_to_csv, save_to_json, create_usage_warning
 
@@ -22,17 +22,21 @@ class DiskUsage:
                 details: bool=False,
                 every: bool=False) -> None:
         self.path = path
-        if exclude is None:
-            self.exclude = []
-        else:
+        self.exclude = []
+        if exclude:
             self.exclude = exclude
         self.details = details
         self.every = every
         self._platform = platform.system() # Check on which platform vizex operates
 
     def print_charts(self, options: Options=None) -> None:
-        """Prints the charts based on user selection type"""
-        if options is None:
+        """
+        Prints the charts based on user selection type
+        
+        Args:
+            options (Options): colors and symbols for printing
+        """
+        if not options:
             options = Options()
 
         if self.path:
@@ -46,12 +50,17 @@ class DiskUsage:
             self.print_disk_chart(chrt, partname, parts[partname])
 
     def print_disk_chart(
-            self, chart: Chart, partname: str, part: dict
+            self, ch: Chart, partname: str, part: dict
         ) -> None:
-        """Prints the disk data as a chart"""
-        ch = chart
-        title = (partname,)
+        """Prints the disk data as a chart
+        
+        Args:
+            ch (Chart): to print
+            partname (str): partition title
+            part (dict): parition data to be visualized
+        """
         pre_graph_text = self.create_stats(part)
+
         if self.details:
             footer = self.create_details_text(part)
         else:
@@ -64,7 +73,7 @@ class DiskUsage:
 
         ch.chart(
             post_graph_text=post_graph_text,
-            title=title[0],
+            title=partname,
             pre_graph_text=pre_graph_text,
             footer=footer,
             maximum=maximum,
@@ -73,8 +82,13 @@ class DiskUsage:
         print()
 
     def grab_root(self) -> dict:
-        """Grab the data about the root partition"""
-        root = {
+        """
+        Grab the data for the root partition
+        
+        return:
+            (dict) with column titles as keys
+        """
+        return {
             "total": psutil.disk_usage("/").total,
             "used": psutil.disk_usage("/").used,
             "free": psutil.disk_usage("/").free,
@@ -82,12 +96,16 @@ class DiskUsage:
             "fstype": psutil.disk_partitions(all=False)[0][2],
             "mountpoint": "/",
         }
-        return root
 
     def grab_partitions(self,
                         exclude: list,
                         every: bool) -> dict:
-        """Grabs all the partitions"""
+        """Grabs all the partitions data
+        
+        Args:
+            exclude (list): of partitions to exclude
+            every (bool): if all the partitions should be grabbed
+        """
         if self.exclude is None:
             exclude = []
         disks = {}
@@ -129,6 +147,9 @@ class DiskUsage:
     def grab_specific(self, disk_path: str) -> dict:
         """
         Grabs data for the partition of the user specified path
+
+        Args:
+            disk_path (str): to the partition to grab
         """
         disks = {}
         disks[disk_path] = {
@@ -142,21 +163,36 @@ class DiskUsage:
         return disks
 
     def create_details_text(self, disk: dict) -> str:
-        """Creates a string representation of a disk"""
+        """
+        Creates a string representation of a disk
+        
+        Args:
+            disk (dict): text to print
+        """
         return f"fstype={disk['fstype']}\tmountpoint={disk['mountpoint']}"
 
     def create_stats(self, disk: dict) -> str:
-        """Creates statistics as string for a disk"""
+        """
+        Creates statistics as string for a disk
+        
+        Args:
+            disk (dict): stats to print
+        """
         r = ints_to_human_readable(disk)
         return f"Total: {r['total']}\t Used: {r['used']}\t Free: {r['free']}"
 
     def save_data(self, filename: str) -> None:
-        """Outputs disks/partitions data as a CSV file"""
+        """
+        Outputs disks/partitions data as a CSV file
+        
+        Args:
+            filename (str): for the saved file
+        """
         data = self.grab_partitions(self.exclude, self.every)
-        file_type = filename.split(".")[-1]
-        if file_type.lower() == 'csv':
+        file_type = filename.split(".")[-1].lower()
+        if file_type == 'csv':
             save_to_csv(data, filename)
-        elif file_type.lower() == 'json':
+        elif file_type == 'json':
             save_to_json(data, filename)
         else:
             raise NameError("Not supported file type, please indicate "
