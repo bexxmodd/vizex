@@ -1,5 +1,7 @@
+
+<br>
 <p align="center">
-	<img title="Logo" src="https://i.imgur.com/Jt0V0ce.png" width=550>
+	<img title="Logo" src="https://i.imgur.com/0afEXvj.png" width=550>
 	<br>
 	<br>
 	<br>
@@ -7,19 +9,29 @@
 <p>
 	<a href="https://pypi.org/project/vizex/"><img src="https://img.shields.io/github/v/release/bexxmodd/vizex?color=red&style=flat-square"></a>
 	<a href=""><img src="https://img.shields.io/pypi/pyversions/vizex?color=orange&style=flat-square"></a>
-	<a href="https://paypal.me/bexxmodd?locale.x=en_US"><img src="https://img.shields.io/badge/donate-paypal-blue?style=flat-square"> </a>
 	<a href="./LICENSE.md"><img src="https://img.shields.io/pypi/l/vizex?color=g&style=flat-square"></a>
 </p>
 
+
+
+
 **vizex** is the terminal program for the UNIX/Linux systems which helps the user to visualize the disk space usage for every partition and media on the user's machine. **vizex** is highly customizable and can fit any user's taste and preferences.
 
+**vizexdf** is a new feature that allows to organize and print directory data in the terminal.
 
+<br>
+
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="bexxmodd" data-color="#BD5FFF" data-emoji="" data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00" ></script>
+
+<br>
+<br>
 
 # Installation
 
 ## pip
 
 **vizex** can be installed through your terminal and requires `Python >= 3.7` and the `pip package manager`. Here's [how to set up Python](https://realpython.com/installing-python/) on your machine.
+
 
 If you don't have PyPackage Index (PyPI or just `pip`) installed, [Here's the guide on how to install it](https://www.tecmint.com/install-pip-in-linux/). Install **vizex** with the following command:
 ```
@@ -49,7 +61,9 @@ yay -S vizex
 
 # How it Works
 
-After installing run the program with a single command `vizex` in your terminal. This will graphically display disk space and usage:
+After installing run can use two temrinal commands `vizex` to display the disk usage/space and `vizexdf` which will print the data of a current working directory with sizes, file types and last modified date.
+
+This will graphically display disk space and usage:
 
 ```
 vizex
@@ -57,7 +71,15 @@ vizex
 
 ![demo](https://i.imgur.com/OiPWWJf.png)
 
-But the best part is that you can modify the colors and style of the display to your preferences with the following commands. For the example above command has excluded two partitions. You can also do give the following options:
+-----
+
+[]>>> here is the example for `vizexdf`:
+
+![demo1](https://i.imgur.com/At7MFgu.png)
+
+## vizex
+
+The best part is that you can modify the colors and style of the display to your preferences with the following commands. For the example above command has excluded two partitions. You can also do give the following options:
 
 ```
 -d --header <color>
@@ -97,32 +119,65 @@ For a full list of the available options please check:
 vizex --help
 ```
 
-If you want to contribute to the project you are more than a welcome! But first, make sure all the tests run after you fork the project and before the pull request. First, run the `access.py`, that way `tests` folder will obtain a path to the `src` folder and you can run all the tests.
+
+## vizexdf
+
+You can include hidden files and folders by calling `--all` or `-a` for short and sort the output with `--sort` or `-s` for short based on name, file type, size, or date. Put it in descending order with the `--desc` option.
+
+You can chain multiple options but make sure to put the `-s` at the end as it requires a text argument. Example:
+
+```
+vizexdf -ads name
+```
+
+This will print current directory data sorted by name and in descending order and will include hidden files.
+
+----
+**Lastly, you save all the modifications by adding -l at the end of the command**:
+
+```
+vizex -d red -t blue --details -l
+```
+
+The next time you call `vizex` it will include all options listed above. If you decided to change the default calling command for vizex/vizexdf just include `-l` and it will be overwritten
+
+
+If you want to contribute to the project you are more than welcome! But first, make sure all the tests run after you fork the project and before the pull request. First, run the `access.py`, that way `tests` folder will obtain a path to the `main` folder and you can run all the tests.
+
+You can get the full set of features by calling `--help` option with command.
 
 # File Structure
 
-```bash
+```
 .
 ├── LICENSE
 ├── README.md
 ├── requirements.txt
 ├── setup.py
-├── src/
-│   ├── charts.py
+├── main/
+│   ├── battery.py
+│   ├── battery.py
 │   ├── cli.py
+│   ├── cpu.py
 │   ├── disks.py
-│   ├── pkg/
-│   │   └── __init__.py
-│   └── tools.py
+│   ├── files.py
+|	└── tools.py
 └── tests/
-    ├── access.py
-    ├── test_charts.py
-    ├── test_cli.py
-    ├── test_disk.py
-    └── test_tools.py
+	├── access.py
+    ├── test_battery.py
+	├── test_charts.py
+	├── test_cli.py
+	├── test_disk.py
+	├── test_files.py
+	└── test_tools.py
 ```
 
 # Release History
+- v1.9.9:
+	- Added `vizexdf` which prints directory data in style
+	- Added alias `-l` option to save edited line as alias for a command
+	- New logo
+	- Refactoring and more explicit docstrings
 - v1.5.3:
 	- Added battery information  display
 	- Now you can save output in csv or json formats
