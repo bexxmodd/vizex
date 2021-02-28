@@ -6,6 +6,7 @@
 	<br>
 	<br>
 </p>
+
 <p>
 	<a href="https://pypi.org/project/vizex/"><img src="https://img.shields.io/github/v/release/bexxmodd/vizex?color=red&style=flat-square"></a>
 	<a href=""><img src="https://img.shields.io/pypi/pyversions/vizex?color=orange&style=flat-square"></a>
@@ -19,9 +20,6 @@
 
 **vizexdf** is a new feature that allows to organize and print directory data in the terminal.
 
-<br>
-
-<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="bexxmodd" data-color="#BD5FFF" data-emoji="" data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#ffffff" data-coffee-color="#FFDD00" ></script>
 
 <br>
 <br>
