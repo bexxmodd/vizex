@@ -112,8 +112,7 @@ def save_to_csv(data: dict,
     Raises:
         NameError: [description]
     """
-    file_type = filename.split(".")[-1]
-    if file_type.lower() == 'csv':
+    if filename.split(".")[-1].lower() == 'csv':
         df = pd.DataFrame.from_dict(data, orient=orient)
         df.to_csv(filename, mode='a')
     else:
@@ -133,8 +132,7 @@ def save_to_json(data: dict,
     Raises:
         NameError: [description]
     """
-    file_type = filename.split(".")[-1]
-    if file_type.lower() == 'json':
+    if filename.split(".")[-1].lower() == 'json':
         with open(filename, "w") as f:
             json.dump(data, f, indent=indent)
     else:

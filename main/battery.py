@@ -42,9 +42,7 @@ class Battery:
         """ Format more information about the battery """
         time_left = datetime.timedelta(seconds=self._battery.secsleft)
 
-        plugged = self._battery.power_plugged
-        ret: str
-        if plugged:
+        if (plugged := self._battery.power_plugged):
             ret = format("Charging")
         else:
             ret = f"Plugged in: {plugged}\tDischarging: {time_left}\t"

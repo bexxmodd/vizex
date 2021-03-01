@@ -61,10 +61,9 @@ class DiskUsage:
         """
         pre_graph_text = self.create_stats(part)
 
+        footer = None
         if self.details:
             footer = self.create_details_text(part)
-        else:
-            footer = None
 
         maximum = part["total"]
         current = part["used"]
@@ -106,8 +105,6 @@ class DiskUsage:
             exclude (list): of partitions to exclude
             every (bool): if all the partitions should be grabbed
         """
-        if self.exclude is None:
-            exclude = []
         disks = {}
         
         # If we don't need every part we grab root seperately
@@ -126,7 +123,7 @@ class DiskUsage:
                 continue
 
             # Check that part name is not in the excluded list
-            if disk[1].split("/")[-1] in exclude:
+            if self.exclude and disk[1].split("/")[-1] in exclude:
                 continue
 
             try:
@@ -189,8 +186,7 @@ class DiskUsage:
             filename (str): for the saved file
         """
         data = self.grab_partitions(self.exclude, self.every)
-        file_type = filename.split(".")[-1].lower()
-        if file_type == 'csv':
+        if (file_type := filename.split(".")[-1].lower()) == 'csv':
             save_to_csv(data, filename)
         elif file_type == 'json':
             save_to_json(data, filename)

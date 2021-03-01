@@ -103,10 +103,10 @@ class Chart:
     """Abstract base object for charts"""
 
     def __init__(self, options: Options = None):
-        if not options:
-            self.options = Options()
-        else:
+        if options:
             self.options = options
+        else:
+            self.options = Options()
 
 
 class HorizontalBarChart(Chart):

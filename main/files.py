@@ -26,7 +26,6 @@ class DirectoryFiles():
         # Path is the current working directory if not stated otherwise
         self.path = os.getcwd()
         if dpath: self.path = dpath
-
         self.show_hidden = show_hidden
         self.sort_by = sort_by
         self.desc = desc
@@ -62,10 +61,10 @@ class DirectoryFiles():
             by: key as a string to sort by
             desc: to sort in descending order
         """
-        key = -1
         if by == 'name': key = 0
         elif by == 'dt': key = 1
         elif by == 'size': key = 2
+        else: key = -1
 
         # Sort and return data based on user's choice
         data.sort(key=lambda x: (x[key], x[-1]), reverse=desc)
