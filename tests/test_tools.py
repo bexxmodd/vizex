@@ -265,7 +265,7 @@ class TestTools(unittest.TestCase):
 
     def test_decorated_data_equal(self):
         test_a = DecoratedData(5, 'five')
-        test_b = DecoratedData(5, 'five but same')
+        test_b = DecoratedData(5, 'five')
         self.assertEqual(test_a, test_b)
 
     def test_decorated_notequal(self):
@@ -290,7 +290,7 @@ class TestTools(unittest.TestCase):
 
     def test_decorated_less_equal(self):
         test_a = DecoratedData(6, 'three')
-        test_b = DecoratedData(6, 'five and three')
+        test_b = DecoratedData(6, 'x and three')
         self.assertLessEqual(test_a, test_b)
 
 

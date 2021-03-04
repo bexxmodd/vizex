@@ -6,6 +6,7 @@ import time
 import pandas as pd
 
 from math import ceil
+from dataclasses import dataclass
 from colored import fg, attr, stylize
 
 
@@ -184,39 +185,14 @@ def normalize_date(format: str, date: int) -> str:
     return time.strftime(format, time.localtime(date))
 
 
+@dataclass(order=True)
 class DecoratedData():
     """
     Custom class to compare numerical data for sorting
     which appears in the stylized representation of a string.
     """
-
-    def __init__(self, size: int, to_string: str) -> None:
-        self.size = size
-        self.to_string = to_string
-
-    def __eq__(self, other) -> bool:
-        """Equals"""
-        return self.size == other.size
-
-    def __ne__(self, other) -> bool:
-        """Not equals"""
-        return self.size != other.size
-
-    def __gt__(self, other) -> bool:
-        """Greater than"""
-        return self.size > other.size
-    
-    def __ge__(self, other) -> bool:
-        """Greater than or equals to"""
-        return self.size >= other.size
-    
-    def __lt__(self, other) -> bool:
-        """Less than"""
-        return self.size < other.size
-
-    def __le__(self, other) -> bool:
-        """Less than or equals to"""
-        return self.size <= other.size
+    size: int
+    to_string: str
 
     def __str__(self):
         """String representation of the class"""
