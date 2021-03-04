@@ -160,11 +160,11 @@ class HorizontalBarChart(Chart):
         text_bar = ""
         usage = int((current / maximum) * 38)
 
-        for i in range(1, usage + 1):
+        for _ in range(1, usage + 1):
             text_bar += self.options.fsymbol
         text_bar += self.options.msymbol
 
-        for i in range(1, 39 - usage):
+        for _ in range(1, 39 - usage):
             text_bar += self.options.esymbol
 
         # Check if the user set up graph color
