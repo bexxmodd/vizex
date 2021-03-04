@@ -131,3 +131,4 @@ dmypy.json
 # Manually excluded
 beta.py
 timetest.py
+.vscode

@@ -48,7 +48,6 @@ class Battery:
             ret = f"Plugged in: {plugged}\tDischarging: {time_left}\t"
         return ret
 
-
 if __name__ == "__main__":
     battery = Battery()
     battery.print_charts()
