@@ -176,6 +176,7 @@ You can get the full set of features by calling `--help` option with command.
 	- Added alias `-l` option to save edited line as alias for a command
 	- New logo
 	- Refactoring and more explicit docstrings
+	
 - v1.5.3:
 	- Added battery information  display
 	- Now you can save output in csv or json formats
