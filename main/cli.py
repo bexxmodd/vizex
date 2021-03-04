@@ -3,12 +3,12 @@
 import click
 import sys
 
-from main.disks import DiskUsage
-from main.files import DirectoryFiles
-from main.battery import Battery
-from main.charts import Options
-from main.cpu import CPUFreq
-from main.tools import append_to_bash
+from disks import DiskUsage
+from files import DirectoryFiles
+from battery import Battery
+from charts import Options
+from cpu import CPUFreq
+from tools import append_to_bash
 from colored import fg, attr, stylize
 
 # ----- vizexdf options and arguments -----

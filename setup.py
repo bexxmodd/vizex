@@ -8,13 +8,14 @@ with open('requirements.txt') as r:
 
 setup(
     name='vizex',
-    version='1.9.9.1',
+    version='1.9.9.3',
     author='Beka Modebadze',
     author_email='bexxmodd@seas.upenn.edu',
     description='UNIX/Linux Terminal program to graphically display the disk space usage and/or directory data',
     long_description=long_description,
     long_description_content_type ='text/markdown',
     url='https://github.com/bexxmodd/vizex',
+    package_dir = {'': 'main'},
     py_modules=['cli', 'disks', 'tools', 'charts', 'battery', 'cpu', 'files'],
     packages = find_packages(),
     classifiers=[

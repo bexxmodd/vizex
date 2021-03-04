@@ -7,7 +7,7 @@ import magic
 
 from tabulate import tabulate
 from colored import fg, bg, stylize, attr
-from main.tools import DecoratedData, bytes_to_human_readable,  normalize_date
+from tools import DecoratedData, bytes_to_human_readable,  normalize_date
 
 class DirectoryFiles():
     """
@@ -61,16 +61,16 @@ class DirectoryFiles():
             by: key as a string to sort by
             desc: to sort in descending order
         """
-        if by == 'name': key = 0
-        elif by == 'dt': key = 1
-        elif by == 'size': key = 2
-        else: key = -1
+        if by == 'name': column = 0
+        elif by == 'dt': column = 1
+        elif by == 'size': column = 2
+        else: column = -1
 
-        # Sort and return data based on user's choice
-        data.sort(key=lambda x: (x[key], x[-1]), reverse=desc)
+        # Sort data inplace based on user's choice
+        data.sort(key=lambda x: (x[column], x[-1]), reverse=desc)
 
     @classmethod
-    def _decorate_dir_entry(cls, entry) -> list:
+    def _decorate_dir_entry(cls, entry) -> tuple:
         """
         Decorates given entry for a directory. Decorate means that creates 
         a colored representation of a name of the entry, grabs 
@@ -97,10 +97,10 @@ class DirectoryFiles():
         )
         
         current.append('-') # Append type 
-        return current
+        return tuple(current)
 
     @classmethod
-    def _decorate_file_entry(cls, entry) -> list:
+    def _decorate_file_entry(cls, entry) -> tuple:
         """
         Decorates given entryfor a file. By decorate it means that creates 
         a colored representation of a name of the entry, grabs 
@@ -129,7 +129,7 @@ class DirectoryFiles():
         current.append(
             magic.from_file(entry.path, mime=True)
         )
-        return current
+        return tuple(current)
 
 
     def get_usage(self) -> list:
@@ -159,7 +159,8 @@ class DirectoryFiles():
                         current = self._decorate_dir_entry(entry)
 
                     # Add current list to the main list
-                    data.append(current)
+                    if len(current) == 4:
+                        data.append(current)
                 except FileNotFoundError:
                     continue
         return data

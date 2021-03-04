@@ -4,7 +4,7 @@ import datetime
 import psutil
 
 from math import ceil
-from main.charts import Chart, HorizontalBarChart, Options
+from charts import Chart, HorizontalBarChart, Options
 
 
 class Battery:

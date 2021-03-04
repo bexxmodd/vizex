@@ -9,7 +9,7 @@ import psutil
 import getpass
 import main.tools
 
-from main.charts import HorizontalBarChart, Chart, Options
+from charts import HorizontalBarChart, Chart, Options
 
 
 class CPUFreq:
