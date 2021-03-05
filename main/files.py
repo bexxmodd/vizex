@@ -43,7 +43,7 @@ class DirectoryFiles():
             int: the size of all files in a given path in bytes
         """
         total_size = 0
-        for dirpath, dirnames, filenames in os.walk(start_path):
+        for dirpath, _, filenames in os.walk(start_path):
             for f in filenames:
                 fp = os.path.join(dirpath, f)
                 total_size += os.path.getsize(fp)
