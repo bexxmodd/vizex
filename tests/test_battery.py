@@ -1,6 +1,6 @@
 import unittest
 
-from main.battery import Battery
+from battery import Battery
 
 class TestBattery(unittest.TestCase):
     """ Test battry module """
