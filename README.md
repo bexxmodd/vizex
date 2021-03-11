@@ -36,6 +36,11 @@ If you don't have PyPackage Index (PyPI or just `pip`) installed, [Here's the gu
 pip install vizex
 ```
 
+If you already have vizex install you'll need to upgrade it:
+```
+pip install vizex --upgrade
+```
+
 If you encounter any problems during installation, know that some `vizex` dependencies require a Python 3 development package on Linux and you need to set up that manually.
 
 For **Debian** and other derived systems (Ubuntu, Mint, Kali, etc.) you can install this with the following command:
@@ -144,31 +149,6 @@ If you want to contribute to the project you are more than welcome! But first, m
 
 You can get the full set of features by calling `--help` option with command.
 
-# File Structure
-
-```
-.
-├── LICENSE
-├── README.md
-├── requirements.txt
-├── setup.py
-├── main/
-│   ├── battery.py
-│   ├── battery.py
-│   ├── cli.py
-│   ├── cpu.py
-│   ├── disks.py
-│   ├── files.py
-|	└── tools.py
-└── tests/
-	├── access.py
-    ├── test_battery.py
-	├── test_charts.py
-	├── test_cli.py
-	├── test_disk.py
-	├── test_files.py
-	└── test_tools.py
-```
 
 # Release History
 - v1.9.9:
