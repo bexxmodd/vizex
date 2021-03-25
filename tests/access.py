@@ -3,7 +3,7 @@ import sys
 import inspect
 
 # Creates path to the main module files
-def add_path():
+def ADD_PATH():
     currentdir = os.path.dirname(
         os.path.abspath(
             inspect.getfile(inspect.currentframe())
@@ -13,4 +13,5 @@ def add_path():
     sys.path.insert(0, parentdir + '/main')
 
 if __name__ == '__main__':
-    add_path()
+    ADD_PATH()
+    print(sys.path)

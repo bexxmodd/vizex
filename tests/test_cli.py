@@ -1,3 +1,7 @@
+# add path to the main package and test cli.py
+from access import ADD_PATH
+ADD_PATH()
+
 import io
 import random
 import psutil

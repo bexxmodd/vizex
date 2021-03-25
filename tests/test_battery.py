@@ -1,3 +1,6 @@
+from access import ADD_PATH
+ADD_PATH()
+
 import unittest
 
 from battery import Battery
