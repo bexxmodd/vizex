@@ -7,7 +7,8 @@ import magic
 
 from tabulate import tabulate
 from colored import fg, bg, stylize, attr
-from tools import DecoratedData, bytes_to_human_readable,  normalize_date
+from decorateddata import DecoratedData
+from tools import bytes_to_human_readable, normalize_date
 
 class DirectoryFiles():
     """
@@ -161,8 +162,10 @@ class DirectoryFiles():
                     # Add current list to the main list
                     if len(current) == 4:
                         data.append(current)
-                except FileNotFoundError:
+                except FileNotFoundError as e:
                     continue
+                except PermissionError as e:
+                    print(f"No access ::> {e}")
         return data
 
     def tabulate_disk(self) -> tabulate:

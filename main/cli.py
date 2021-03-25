@@ -11,6 +11,7 @@ from cpu import CPUFreq
 from tools import append_to_bash
 from colored import fg, attr, stylize
 
+
 # ----- vizexdf options and arguments -----
 @click.version_option('1.5.5', message='%(prog)s version %(version)s')
 @click.command(options_metavar='[options]')

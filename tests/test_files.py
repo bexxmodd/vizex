@@ -5,7 +5,7 @@ import random
 import os
 import warnings
 
-from main.files import DirectoryFiles
+from files import DirectoryFiles
 
 
 class TestDirectoryFiles(unittest.TestCase):
