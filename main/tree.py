@@ -6,7 +6,7 @@ E = TypeVar('E')
 @dataclass
 class Node:
 
-    val: E = None
+    value: E = None
     left: 'Node' = None
     right: 'Node' = None
 
@@ -43,6 +43,7 @@ class BinarySearchTree:
     def __add(self, p: Node, val: E) -> bool:
         if not p or not val:
             return False
+
         if p.value == val:
             return False # ensure that the same value doesn't appear more than once
         elif p.value > val:
@@ -58,8 +59,47 @@ class BinarySearchTree:
             else:
                 return self.__add(n.right, val)
 
+    def remove(self, val: E) -> bool:
+        """Removes node from a tree"""
+        return self.__remove(self.root, None, val)
+
+    def __remove(self, p: Node, parent: Node, val: E) -> bool:
+        if not p:
+            return False
+
+        if p.value > val:
+            return self.__remove(p.left, p, val)
+        elif p.value < val:
+            return self.__remove(p.right, p, val)
+        else:
+            if p.left and p.right:
+                p.value = self.max_value(p.left)
+                self.__remove(p.left, p, p.value)
+
+    def _max_value(self, p: Node) -> E:
+        """returns the max value of a node"""
+        if not p.right:
+            return p.value
+        return self._max_value(p.right)
+
+    def is_leaf(self, p: Node) -> bool:
+        """Checks if a node is a leaf e.i. has no children"""
+        return not p.left and not p.right
+    
+    def get_children(self, p: Node) -> list:
+        """returns the list of children node"""
+        children = []
+        if p.left:
+            children.append(p.left)
+        if p.right:
+            children.append(p.right)
+        return children
+
 
 if __name__ == '__main__':
     n = Node("First")
-    
-    print(n)
+    bts = BinarySearchTree(n)
+    bts.add('Second')
+    children = bts.get_children(n)
+    print(children)    
+    print(bts)
