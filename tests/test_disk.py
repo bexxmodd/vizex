@@ -1,3 +1,9 @@
+# add path to the main package and test disks.py
+if __name__ == '__main__':
+    from tests.__access import ADD_PATH
+    ADD_PATH()
+
+
 import io
 import random
 import psutil
@@ -5,7 +11,7 @@ import unittest
 
 from unittest.mock import MagicMock, call
 from colored import fg, attr, stylize
-from main.charts import Options
+from charts import Options
 
 @unittest.skip("Tests need to be updated to suit the changes in the disks.py module")
 class TestDiskUsage(unittest.TestCase):

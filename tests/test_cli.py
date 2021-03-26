@@ -1,6 +1,8 @@
 # add path to the main package and test cli.py
-from access import ADD_PATH
-ADD_PATH()
+if __name__ == '__main__':
+    from tests.__access import ADD_PATH
+    ADD_PATH()
+
 
 import io
 import random
@@ -9,7 +11,7 @@ import unittest
 import unittest.mock
 
 from click.testing import CliRunner
-from main.cli import dirs_files, disk_usage
+from cli import dirs_files, disk_usage
 
 
 class TestCli(unittest.TestCase):

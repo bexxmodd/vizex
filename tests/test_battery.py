@@ -1,9 +1,12 @@
-from access import ADD_PATH
-ADD_PATH()
+# add path to the main package and test battery.py
+if __name__ == '__main__':
+    from tests.__access import ADD_PATH
+    ADD_PATH()
 
 import unittest
 
 from battery import Battery
+
 
 class TestBattery(unittest.TestCase):
     """ Test battry module """

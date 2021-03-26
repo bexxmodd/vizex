@@ -1,11 +1,13 @@
 # add path to the main package and test bstree.py
-from access import ADD_PATH
-ADD_PATH()
+if __name__ == '__main__':
+    from tests.__access import ADD_PATH
+    ADD_PATH()
 
 
 import unittest
 
-from bstree import Node, BinarySearchTree
+from main.bstree import Node, BinarySearchTree
+
 
 class TestDirectoryFiles(unittest.TestCase):
 

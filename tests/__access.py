@@ -14,4 +14,3 @@ def ADD_PATH():
 
 if __name__ == '__main__':
     ADD_PATH()
-    print(sys.path)
