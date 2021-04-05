@@ -1,5 +1,4 @@
 # Class to collect and organize data about files and directories
-
 import os
 import getpass
 import time
@@ -7,9 +6,9 @@ import magic
 
 from tabulate import tabulate
 from colored import fg, bg, stylize, attr
-from decorateddata import DecoratedData
-from tools import bytes_to_human_readable, normalize_date
-from bstree import Node, BinarySearchTree
+from main.decorateddata import DecoratedData
+from main.tools import bytes_to_human_readable, normalize_date
+from main.bstree import Node, BinarySearchTree
 
 class DirectoryFiles():
     """

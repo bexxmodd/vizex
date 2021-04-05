@@ -7,8 +7,8 @@ import pandas as pd
 from math import ceil
 from colored import fg, attr, stylize
 from charts import Chart, HorizontalBarChart, Options
-from tools import create_usage_warning, ints_to_human_readable
-from tools import save_to_csv, save_to_json, create_usage_warning
+from main.tools import create_usage_warning, ints_to_human_readable
+from main.tools import save_to_csv, save_to_json, create_usage_warning
 
 
 class DiskUsage:
