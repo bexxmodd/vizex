@@ -9,6 +9,7 @@ from tabulate import tabulate
 from colored import fg, bg, stylize, attr
 from decorateddata import DecoratedData
 from tools import bytes_to_human_readable, normalize_date
+from bstree import Node, BinarySearchTree
 
 class DirectoryFiles():
     """
@@ -30,6 +31,22 @@ class DirectoryFiles():
         self.show_hidden = show_hidden
         self.sort_by = sort_by
         self.desc = desc
+
+    @staticmethod
+    def get_files(path: str, hidden: bool=False, level: int=None) -> BinarySearchTree:
+        """Collects all the files and returns as a BST"""
+        bst = BinarySearchTree()
+        for dirpath, dirname, filenames in os.walk(path):
+            for f in filenames:
+                entry = os.path.join(dirpath, f)
+                if os.path.isfile(entry):
+                    if f.startswith('.') and not hidden:
+                        continue
+                    else:
+                        b = os.stat(entry).st_size
+                        file_node = DecoratedData(f, b)
+                        bst.add(file_node)
+        return bst
 
     @staticmethod
     def get_dir_size(start_path: str) -> int:

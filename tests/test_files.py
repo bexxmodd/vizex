@@ -1,3 +1,8 @@
+# add path to the main package and test files.py
+if __name__ == '__main__':
+    from __access import ADD_PATH
+    ADD_PATH()
+
 import unittest
 import tempfile
 import string

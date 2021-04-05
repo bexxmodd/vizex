@@ -1,9 +1,16 @@
+# add path to the main package and test charts.py
+if __name__ == '__main__':
+    from __access import ADD_PATH
+    ADD_PATH()
+
+
 import io
 import unittest
 import unittest.mock
 
 from colored import fg, attr, stylize
-from main.charts import Options, Chart, HorizontalBarChart, VerticalBarChart
+from charts import Options, Chart, HorizontalBarChart, VerticalBarChart
+
 
 class TestOptions(unittest.TestCase):
 
