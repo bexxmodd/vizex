@@ -7,7 +7,7 @@ if __name__ == '__main__':
 import unittest
 import unittest.mock
 
-from main.decorateddata import DecoratedData
+from main.tools import DecoratedData
 
 
 class TestTools(unittest.TestCase):

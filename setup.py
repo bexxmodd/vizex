@@ -17,7 +17,7 @@ setup(
     url='https://github.com/bexxmodd/vizex',
     package_dir = {'': 'main'},
     py_modules=['cli', 'disks', 'tools', 'charts', 'battery', 'cpu', 'files', 'bstree'],
-    packages = find_packages(),
+    packages = find_packages(where='main'),
     classifiers=[
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
