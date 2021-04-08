@@ -24,7 +24,7 @@ from tools import append_to_bash
 @click.option(
     '-s', '--sort',
     type=click.Choice(['type', 'size', 'name', 'dt']),
-    default='type',
+    default=None,
     help='Sort table with one of four given columns'
 )
 @click.option(
@@ -78,9 +78,9 @@ This will sort in descending order by name and show all the hidden files and fol
     dirpath = path
 
     # Execute vizexdf
-    dir_files = DirectoryFiles(sort_by=sort_by, show_hidden=show,
-                                desc=desc_sort, dpath=dirpath)
-    dir_files.print_tables()
+    dir_files = DirectoryFiles(path=dirpath, sort_by=sort_by,
+                                show_hidden=show, desc=desc_sort)
+    dir_files.print_tabulate_data()
 
 
 # ----- vizex options and arguments -----

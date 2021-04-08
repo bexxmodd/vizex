@@ -4,11 +4,14 @@ import getpass
 import time
 import magic
 
+from profiler import speedometer
 from tabulate import tabulate
 from colored import fg, bg, stylize, attr
 from tools import bytes_to_human_readable, normalize_date, DecoratedData
 from bstree import Node, BinarySearchTree
+from dataclasses import dataclass
 
+@dataclass
 class DirectoryFiles():
     """
     Creates the tabular listing of all the folders and files in a given path.
@@ -21,16 +24,13 @@ class DirectoryFiles():
         desc (bool): if the sorting should be descending or ascending
     """
 
-    def __init__(self, dpath: str=None, show_hidden: bool=False,
-                sort_by: str='type', desc: bool=False) -> None:
-        # Path is the current working directory if not stated otherwise
-        self.path = os.getcwd()
-        if dpath: self.path = dpath
-        self.show_hidden = show_hidden
-        self.sort_by = sort_by
-        self.desc = desc
+    path: str = os.getcwd()
+    show_hidden: bool = False
+    sort_by: str = None
+    desc: bool = False
 
     @staticmethod
+    @speedometer
     def get_files(path: str, hidden: bool=False, level: int=None) -> BinarySearchTree:
         """Collects all the files and returns as a BST"""
         bst = BinarySearchTree()
@@ -47,6 +47,7 @@ class DirectoryFiles():
         return bst
 
     @staticmethod
+    @speedometer
     def get_dir_size(start_path: str) -> int:
         """
         Calculates the cumulative size of a given directory.
@@ -66,6 +67,7 @@ class DirectoryFiles():
         return total_size
 
     @classmethod
+    @speedometer
     def sort_data(cls, data: list, by: str, desc: bool) -> None:
         """
         Sorts data in place, which is inputted as a list, 
@@ -83,9 +85,10 @@ class DirectoryFiles():
         else: column = -1
 
         # Sort data inplace based on user's choice
-        data.sort(key=lambda x: (x[column], x[-1]), reverse=desc)
+        data.sort(key=lambda x: x[column], reverse=desc)
 
     @classmethod
+    @speedometer
     def _decorate_dir_entry(cls, entry) -> tuple:
         """
         Decorates given entry for a directory. Decorate means that creates 
@@ -116,6 +119,7 @@ class DirectoryFiles():
         return tuple(current)
 
     @classmethod
+    @speedometer
     def _decorate_file_entry(cls, entry) -> tuple:
         """
         Decorates given entryfor a file. By decorate it means that creates 
@@ -147,7 +151,7 @@ class DirectoryFiles():
         )
         return tuple(current)
 
-
+    @speedometer
     def get_usage(self) -> list:
         """
         Collects the data for a given path like the name of a file/folder 
@@ -183,7 +187,8 @@ class DirectoryFiles():
                     print(f"No access ::> {e}")
         return data
 
-    def tabulate_disk(self) -> tabulate:
+    @speedometer
+    def print_tabulate_data(self) -> tabulate:
         """
         Creates the tabular representation of the data.
         Adds headers and sorts the list's data as rows.
@@ -199,14 +204,11 @@ class DirectoryFiles():
             'type'
         ]
         result = self.get_usage()
-        self.sort_data(result, self.sort_by, self.desc)
-        return tabulate(result, headers, tablefmt="rst")
-
-    def print_tables(self) -> None:
-        """Prints tabular data in the terminal"""
-        print(self.tabulate_disk())
+        if self.sort_by:
+            self.sort_data(result, self.sort_by, self.desc)
+        print( tabulate(result, headers, tablefmt="rst"))
 
 
 if __name__ == '__main__':
-    files = DirectoryFiles(sort_by='type', desc=True)
-    files.print_tables()
+    files = DirectoryFiles(path="/home/bexx/", desc=True)
+    files.print_tabulate_data()
