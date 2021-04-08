@@ -5,7 +5,6 @@ import time
 import magic
 import glob
 
-from profiler import speedometer
 from tabulate import tabulate
 from colored import fg, bg, stylize, attr
 from tools import bytes_to_human_readable, normalize_date, DecoratedData
