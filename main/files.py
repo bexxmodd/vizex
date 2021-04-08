@@ -3,6 +3,7 @@ import os
 import getpass
 import time
 import magic
+import glob
 
 from profiler import speedometer
 from tabulate import tabulate
@@ -30,7 +31,6 @@ class DirectoryFiles():
     desc: bool = False
 
     @staticmethod
-    @speedometer
     def get_files(path: str, hidden: bool=False, level: int=None) -> BinarySearchTree:
         """Collects all the files and returns as a BST"""
         bst = BinarySearchTree()
@@ -47,7 +47,6 @@ class DirectoryFiles():
         return bst
 
     @staticmethod
-    @speedometer
     def get_dir_size(start_path: str) -> int:
         """
         Calculates the cumulative size of a given directory.
@@ -67,7 +66,6 @@ class DirectoryFiles():
         return total_size
 
     @classmethod
-    @speedometer
     def sort_data(cls, data: list, by: str, desc: bool) -> None:
         """
         Sorts data in place, which is inputted as a list, 
@@ -88,7 +86,6 @@ class DirectoryFiles():
         data.sort(key=lambda x: x[column], reverse=desc)
 
     @classmethod
-    @speedometer
     def _decorate_dir_entry(cls, entry) -> tuple:
         """
         Decorates given entry for a directory. Decorate means that creates 
@@ -119,7 +116,6 @@ class DirectoryFiles():
         return tuple(current)
 
     @classmethod
-    @speedometer
     def _decorate_file_entry(cls, entry) -> tuple:
         """
         Decorates given entryfor a file. By decorate it means that creates 
@@ -151,7 +147,6 @@ class DirectoryFiles():
         )
         return tuple(current)
 
-    @speedometer
     def get_usage(self) -> list:
         """
         Collects the data for a given path like the name of a file/folder 
@@ -187,7 +182,6 @@ class DirectoryFiles():
                     print(f"No access ::> {e}")
         return data
 
-    @speedometer
     def print_tabulate_data(self) -> tabulate:
         """
         Creates the tabular representation of the data.
@@ -210,5 +204,5 @@ class DirectoryFiles():
 
 
 if __name__ == '__main__':
-    files = DirectoryFiles(path="/home/bexx/", desc=True)
+    files = DirectoryFiles(sort_by='type', desc=True)
     files.print_tabulate_data()
