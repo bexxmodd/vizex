@@ -151,6 +151,10 @@ You can get the full set of features by calling `--help` option with command.
 
 
 # Release History
+- v2.0.2:
+	- Performance optimization. Runtime is reduced by ~250%
+	- When program has no access to the folder it prints on the terminal instead of raising error
+
 - v1.9.9:
 	- Added `vizexdf` which prints directory data in style
 	- Added alias `-l` option to save edited line as alias for a command
