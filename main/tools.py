@@ -25,7 +25,7 @@ class DecoratedData():
         return self.to_string
 
 
-def bytes_to_human_readable(bytes_in: int, suffix='b') -> str:
+def bytes_to_human_readable(bytes_in: int, suffix='B') -> str:
     """
     Converts bytes into the appropriate human
     readable unit with a relevant suffix.
@@ -38,7 +38,7 @@ def bytes_to_human_readable(bytes_in: int, suffix='b') -> str:
     Returns:
         str: [description]
     """
-    for unit in ['','k','m','g','t','p','e','z']:
+    for unit in ['','k','M','G','T','P','E','Z']:
         if abs(bytes_in) < 1024.0:
             return f'{bytes_in:3.1f} {unit}{suffix}'
         bytes_in /= 1024.0
@@ -201,6 +201,6 @@ def normalize_date(format: str, date: int) -> str:
 
 
 if __name__ == '__main__':
-    file1 = DecoratedData(55456, '54.2 kb')
-    file2 = DecoratedData(123233419, '117.5 mb')
+    file1 = DecoratedData(55456, '54.2 kB')
+    file2 = DecoratedData(123233419, '117.5 MB')
     print(f'{file1} is less than {file2} : {file1 < file2}')
