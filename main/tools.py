@@ -25,7 +25,7 @@ class DecoratedData():
         return self.to_string
 
 
-def bytes_to_human_readable(bytes: int, suffix='b') -> str:
+def bytes_to_human_readable(bytes_in: int, suffix='b') -> str:
     """
     Converts bytes into the appropriate human
     readable unit with a relevant suffix.
@@ -39,10 +39,10 @@ def bytes_to_human_readable(bytes: int, suffix='b') -> str:
         str: [description]
     """
     for unit in ['','k','m','g','t','p','e','z']:
-        if abs(bytes) < 1024.0:
-            return f'{bytes:3.1f} {unit}{suffix}'
-        bytes /= 1024.0
-    return f'{bytes:.1f} {"Y"}{suffix}'
+        if abs(bytes_in) < 1024.0:
+            return f'{bytes_in:3.1f} {unit}{suffix}'
+        bytes_in /= 1024.0
+    return f'{bytes_in:.1f} {"Y"}{suffix}'
 
 def ints_to_human_readable(disk: dict) -> dict:
     """Converts the dictionary of integers
