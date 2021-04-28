@@ -6,13 +6,12 @@ import time
 import pandas as pd
 
 from math import ceil
-from dataclasses import dataclass
 from colored import fg, attr, stylize
 from dataclasses import dataclass
 
 
 @dataclass(order=True)
-class DecoratedData():
+class DecoratedData:
     """
     Custom class to compare numerical data for sorting
     which appears in the stylized representation of a string.
@@ -31,18 +30,19 @@ def bytes_to_human_readable(bytes_in: int, suffix='B') -> str:
     readable unit with a relevant suffix.
 
     Args:
-        bytes (int): to convert
+        bytes_in (int): to convert
         suffix (str, optional): suffix of a size string.
                                 Defaults to 'b'.
 
     Returns:
-        str: [description]
+        str: size in a human readable
     """
-    for unit in ['','k','M','G','T','P','E','Z']:
+    for unit in ['', 'k', 'M', 'G', 'T', 'P', 'E', 'Z']:
         if abs(bytes_in) < 1024.0:
             return f'{bytes_in:3.1f} {unit}{suffix}'
         bytes_in /= 1024.0
     return f'{bytes_in:.1f} {"Y"}{suffix}'
+
 
 def ints_to_human_readable(disk: dict) -> dict:
     """Converts the dictionary of integers
@@ -55,12 +55,13 @@ def ints_to_human_readable(disk: dict) -> dict:
         dict: same dict but in human readable format
     """
     result = {}
-    try:
-        for key in disk:
+    for key in disk:
+        try:
             result[key] = bytes_to_human_readable(disk[key])
-    except Exception:
-        result[key] = disk[key] # If not able to convert return input back
+        except Exception:
+            result[key] = disk[key]  # If not able to convert return input back
     return result
+
 
 def printml(folder: list, cols: int = 1) -> None:
     """Prints multiline strings side by side.
@@ -86,9 +87,10 @@ def printml(folder: list, cols: int = 1) -> None:
         print()
         start = end
 
+
 def create_usage_warning(usage_pct: float,
-                        red_flag: int,
-                        yellow_flag: int) -> str:
+                         red_flag: int,
+                         yellow_flag: int) -> str:
     """Create disk usage percent with warning color
 
     Args:
@@ -97,7 +99,7 @@ def create_usage_warning(usage_pct: float,
         yellow_flag (int): threshold that decides if print is yellow
 
     Returns:
-        str: [description]
+        str: stylized warning string
     """
     if usage_pct < 0:
         usage_pct = 0
@@ -111,12 +113,12 @@ def create_usage_warning(usage_pct: float,
         return f"{stylize(use, attr('blink') + fg(9))}"
     elif usage_pct >= yellow_flag:
         return f"{stylize(use, fg(214))}"
-    else:
-        return f"{stylize(use, fg(82))}"
+    return f"{stylize(use, fg(82))}"
+
 
 def save_to_csv(data: dict,
                 filename: str,
-                orient: str='index') -> None:
+                orient: str = 'index') -> None:
     """Outputs disks/partitions data as a CSV file
 
     Args:
@@ -126,7 +128,7 @@ def save_to_csv(data: dict,
                                 Defaults to 'index'.
 
     Raises:
-        NameError: [description]
+        NameError: if filename doesn't contain .csv at the end
     """
     if filename.split(".")[-1].lower() == 'csv':
         df = pd.DataFrame.from_dict(data, orient=orient)
@@ -134,9 +136,10 @@ def save_to_csv(data: dict,
     else:
         raise NameError('Please include ".csv" in the filename')
 
+
 def save_to_json(data: dict,
-                filename: str,
-                indent: int=4) -> None:
+                 filename: str,
+                 indent: int = 4) -> None:
     """Saves disk/partitions data as a JSON file
 
     Args:
@@ -146,13 +149,14 @@ def save_to_json(data: dict,
                                 Defaults to 4.
 
     Raises:
-        NameError: [description]
+        NameError: if filename doesn't contain .json at the end
     """
     if filename.split(".")[-1].lower() == 'json':
         with open(filename, "w") as f:
             json.dump(data, f, indent=indent)
     else:
         raise NameError('Please include ".json" in the filename')
+
 
 def append_to_bash(alias: str, line: str) -> None:
     """
@@ -165,8 +169,9 @@ def append_to_bash(alias: str, line: str) -> None:
     bash = os.path.expanduser("~") + '/.bash_aliases'
     print(remove_if_exists(alias, bash))
     with open(bash, 'a+') as f:
-            # if line.startswith(f'alias {alias}')
+        # if line starts with(alias {alias}')
         f.write('alias ' + alias + f"='{line}'")
+
 
 def remove_if_exists(alias: str, path: str) -> None:
     """
@@ -186,13 +191,14 @@ def remove_if_exists(alias: str, path: str) -> None:
             if f'alias {alias}' not in line.strip("\n"):
                 f.write(line)
 
+
 def normalize_date(format: str, date: int) -> str:
     """
-    Converts date from nanoseconds to the fuman readable form
+    Converts date from nanoseconds to the human readable form
 
     Args:
         format (str): example %h-%d-%Y for mm-dd-yyyy
-        date_as_nanosecs (int): date in nanoseconds
+        date (int): date in nanoseconds
 
     Returns:
         str: Human readable format of a date

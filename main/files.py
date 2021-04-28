@@ -1,27 +1,19 @@
 # Class to collect and organize data about files and directories
 import os
-import getpass
-import time
 import magic
-import glob
 
 from tabulate import tabulate
-from colored import fg, bg, stylize, attr
+from colored import fg, stylize
 from tools import bytes_to_human_readable, normalize_date, DecoratedData
-from bstree import Node, BinarySearchTree
+from bstree import BinarySearchTree
 from dataclasses import dataclass
 
+
 @dataclass
-class DirectoryFiles():
+class DirectoryFiles:
     """
     Creates the tabular listing of all the folders and files in a given path.
     This module can be seen as a substitute for du/df Linux terminal commands.
-
-    Args:
-        path (str): to the file or directory
-        shoiw_hidden (bool): if program'd show hidden files and folders
-        sort_by (str): at which column folders and files should be sorted
-        desc (bool): if the sorting should be descending or ascending
     """
 
     path: str = os.getcwd()
@@ -30,7 +22,7 @@ class DirectoryFiles():
     desc: bool = False
 
     @staticmethod
-    def get_files(path: str, hidden: bool=False, level: int=None) -> BinarySearchTree:
+    def get_files(path: str, hidden: bool = False) -> BinarySearchTree:
         """Collects all the files and returns as a BST"""
         bst = BinarySearchTree()
         for dirpath, dirname, filenames in os.walk(path):
@@ -41,7 +33,7 @@ class DirectoryFiles():
                         continue
                     else:
                         b = os.stat(entry).st_size
-                        file_node = DecoratedData(f, b)
+                        file_node = DecoratedData(b, f)
                         bst.add(file_node)
         return bst
 
@@ -72,14 +64,18 @@ class DirectoryFiles():
         user has selected descending order.
 
         Args:
-            list: data with several columns
+            data: data with several columns
             by: key as a string to sort by
             desc: to sort in descending order
         """
-        if by == 'name': column = 0
-        elif by == 'dt': column = 1
-        elif by == 'size': column = 2
-        else: column = -1
+        if by == 'name':
+            column = 0
+        elif by == 'dt':
+            column = 1
+        elif by == 'size':
+            column = 2
+        else:
+            column = -1
 
         # Sort data inplace based on user's choice
         data.sort(key=lambda x: x[column], reverse=desc)
@@ -92,48 +88,42 @@ class DirectoryFiles():
         the date it was last modified and size in bytes and decorates.
         collects everything and returns as a list.
         """
-        current = []
 
         # Gives orange color to the string & truncate to 32 chars
-        current.append(
-            stylize("■ " + entry.name[:33] + "/", fg(202))
-        )
+        current = [stylize("■ " + entry.name[:33] + "/", fg(202))]
 
         # Get date and convert in to a human readable format
         date = os.stat(entry).st_mtime
         current.append(
             DecoratedData(date, normalize_date('%h %d %Y %H:%M', date))
-        ) 
+        )
 
-        # recursivly calculates the total size of a folder
+        # recursively calculates the total size of a folder
         b = DirectoryFiles().get_dir_size(entry)
         current.append(
             DecoratedData(b, bytes_to_human_readable(b))
         )
-        
-        current.append('-') # Append type 
+
+        current.append('-')  # add directory type identifier
         return tuple(current)
 
     @classmethod
     def _decorate_file_entry(cls, entry) -> tuple:
         """
-        Decorates given entryfor a file. By decorate it means that creates 
+        Decorates given entry for a file. By decorate it means that creates
         a colored representation of a name of the entry, grabs 
         the date it was last modified and size in bytes and decorates,
-        determins file type. collects everything and returns as a list.
+        determines file type. collects everything and returns as a list.
         """
-        current = []
 
         # Gives yellow color to the string & truncate to 32 chars
-        current.append(
-            stylize("» " + entry.name[:33], fg(226))
-        )
+        current = [stylize("» " + entry.name[:33], fg(226))]
 
         # Convert last modified time (which is in nanoseconds)
         date = os.stat(entry).st_mtime
         current.append(
             DecoratedData(date, normalize_date('%h %d %Y %H:%M', date))
-        ) 
+        )
 
         b = os.stat(entry).st_size
         current.append(
@@ -175,13 +165,13 @@ class DirectoryFiles():
                     # Add current list to the main list
                     if len(current) == 4:
                         data.append(current)
-                except FileNotFoundError as e:
+                except FileNotFoundError:
                     continue
                 except PermissionError as e:
                     print(f"No access ::> {e}")
         return data
 
-    def print_tabulate_data(self) -> tabulate:
+    def print_tabulated_data(self) -> tabulate:
         """
         Creates the tabular representation of the data.
         Adds headers and sorts the list's data as rows.
@@ -192,16 +182,16 @@ class DirectoryFiles():
         """
         headers = [
             'name',
-            'last modified (dt)', 
+            'last modified (dt)',
             'size',
             'type'
         ]
         result = self.get_usage()
         if self.sort_by:
             self.sort_data(result, self.sort_by, self.desc)
-        print( tabulate(result, headers, tablefmt="rst"))
+        print(tabulate(result, headers, tablefmt="rst"))
 
 
 if __name__ == '__main__':
     files = DirectoryFiles(sort_by='type', desc=True)
-    files.print_tabulate_data()
+    files.print_tabulated_data()

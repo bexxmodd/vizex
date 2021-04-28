@@ -3,7 +3,6 @@
 import click
 import sys
 
-from colored import fg, attr, stylize
 from disks import DiskUsage
 from files import DirectoryFiles
 from battery import Battery
@@ -16,7 +15,7 @@ from tools import append_to_bash
 @click.version_option('2.0.2', message='%(prog)s version %(version)s')
 @click.command(options_metavar='[options]')
 @click.argument(
-    'path', 
+    'path',
     type=click.Path(exists=True),
     default='.',
     metavar='[path]'
@@ -40,21 +39,21 @@ from tools import append_to_bash
     '-l', '--alias',
     is_flag=True,
     help='Store customized terminal command for vizexdf as an alias so you don\'t have to repeat the line everytime.'
-        + '<-l> should always be the last command in the line'
+         + '<-l> should always be the last command in the line'
 )
 def dirs_files(sort: str, all: str,
-            desc: str, path: str, alias: str) -> None:
-    '''
+               desc: str, path: str, alias: str) -> None:
+    """
 \b
-██╗   ██╗██╗███████╗███████╗██╗  ██╗     _  __ 
+██╗   ██╗██╗███████╗███████╗██╗  ██╗     _  __
 ██║   ██║██║╚══███╔╝██╔════╝╚██╗██╔╝  __| |/ _|
-██║   ██║██║  ███╔╝ █████╗   ╚███╔╝  / _` | |_ 
+██║   ██║██║  ███╔╝ █████╗   ╚███╔╝  / _` | |_
 ╚██╗ ██╔╝██║ ███╔╝  ██╔══╝   ██╔██╗ | (_| |  _|
- ╚████╔╝ ██║███████╗███████╗██╔╝ ██╗ \__,_|_|  
+ ╚████╔╝ ██║███████╗███████╗██╔╝ ██╗ \__,_|_|
   ╚═══╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝
     Made by: Beka Modebadze
 
-The command-line program `vizexdf` is a branch of the `vizex` that 
+The command-line program `vizexdf` is a branch of the `vizex` that
 displays directories and files information in a tabular form.
 
 `vizexdf` Prints data of current working path in a tabular form.
@@ -68,8 +67,8 @@ You can also chain options for --all --desc --sort.
 
 This will sort in descending order by name and show all the hidden files and folders.
 !Just make sure 's' is placed at the end of the options chain!
-    '''
-    if alias: # Set vizexdf as alias
+    """
+    if alias:  # Set vizexdf as alias
         line = 'vizexdf ' + ' '.join(sys.argv[1:-1])
         append_to_bash('vizexdf', line)
     show = all
@@ -79,8 +78,8 @@ This will sort in descending order by name and show all the hidden files and fol
 
     # Execute vizexdf
     dir_files = DirectoryFiles(path=dirpath, sort_by=sort_by,
-                                show_hidden=show, desc=desc_sort)
-    dir_files.print_tabulate_data()
+                               show_hidden=show, desc=desc_sort)
+    dir_files.print_tabulated_data()
 
 
 # ----- vizex options and arguments -----
@@ -92,8 +91,8 @@ This will sort in descending order by name and show all the hidden files and fol
 @click.option(
     "--save",
     help="Export your disk usage data into a CSV or JSON file:"
-        + "Takes a full path with a file name as an argument. "
-        + "File type will be defined based on a <.type> of the filename"
+         + "Takes a full path with a file name as an argument. "
+         + "File type will be defined based on a <.type> of the filename"
 )
 @click.option(
     "-P",
@@ -101,7 +100,7 @@ This will sort in descending order by name and show all the hidden files and fol
     default=None,
     multiple=True,
     help="Print directory for a provided path."
-        + " It can be both, full and relative path",
+         + " It can be both, full and relative path",
 )
 @click.option(
     "-X",
@@ -162,11 +161,11 @@ This will sort in descending order by name and show all the hidden files and fol
     '-l', '--alias',
     is_flag=True,
     help='Store customized terminal command for vizexdf as an alias so you don\'t have to repeat the line everytime.'
-        + '<-l> should always be the last command in the line'
+         + '<-l> should always be the last command in the line'
 )
 def disk_usage(arg, save, path, every,
-        details, exclude, header, style,
-        text, graph, mark, alias) -> None:
+               details, exclude, header, style,
+               text, graph, mark, alias) -> None:
     """
 \b                                            
 ██╗   ██╗██╗███████╗███████╗██╗  ██╗
@@ -194,7 +193,7 @@ You can also give *args like [BATTERY] and [CPU]
 battery --> will display the battery information if found.
 cpu --> will visualize the usage of each CPU in live time *(beta mode)
     """
-    if alias: # Set vizex as alias
+    if alias:  # Set vizex as alias
         line = 'vizex ' + ' '.join(sys.argv[1:-1])
         append_to_bash('vizex', line)
 

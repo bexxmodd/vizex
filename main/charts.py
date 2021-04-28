@@ -3,6 +3,7 @@
 from math import ceil
 from colored import fg, attr, stylize
 
+
 class Options:
     """Options"""
 
@@ -24,7 +25,7 @@ class Options:
 
     @graph_color.setter
     def graph_color(self, color: str):
-        self._graph_color = self._check_color(color, self._graph_color)
+        self._graph_color = Options._check_color(color, self._graph_color)
 
     @property
     def header_color(self):
@@ -33,16 +34,16 @@ class Options:
 
     @header_color.setter
     def header_color(self, color: str):
-        self._header_color = self._check_color(color, self._header_color)
+        self._header_color = Options._check_color(color, self._header_color)
 
     @property
     def header_style(self):
         """ header style """
         return self._header_style
-    
+
     @header_style.setter
     def header_style(self, style: str):
-        self._header_style = self._check_attr(style, self._header_style)
+        self._header_style = Options._check_attr(style, self._header_style)
 
     @property
     def text_color(self):
@@ -51,12 +52,12 @@ class Options:
 
     @text_color.setter
     def text_color(self, color: str):
-        self._text_color = self._check_color(color, self._text_color)
+        self._text_color = Options._check_color(color, self._text_color)
 
     @property
     def symbol(self):
         """ graph symbols to use """
-        return (self._fsymbol, self._msymbol, self.esymbol)
+        return self._fsymbol, self._msymbol, self.esymbol
 
     @symbol.setter
     def symbol(self, symbol: str):
@@ -84,14 +85,16 @@ class Options:
         """ The middle symbol """
         return self._msymbol
 
-    def _check_color(self, color: str, default_color: str="white"):
+    @staticmethod
+    def _check_color(color: str, default_color: str = "white"):
         """Checks if set color is valid"""
         try:
             return fg(color)
         except KeyError:
             return default_color
 
-    def _check_attr(self, style: str, default_attr: str="bold"):
+    @staticmethod
+    def _check_attr(style: str, default_attr: str = "bold"):
         """Checks if set attribute is valid"""
         try:
             return attr(style)
@@ -115,12 +118,12 @@ class HorizontalBarChart(Chart):
     """
 
     def chart(self,
-            title: str,
-            pre_graph_text: str,
-            post_graph_text: str,
-            footer: str,
-            maximum: float,
-            current: float) -> None:
+              title: str,
+              pre_graph_text: str,
+              post_graph_text: str,
+              footer: str,
+              maximum: int,
+              current: int) -> None:
         print(
             stylize(title, self.options.header_color + self.options.header_style)
         )
@@ -200,7 +203,7 @@ if __name__ == "__main__":
     ch.options.text_color = 'yellow'
     ch.options.header_color = 'red'
     ch.options.header_style = 'underlined'
-    
+
     ch.chart(
         title="Test Content",
         maximum=100,

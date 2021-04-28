@@ -7,7 +7,6 @@ import os
 import time
 import psutil
 import getpass
-import main.tools
 
 from main.charts import HorizontalBarChart, Chart, Options
 

@@ -2,12 +2,9 @@
 
 import psutil
 import platform
-import pandas as pd
 
-from math import ceil
-from colored import fg, attr, stylize
 from charts import Chart, HorizontalBarChart, Options
-from main.tools import create_usage_warning, ints_to_human_readable
+from main.tools import ints_to_human_readable
 from main.tools import save_to_csv, save_to_json, create_usage_warning
 
 
@@ -17,19 +14,19 @@ class DiskUsage:
     """
 
     def __init__(self,
-                path: str = "",
-                exclude: list=None,
-                details: bool=False,
-                every: bool=False) -> None:
+                 path: str = "",
+                 exclude: list = None,
+                 details: bool = False,
+                 every: bool = False) -> None:
         self.path = path
         self.exclude = []
         if exclude:
             self.exclude = exclude
         self.details = details
         self.every = every
-        self._platform = platform.system() # Check on which platform vizex operates
+        self._platform = platform.system()  # Check on which platform vizex operates
 
-    def print_charts(self, options: Options=None) -> None:
+    def print_charts(self, options: Options = None) -> None:
         """
         Prints the charts based on user selection type
         
@@ -43,21 +40,21 @@ class DiskUsage:
             parts = self.grab_specific(self.path[0])
         else:
             parts = self.grab_partitions(exclude=self.exclude,
-                                        every=self.every)
+                                         every=self.every)
 
-        chrt = HorizontalBarChart(options)
+        chart = HorizontalBarChart(options)
         for partname in parts:
-            self.print_disk_chart(chrt, partname, parts[partname])
+            self.print_disk_chart(chart, partname, parts[partname])
 
     def print_disk_chart(
             self, ch: Chart, partname: str, part: dict
-        ) -> None:
+    ) -> None:
         """Prints the disk data as a chart
         
         Args:
             ch (Chart): to print
             partname (str): partition title
-            part (dict): parition data to be visualized
+            part (dict): partition data to be visualized
         """
         pre_graph_text = self.create_stats(part)
 
@@ -68,7 +65,7 @@ class DiskUsage:
         maximum = part["total"]
         current = part["used"]
         post_graph_text = create_usage_warning(
-                                part['percent'], 80, 60)
+            part['percent'], 80, 60)
 
         ch.chart(
             post_graph_text=post_graph_text,
@@ -83,7 +80,7 @@ class DiskUsage:
     def grab_root(self) -> dict:
         """
         Grab the data for the root partition
-        
+
         return:
             (dict) with column titles as keys
         """
@@ -99,19 +96,19 @@ class DiskUsage:
     def grab_partitions(self,
                         exclude: list,
                         every: bool) -> dict:
-        """Grabs all the partitions data
+        """Grabs data for all the partitions.
         
         Args:
             exclude (list): of partitions to exclude
             every (bool): if all the partitions should be grabbed
         """
         disks = {}
-        
-        # If we don't need every part we grab root seperately
+
+        # If we don't need every part we grab root separately
         if not every and self._platform != 'Windows':
             disks['root'] = self.grab_root()
         disk_parts = psutil.disk_partitions(all=every)
-        
+
         for disk in disk_parts[1:]:
 
             # Exclude mounpoints created by snap
@@ -148,15 +145,14 @@ class DiskUsage:
         Args:
             disk_path (str): to the partition to grab
         """
-        disks = {}
-        disks[disk_path] = {
+        disks = {disk_path: {
             "total": psutil.disk_usage(disk_path).total,
             "used": psutil.disk_usage(disk_path).used,
             "free": psutil.disk_usage(disk_path).free,
             "percent": psutil.disk_usage(disk_path).percent,
             "fstype": "N/A",
             "mountpoint": "N/A",
-        }
+        }}
         return disks
 
     def create_details_text(self, disk: dict) -> str:
@@ -208,7 +204,7 @@ if __name__ == "__main__":
         maximum = part["total"]
         current = part["used"]
         post_graph_text = create_usage_warning(
-                                part['percent'], 80, 60)
+            part['percent'], 80, 60)
 
         ch.chart(
             post_graph_text=post_graph_text,
