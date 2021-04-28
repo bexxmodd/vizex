@@ -9,16 +9,23 @@ from battery import Battery
 from charts import Options
 from cpu import CPUFreq
 from tools import append_to_bash
+from viztree import construct_tree
 
 
 # ----- vizexdf options and arguments -----
-@click.version_option('2.0.2', message='%(prog)s version %(version)s')
+@click.version_option('2.0.3', message='%(prog)s version %(version)s')
 @click.command(options_metavar='[options]')
 @click.argument(
     'path',
     type=click.Path(exists=True),
     default='.',
     metavar='[path]'
+)
+@click.option(
+    '-tree', '--tree',
+    default=0,
+    show_default=True,
+    help='Print the directory list tree'
 )
 @click.option(
     '-s', '--sort',
@@ -41,7 +48,7 @@ from tools import append_to_bash
     help='Store customized terminal command for vizexdf as an alias so you don\'t have to repeat the line everytime.'
          + '<-l> should always be the last command in the line'
 )
-def dirs_files(sort: str, all: str,
+def dirs_files(tree: int, sort: str, all: str,
                desc: str, path: str, alias: str) -> None:
     """
 \b
@@ -65,16 +72,28 @@ You can also chain options for --all --desc --sort.
 
     Example: vizexdf -ads name
 
+If you just want to print the directory tree run vizexdf with --tree/-tree and supply
+the level of how many child directory/files you want to be printed.
+
+    Example: vizexdf -tree=2
+
 This will sort in descending order by name and show all the hidden files and folders.
 !Just make sure 's' is placed at the end of the options chain!
     """
     if alias:  # Set vizexdf as alias
         line = 'vizexdf ' + ' '.join(sys.argv[1:-1])
         append_to_bash('vizexdf', line)
+
+    if tree:
+        construct_tree(dir_path=path, level=tree)
+        return
+
     show = all
     desc_sort = desc
     sort_by = sort
     dirpath = path
+
+
 
     # Execute vizexdf
     dir_files = DirectoryFiles(path=dirpath, sort_by=sort_by,
@@ -83,7 +102,7 @@ This will sort in descending order by name and show all the hidden files and fol
 
 
 # ----- vizex options and arguments -----
-@click.version_option('2.0.2', message='%(prog)s version %(version)s')
+@click.version_option('2.0.3', message='%(prog)s version %(version)s')
 @click.command(options_metavar='[options]')
 @click.argument('arg',
                 default='disk',

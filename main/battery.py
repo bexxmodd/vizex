@@ -4,7 +4,7 @@ import datetime
 import psutil
 
 from math import ceil
-from main.charts import Chart, HorizontalBarChart, Options
+from charts import Chart, HorizontalBarChart, Options
 
 
 class Battery:
@@ -16,16 +16,17 @@ class Battery:
         if not self._battery:
             raise Exception("Battery information currently unavailable")
 
-    def print_charts(self, options: Options=None) -> None:
+    def print_charts(self, options: Options = None) -> None:
         """ Prints battery information """
-        if not options: options = Options()
+        if not options:
+            options = Options()
         chart = HorizontalBarChart(options)
         self.print_battery_chart(chart)
 
     def print_battery_chart(self, chart: Chart) -> None:
         """ Prints battery information chart """
         post_graph_text = str(
-                        ceil(100 * self._battery.percent) / 100) + "%"
+            ceil(100 * self._battery.percent) / 100) + "%"
         footer = self.create_details_text()
 
         chart.chart(
@@ -47,6 +48,7 @@ class Battery:
         else:
             ret = f"Plugged in: {plugged}\tDischarging: {time_left}\t"
         return ret
+
 
 if __name__ == "__main__":
     battery = Battery()

@@ -4,6 +4,7 @@ from tools import find_word
 
 from colored import fg, attr, stylize
 
+
 SPACE = '    '
 BRANCH = '│   '
 TEE = '├── '
@@ -13,12 +14,13 @@ FILES_COUNT = 0
 DIRS_COUNT = 0
 
 
-def construct_tree(dir_path: str, level: int = 2,
-                   only_dirs: bool = False, max_length: int = 1000) -> None:
+def construct_tree(dir_path: str, level: int, only_dirs: bool = False,
+                   max_length: int = 1000) -> None:
     dir_path = Path(dir_path)
 
-    print(stylize(dir_path, fg(13) + attr('bold')))
-    iterator = generate_iterable(dir_path, level=level, only_dirs=only_dirs)
+    print_colored(dir_path.name, 'red', 'bold')
+    iterator = generate_iterable(
+        dir_path, level=level, only_dirs=only_dirs)
     for line in islice(iterator, max_length):
         filter_project_dirs(line)
     if next(iterator, None):
@@ -31,11 +33,13 @@ def generate_iterable(dir_path: Path, prefix: str = '',
                       level=-1, only_dirs: bool = False) -> str:
     global FILES_COUNT, DIRS_COUNT
     if not level:
-        return  # 0, stop iterating
+        return  # stop iterating
+
     if only_dirs:
         contents = [d for d in dir_path.iterdir() if d.is_dir()]
     else:
         contents = list(dir_path.iterdir())
+
     pointers = [TEE] * (len(contents) - 1) + [LEAF]
     for pointer, path in zip(pointers, contents):
         if path.is_dir():
@@ -47,6 +51,7 @@ def generate_iterable(dir_path: Path, prefix: str = '',
         elif not only_dirs:
             yield prefix + pointer + path.name
             FILES_COUNT += 1
+
 
 def filter_project_dirs(line: str) -> None:
     if find_word('test', line) or find_word('tests', line):
@@ -61,7 +66,8 @@ def filter_project_dirs(line: str) -> None:
         print(line)
 
 
-def print_colored(line: str, color: str=None, style: str=None) -> None:
+def print_colored(line: str, color: str = None,
+                  style: str = None) -> None:
     for c in line:
         if c not in ('├', '─', '│', '└'):
             print(stylize(c, attr(style) + fg(color)), end='')
@@ -78,4 +84,4 @@ def is_hidden(line: str) -> bool:
 
 
 if __name__ == '__main__':
-    construct_tree("../")
+    construct_tree("../", level=2)
