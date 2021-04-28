@@ -1,8 +1,11 @@
 # Utility functions for vizex/vizexdf
 
 import os
+import re
 import json
 import time
+from typing import Optional, Match
+
 import pandas as pd
 
 from math import ceil
@@ -204,6 +207,11 @@ def normalize_date(format: str, date: int) -> str:
         str: Human readable format of a date
     """
     return time.strftime(format, time.localtime(date))
+
+
+def find_word(w, s) -> Optional[Match[str]]:
+    return re.compile(r'\b({0})\b'.format(w),
+                      flags=re.IGNORECASE).search(s)
 
 
 if __name__ == '__main__':
