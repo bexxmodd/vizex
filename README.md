@@ -64,7 +64,7 @@ yay -S vizex
 
 # How it Works
 
-After installing run can use two temrinal commands `vizex` to display the disk usage/space and `vizexdf` which will print the data of a current working directory with sizes, file types and last modified date.
+After installing you can use two terminal commands: `vizex` to display the disk usage/space and `vizexdf`, which will print the data of a current working directory with sizes, file types and last modified date.
 
 This will graphically display disk space and usage:
 
@@ -112,7 +112,7 @@ You can also save the partitions full information in `csv` or in `json` file, ju
 vizex --save "/home/user/disk_info.json"
 ```
 
-And if you are on laptopt you can even call your battery information with simple argument:
+And if you are on laptop you can even call your battery information with simple argument:
 ```
 vizex battery
 ```
