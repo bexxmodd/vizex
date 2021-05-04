@@ -71,6 +71,14 @@ class TestDirectoryFiles(unittest.TestCase):
         except Exception as e:
             self.fail(f'Exception occured when tried to get_size for an empty folder {e}')
 
+    def test_get_dir_size_broken_symlink(self):
+        os.symlink(
+            '/this/path/could/not/possibly/exist/like/evar',
+            os.path.join(self.tmpd.name, 'broken-link'),
+        )
+        size = DirectoryFiles().get_dir_size(self.tmpd.name)
+        self.assertEqual(0, size)
+
     def test_sort_data(self):
         try:
             data = [
