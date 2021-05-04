@@ -36,7 +36,13 @@ class DirectoryFiles:
         for dirpath, _, filenames in os.walk(start_path):
             for f in filenames:
                 fp = os.path.join(dirpath, f)
-                total_size += os.path.getsize(fp)
+                try:
+                    total_size += os.path.getsize(fp)
+                except FileNotFoundError:
+                    # Could be a broken symlink or some other weirdness.
+                    # Trap the error here so that the directory can continue
+                    # to be successfully processed.
+                    pass
         return total_size
 
     @classmethod
