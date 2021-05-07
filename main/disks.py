@@ -29,7 +29,7 @@ class DiskUsage:
     def print_charts(self, options: Options = None) -> None:
         """
         Prints the charts based on user selection type
-        
+
         Args:
             options (Options): colors and symbols for printing
         """
@@ -50,7 +50,7 @@ class DiskUsage:
             self, ch: Chart, partname: str, part: dict
     ) -> None:
         """Prints the disk data as a chart
-        
+
         Args:
             ch (Chart): to print
             partname (str): partition title
@@ -97,7 +97,7 @@ class DiskUsage:
                         exclude: list,
                         every: bool) -> dict:
         """Grabs data for all the partitions.
-        
+
         Args:
             exclude (list): of partitions to exclude
             every (bool): if all the partitions should be grabbed
@@ -158,7 +158,7 @@ class DiskUsage:
     def create_details_text(self, disk: dict) -> str:
         """
         Creates a string representation of a disk
-        
+
         Args:
             disk (dict): text to print
         """
@@ -167,7 +167,7 @@ class DiskUsage:
     def create_stats(self, disk: dict) -> str:
         """
         Creates statistics as string for a disk
-        
+
         Args:
             disk (dict): stats to print
         """
@@ -177,7 +177,7 @@ class DiskUsage:
     def save_data(self, filename: str) -> None:
         """
         Outputs disks/partitions data as a CSV file
-        
+
         Args:
             filename (str): for the saved file
         """
