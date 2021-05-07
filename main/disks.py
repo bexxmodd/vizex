@@ -195,8 +195,7 @@ if __name__ == "__main__":
     self = DiskUsage()
     parts = self.grab_partitions(exclude=[], every=False)
 
-    for partname in parts:
-        part = parts[partname]
+    for partname, part in parts.items():
         ch = HorizontalBarChart()
         title = (partname,)
         pre_graph_text = self.create_stats(part)
