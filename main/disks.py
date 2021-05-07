@@ -191,7 +191,7 @@ class DiskUsage:
                             + ".CSV or .JSON at the end of the filename")
 
 
-if __name__ == "__main__":
+def main():
     self = DiskUsage()
     parts = self.grab_partitions(exclude=[], every=False)
 
@@ -215,3 +215,7 @@ if __name__ == "__main__":
             current=current,
         )
         print()
+
+
+if __name__ == "__main__":
+    main()
