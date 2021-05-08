@@ -76,7 +76,9 @@ vizex
 
 -----
 
-[]>>> here is the example for `vizexdf`:
+```
+vizexdf
+```
 
 ![demo1](https://i.imgur.com/At7MFgu.png)
 
