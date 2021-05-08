@@ -27,7 +27,7 @@ class TestDirectoryFiles(unittest.TestCase):
         try:
             for i in range(5):
                 tempfile.NamedTemporaryFile(prefix='TEST_', delete=False, dir=self.tmpd.name)
-            df = DirectoryFiles(dpath=self.tmpd.name)
+            df = DirectoryFiles(path=self.tmpd.name)
             usage = df.get_usage()
             self.assertEqual(5, len(usage),
                             msg='There should have been 5 items in the list')
@@ -38,7 +38,7 @@ class TestDirectoryFiles(unittest.TestCase):
 
     def test_get_usage_files_empty_dir(self):
         try:
-            df = DirectoryFiles(dpath=self.tmpd.name)
+            df = DirectoryFiles(path=self.tmpd.name)
             usage = df.get_usage()
             self.assertListEqual([], usage, 
                                 msg='For empty folder method should return an empty list')
@@ -105,10 +105,12 @@ class TestDirectoryFiles(unittest.TestCase):
 
     @unittest.skip("UNDER CONSTRUCTION!")
     def test_decorate_dir(self):
+        # TODO
         self.fail("TODO")
 
     @unittest.skip("UNDER CONSTRUCTION!")
     def test_decorate_file(self):
+        # TODO
         self.fail("TODO")
 
 

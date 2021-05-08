@@ -42,7 +42,7 @@ class DirectoryFiles:
                     # Could be a broken symlink or some other weirdness.
                     # Trap the error here so that the directory can continue
                     # to be successfully processed.
-                    pass
+                    continue
         return total_size
 
     @classmethod

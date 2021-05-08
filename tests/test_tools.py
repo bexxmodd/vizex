@@ -26,20 +26,20 @@ class TestTools(unittest.TestCase):
     def test_bytes_to_human_readable_zero_input(self):
         try:
             bt = bytes_to_human_readable(0)
-            self.assertEqual('0.0 b', bt)
+            self.assertEqual('0.0 B', bt)
         except Exception as e:
             self.fail(f"Exception occured when None value was given as an argument {e}")
 
     def test_bytes_to_humand_readable_exact_conversion(self):
         try:
             bt = bytes_to_human_readable(12288)
-            self.assertEqual('12.0 kb', bt, msg='12288 b should have been 12.0 kb')
+            self.assertEqual('12.0 kB', bt, msg='12288 b should have been 12.0 kB')
             bt = bytes_to_human_readable(3300000)
-            self.assertEqual('3.1 mb', bt, msg='3300000 b should have been 3.1 mb')
+            self.assertEqual('3.1 MB', bt, msg='3300000 b should have been 3.1 MB')
             bt = bytes_to_human_readable(13000000000)
-            self.assertEqual('12.1 gb', bt, msg='13000000000 b should have been 12.1 gb')
+            self.assertEqual('12.1 GB', bt, msg='13000000000 b should have been 12.1 GB')
             bt = bytes_to_human_readable(24500000000000)
-            self.assertEqual('22.3 tb', bt, msg='24500000000000 b should have been 22.3 tb')
+            self.assertEqual('22.3 TB', bt, msg='24500000000000 b should have been 22.3 TB')
         except Exception as e:
             self.fail(f"Exception occured when tried to convert bytes to human readable format {e}")
     
@@ -48,7 +48,7 @@ class TestTools(unittest.TestCase):
             for i in range(20):
                 bt = random.randint(1048576, 943718400)
                 human = bytes_to_human_readable(bt).split(' ')[1]
-                self.assertEqual(human, 'mb', msg='Should be mb')
+                self.assertEqual(human, 'MB', msg='Should be MB')
         except Exception as e:
             self.fail(f"Exception occured when mb range values were given as an argument {e}")
 
@@ -57,7 +57,7 @@ class TestTools(unittest.TestCase):
             for i in range(20):
                 bt = random.randint(1073741824, 549755813888)
                 human = bytes_to_human_readable(bt).split(' ')[1]
-                self.assertEqual(human, 'gb', msg='Should be gb')
+                self.assertEqual(human, 'GB', msg='Should be GB')
         except Exception as e:
             self.fail(f"Exception occured when gb range values were given as an argument {e}")
 
@@ -73,11 +73,11 @@ class TestTools(unittest.TestCase):
                     'String': 'This is text'
                 }
                 result = ints_to_human_readable(test_dict)
-                self.assertEqual(result['mb'].split(' ')[1], 'mb')
-                self.assertEqual(result['kb'].split(' ')[1], 'kb')
-                self.assertEqual(result['gb'].split(' ')[1], 'gb')
-                self.assertEqual(result['tb'].split(' ')[1], 'tb')
-                self.assertEqual(result['bs'].split(' ')[1], 'b')
+                self.assertEqual(result['mb'].split(' ')[1], 'MB')
+                self.assertEqual(result['kb'].split(' ')[1], 'kB')
+                self.assertEqual(result['gb'].split(' ')[1], 'GB')
+                self.assertEqual(result['tb'].split(' ')[1], 'TB')
+                self.assertEqual(result['bs'].split(' ')[1], 'B')
                 self.assertEqual(result['String'], 'This is text')
         except Exception as e:
             self.fail(f"Exception occured when trying to convert dict of bytes into readable sizes {e}")
