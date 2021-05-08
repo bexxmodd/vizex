@@ -15,13 +15,11 @@ class DiskUsage:
 
     def __init__(self,
                  path: str = "",
-                 exclude: list = None,
+                 exclude: list = [],
                  details: bool = False,
                  every: bool = False) -> None:
         self.path = path
-        self.exclude = []
-        if exclude:
-            self.exclude = exclude
+        self.exclude = exclude
         self.details = details
         self.every = every
         self._platform = platform.system()  # Check on which platform vizex operates
