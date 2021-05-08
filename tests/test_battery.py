@@ -4,6 +4,7 @@ if __name__ == '__main__':
     ADD_PATH()
 
 import unittest
+import psutil
 
 from battery import Battery
 
@@ -11,15 +12,19 @@ from battery import Battery
 class TestBattery(unittest.TestCase):
     """ Test battry module """
 
-    @unittest.skip("Correction needed to properly catch exception")
     def test_Battery_constructor(self):
-        self.assertRaises(Exception, Battery())
+        if not (has_battery := psutil.sensors_battery()):
+            with self.assertRaises(Exception):
+                Battery()
+        else:
+            self.assertTrue(has_battery.percent > 0)
 
-    def test_print_battery_chart(self):
-        pass
+    def test_create_details_text(self):
+        if not psutil.sensors_battery():
+            pass
+        else:
+            self.assertTrue(isinstance(Batter().create_details_text(), str))
 
-    def test_create_details(self):
-        pass
 
 if __name__ == '__main__':
     unittest.main()
