@@ -22,9 +22,9 @@ from viztree import construct_tree
     metavar='[path]'
 )
 @click.option(
-    '-tree', '--tree',
-    default=0,
-    show_default=True,
+    '-t', '--tree',
+    nargs=1,
+    type=int,
     help='Print the directory list tree'
 )
 @click.option(

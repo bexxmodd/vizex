@@ -17,8 +17,7 @@ DIRS_COUNT = 0
 def construct_tree(dir_path: str, level: int, only_dirs: bool = False,
                    max_length: int = 1000) -> None:
     dir_path = Path(dir_path)
-
-    print_colored(dir_path.name, 'red', 'bold')
+    print_colored(str(dir_path), 'red', 'bold')
     iterator = generate_iterable(
         dir_path, level=level, only_dirs=only_dirs)
     for line in islice(iterator, max_length):

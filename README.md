@@ -15,10 +15,11 @@
 
 
 
-
 **vizex** is the terminal program for the UNIX/Linux systems which helps the user to visualize the disk space usage for every partition and media on the user's machine. **vizex** is highly customizable and can fit any user's taste and preferences.
 
 **vizexdf** is a new feature that allows to organize and print directory data in the terminal.
+
+You can check [full release history here.](https://github.com/bexxmodd/vizex/wiki/Release-History)
 
 
 <br>
@@ -28,7 +29,7 @@
 
 ## pip
 
-**vizex** can be installed through your terminal and requires `Python >= 3.7` and the `pip package manager`. Here's [how to set up Python](https://realpython.com/installing-python/) on your machine.
+**vizex** can be installed through your terminal and requires `Python >= 3.9` and the `pip package manager`. Here's [how to set up Python](https://realpython.com/installing-python/) on your machine.
 
 
 If you don't have PyPackage Index (PyPI or just `pip`) installed, [Here's the guide on how to install it](https://www.tecmint.com/install-pip-in-linux/). Install **vizex** with the following command:
@@ -82,6 +83,16 @@ vizexdf
 
 ![demo1](https://i.imgur.com/At7MFgu.png)
 
+----
+
+_new feature_: you can now print tree of directory structure with the level you want. For example tree with level 1 only
+
+```
+vizexdf --tree 1
+```
+![tree](https://i.imgur.com/i4rXcx6.png)
+
+-----
 ## vizex
 
 The best part is that you can modify the colors and style of the display to your preferences with the following commands. For the example above command has excluded two partitions. You can also do give the following options:
@@ -123,7 +134,7 @@ For a full list of the available options please check:
 ```
 vizex --help
 ```
-
+-----
 
 ## vizexdf
 
@@ -137,53 +148,21 @@ vizexdf -ads name
 
 This will print current directory data sorted by name and in descending order and will include hidden files.
 
-----
+
 **Lastly, you save all the modifications by adding -l at the end of the command**:
 
 ```
 vizex -d red -t blue --details -l
 ```
 
-The next time you call `vizex` it will include all options listed above. If you decided to change the default calling command for vizex/vizexdf just include `-l` and it will be overwritten
+The next time you call `vizex` / `vizexdf` it will include all the options listed in the above command. If you decided to change the default calling command for vizex/vizexdf just include `-l` and it will be overwritten
 
 
 If you want to contribute to the project you are more than welcome! But first, make sure all the tests run after you fork the project and before the pull request. First, run the `access.py`, that way `tests` folder will obtain a path to the `main` folder and you can run all the tests.
 
 You can get the full set of features by calling `--help` option with command.
 
-
-# Release History
-- v2.0.2:
-	- Performance optimization. Runtime is reduced by ~250%
-	- When program has no access to the folder it prints on the terminal instead of raising error
-
-- v1.9.9:
-	- Added `vizexdf` which prints directory data in style
-	- Added alias `-l` option to save edited line as alias for a command
-	- New logo
-	- Refactoring and more explicit docstrings
-	
-- v1.5.3:
-	- Added battery information  display
-	- Now you can save output in csv or json formats
-	- Small bug corrections
-	- Updated --help info
-
-- v1.3.5:
-	- Major refactoring
-	- Now charts can print string data
-	- Options class is separated with all the correct getters and setters
-	
-- v1.3.2:
-	- Refactored module disks.py
-	- Unit Tests created
-	- Set up the color for all the text
-	- Updated docstrings
-
-- v1.1.0:
-	- Displayes media and network partitions
-	- Print all the partitions with `--every` cmd
-	- Print additional (fstype and mount point) with `--details`
+-----
 
 ----
 ## Special Thanks to the Contributors!
@@ -194,16 +173,17 @@ You can get the full set of features by calling `--help` option with command.
 </p>
 
 ------
+------
 ## Follow Me on Social Media
 <p align="center">
 	<a href="https://www.twitter.com/bexxmodd">
-        	<img alt="twitter" src="https://i.imgur.com/fFlVB1c.png" height=50>
+        	<img alt="twitter" src="https://i.imgur.com/fFlVB1c.png" height=45>
 	</a>
 	<a href="https://www.linkedin.com/in/bmodebadze">
-        	<img alt="linkedin" src="https://i.imgur.com/wcvwfoZ.png" height=50>
+        	<img alt="linkedin" src="https://i.imgur.com/wcvwfoZ.png" height=45>
 	</a>
 	<a href="https://www.github.com/bexxmodd">
-        	<img alt="github" src="https://i.imgur.com/gnDF5oQ.png" height=50>
+        	<img alt="github" src="https://i.imgur.com/gnDF5oQ.png" height=45>
 	</a>
 </p>
 
