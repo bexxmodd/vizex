@@ -1,6 +1,8 @@
 # Class to collect and organize data about files and directories
 import os
+import sys
 import magic
+import concurrent.futures
 
 from tabulate import tabulate
 from colored import fg, stylize
@@ -79,7 +81,8 @@ class DirectoryFiles:
         """
 
         # Gives orange color to the string & truncate to 32 chars
-        current = [stylize("■ " + entry.name[:33] + "/", fg(202))]
+        name = entry.split('/')[-1]
+        current = [stylize("■ " + name[:33] + "/", fg(202))]
 
         # Get date and convert in to a human readable format
         date = os.stat(entry).st_mtime
@@ -106,7 +109,8 @@ class DirectoryFiles:
         """
 
         # Gives yellow color to the string & truncate to 32 chars
-        current = [stylize("» " + entry.name[:33], fg(226))]
+        name = entry.split('/')[-1]
+        current = [stylize("» " + name[:33], fg(226))]
 
         # Convert last modified time (which is in nanoseconds)
         date = os.stat(entry).st_mtime
@@ -121,7 +125,7 @@ class DirectoryFiles:
 
         # Evaluate the file type
         current.append(
-            magic.from_file(entry.path, mime=True)
+            magic.from_file(entry, mime=True)
         )
         return tuple(current)
 
@@ -133,31 +137,37 @@ class DirectoryFiles:
         path is a file method evaluates its type. Finally, gives 
         us the date when the given file/folder was last modified.
 
+        Program runs asynchronously using multiple threads or seperate processes
+
         Returns:
             list: which is a collection of each entry
                 (files and folders) in a given path.
         """
         data = []
-        with os.scandir(self.path) as it:
-            for entry in it:
-                try:
-                    current = []
+        with concurrent.futures.ProcessPoolExecutor() as executor:
+            with os.scandir(self.path) as it:
+                for entry in it:
+                    try:
+                        current = []
 
-                    # Deal with hidden files and folders
-                    if entry.name.startswith('.') and not self.show_hidden:
+                        # Deal with hidden files and folders
+                        if entry.name.startswith('.') and not self.show_hidden:
+                            continue
+                        elif entry.is_file():
+                            current = executor.submit(
+                                self._decorate_file_entry, entry.path)
+                        elif entry.is_dir():
+                            current = executor.submit(
+                                self._decorate_dir_entry, entry.path)
+
+                        # Add current list to the main list
+                        try:
+                            data.append(current.result())
+                        except Exception as e:
+                            print(f"Bad Entry ::> {e}", file=sys.stderr)
+                    except FileNotFoundError:
                         continue
-                    elif entry.is_file():
-                        current = self._decorate_file_entry(entry)
-                    elif entry.is_dir():
-                        current = self._decorate_dir_entry(entry)
 
-                    # Add current list to the main list
-                    if len(current) == 4:
-                        data.append(current)
-                except FileNotFoundError:
-                    continue
-                except PermissionError as e:
-                    print(f"No access ::> {e}")
         return data
 
     def print_tabulated_data(self) -> tabulate:
