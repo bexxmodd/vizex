@@ -161,10 +161,9 @@ class DirectoryFiles:
                                 self._decorate_dir_entry, entry.path)
 
                         # Add current list to the main list
-                        try:
-                            data.append(current.result())
-                        except Exception as e:
-                            print(f"Bad Entry ::> {e}", file=sys.stderr)
+                        data.append(current.result())
+                    except Exception as e:
+                        print(f"Bad Entry ::> {e}", file=sys.stderr)
                     except FileNotFoundError:
                         continue
 
