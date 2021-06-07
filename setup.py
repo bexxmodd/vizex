@@ -10,7 +10,7 @@ setup(
     name='vizex',
     version='2.0.4',
     author='Beka Modebadze',
-    author_email='bexxmodd@seas.upenn.edu',
+    author_email='bexx.modd@gmail.com',
     description='UNIX/Linux Terminal program to graphically display the disk space usage and/or directory data',
     long_description=long_description,
     long_description_content_type ='text/markdown',
