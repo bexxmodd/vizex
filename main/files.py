@@ -144,7 +144,7 @@ class DirectoryFiles:
                 (files and folders) in a given path.
         """
         data = []
-        with concurrent.futures.ProcessPoolExecutor() as executor:
+        with concurrent.futures.ThreadPoolExecutor() as executor:
             with os.scandir(self.path) as it:
                 for entry in it:
                     try:
@@ -166,7 +166,6 @@ class DirectoryFiles:
                         print(f"Bad Entry ::> {e}", file=sys.stderr)
                     except FileNotFoundError:
                         continue
-
         return data
 
     def print_tabulated_data(self) -> tabulate:
