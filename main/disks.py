@@ -22,11 +22,11 @@ class DiskUsage:
         self.exclude = exclude
         self.details = details
         self.every = every
-        self._platform = platform.system()  # Check on which platform vizex operates
+        self._platform = platform.system()  # Check which platform prog operates
 
     def print_charts(self, options: Options = None) -> None:
         """
-        Prints the charts based on user selection type
+        Prints the charts based on user selection of colors and what to print
 
         Args:
             options (Options): colors and symbols for printing
@@ -47,7 +47,7 @@ class DiskUsage:
     def print_disk_chart(
             self, ch: Chart, partname: str, part: dict
     ) -> None:
-        """Prints the disk data as a chart
+        """Prints the disk data int terminal as a chart
 
         Args:
             ch (Chart): to print
@@ -109,16 +109,13 @@ class DiskUsage:
 
         for disk in disk_parts[1:]:
 
-            # Exclude mounpoints created by snap
-            if disk.device.startswith("/dev/loop"):
-                continue
-
-            # Check that tmp is not slipping as partition
-            if disk.mountpoint.startswith("/tmp"):
-                continue
-
-            # Check that part name is not in the excluded list
-            if self.exclude and disk[1].split("/")[-1] in exclude:
+                # Exclude mountpoints created by snap
+            if (disk.device.startswith("/dev/loop") or
+                # Check that tmp is not slipping as partition
+                disk.mountpoint.startswith("/tmp") or
+                # Check that part name is not in the excluded list
+                self.exclude and disk[1].split("/")[-1] in exclude
+            ):
                 continue
 
             try:
@@ -136,7 +133,7 @@ class DiskUsage:
                 continue
         return disks
 
-    def grab_specific(self, disk_path: str) -> dict:
+    def grab_specific_partition(self, disk_path: str) -> dict:
         """
         Grabs data for the partition of the user specified path
 
