@@ -72,6 +72,9 @@ You can also chain options for --all --desc --sort.
 
     Example: vizexdf -ads name
 
+Here `vizexdf` will print 'all' (-a) files and directories 
+and 'sort' (-s) them by 'name' in 'descending' (-d) order.
+
 If you just want to print the directory tree run vizexdf with --tree/-tree and supply
 the level of how many child directory/files you want to be printed.
 
