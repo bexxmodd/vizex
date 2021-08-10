@@ -125,7 +125,8 @@ class HorizontalBarChart(Chart):
               maximum: int,
               current: int) -> None:
         print(
-            stylize(title, self.options.header_color + self.options.header_style)
+            stylize(title, self.options.header_color +
+                    self.options.header_style)
         )
 
         if pre_graph_text:
