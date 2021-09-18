@@ -29,10 +29,24 @@ from viztree import construct_tree
 )
 def print_tree(path: str, level: int) -> None:
     """
-    If you just want to print the directory tree run vizextree -path -level 
+\b
+           _              _                 
+__   _(_)_________  _| |_ _ __ ___  ___ 
+\ \ / / |_  / _ \ \/ / __| '__/ _ \/ _ \
+ \ V /| |/ /  __/>  <| |_| | |  __/  __/
+  \_/ |_/___\___/_/\_\\__|_|  \___|\___|
+
+    Made by: Beka Modebadze
+
+
+    If you want to print the directory tree run vizextree -path -level 
     the level of how many child directory/files you want to be printed.
 
-    Example: vizextree . 2
+    Example:
+        
+        vizextree -l 2
+
+    This will print a directory tree of current working directory for two levels
     """
     construct_tree(path, level)
 
