@@ -85,10 +85,21 @@ vizexdf
 
 ----
 
-_new feature_: you can now print tree of directory structure with the level you want. For example tree with level 1 only
+<br/>
+
+_new feature_: 
+
+## vizextree
+
+you can now print tree of directory structure with the level you want. For example tree with level 1 only
+
+
+By default level is set to 3 and path is a current path. But you can manually supply path, by just typing path you want to generate tree for, and using `-l` option to instruct how many levels of directories you want to print.
+
+For example:
 
 ```
-vizexdf --tree 1
+vizextree . -level 1
 ```
 ![tree](https://i.imgur.com/i4rXcx6.png)
 
