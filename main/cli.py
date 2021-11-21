@@ -13,7 +13,7 @@ from viztree import construct_tree
 
 
 # ----- vizextree options and arguments -----
-@click.version_option('2.0.4', message='%(prog)s version %(version)s')
+@click.version_option('2.0.5', message='%(prog)s version %(version)s')
 @click.command(options_metavar='[options]')
 @click.argument(
     'path',
@@ -52,7 +52,7 @@ __   _(_)_________  _| |_ _ __ ___  ___
 
 
 # ----- vizexdf options and arguments -----
-@click.version_option('2.0.4', message='%(prog)s version %(version)s')
+@click.version_option('2.0.5', message='%(prog)s version %(version)s')
 @click.command(options_metavar='[options]')
 @click.argument(
     'path',
@@ -127,7 +127,7 @@ This will sort in descending order by name and show all the hidden files and fol
 
 
 # ----- vizex options and arguments -----
-@click.version_option('2.0.4', message='%(prog)s version %(version)s')
+@click.version_option('2.0.5', message='%(prog)s version %(version)s')
 @click.command(options_metavar='[options]')
 @click.argument('arg',
                 default='disk',

@@ -8,7 +8,7 @@ with open('requirements.txt') as r:
 
 setup(
     name='vizex',
-    version='2.0.4',
+    version='2.0.5',
     author='Beka Modebadze',
     author_email='bexx.modd@gmail.com',
     description='UNIX/Linux Terminal program to graphically display the disk space usage and/or directory data',
