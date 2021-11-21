@@ -30,5 +30,6 @@ setup(
         [console_scripts]
         vizex=cli:disk_usage
         vizexdf=cli:dirs_files
+        vizextree=cli:print_tree
     '''
 )

@@ -30,8 +30,8 @@ from viztree import construct_tree
 def print_tree(path: str, level: int) -> None:
     """
 \b
-           _              _                 
-__   _(_)_________  _| |_ _ __ ___  ___ 
+
+__   _(_)_________  _| |_ _ __ ___  ___
 \ \ / / |_  / _ \ \/ / __| '__/ _ \/ _ \
  \ V /| |/ /  __/>  <| |_| | |  __/  __/
   \_/ |_/___\___/_/\_\\__|_|  \___|\___|
@@ -39,11 +39,11 @@ __   _(_)_________  _| |_ _ __ ___  ___
     Made by: Beka Modebadze
 
 
-    If you want to print the directory tree run vizextree -path -level 
+    If you want to print the directory tree run vizextree -path -level
     the level of how many child directory/files you want to be printed.
 
     Example:
-        
+
         vizextree -l 2
 
     This will print a directory tree of current working directory for two levels
@@ -104,7 +104,7 @@ You can also chain options for --all --desc --sort.
 
     Example: vizexdf -ads name
 
-Here `vizexdf` will print 'all' (-a) files and directories 
+Here `vizexdf` will print 'all' (-a) files and directories
 and 'sort' (-s) them by 'name' in 'descending' (-d) order.
 
 
@@ -119,8 +119,6 @@ This will sort in descending order by name and show all the hidden files and fol
     desc_sort = desc
     sort_by = sort
     dirpath = path
-
-
 
     # Execute vizexdf
     dir_files = DirectoryFiles(path=dirpath, sort_by=sort_by,
@@ -213,11 +211,11 @@ def disk_usage(arg, save, path, every,
                details, exclude, header, style,
                text, graph, mark, alias) -> None:
     """
-\b                                            
+\b
 ██╗   ██╗██╗███████╗███████╗██╗  ██╗
 ██║   ██║██║╚══███╔╝██╔════╝╚██╗██╔╝
-██║   ██║██║  ███╔╝ █████╗   ╚███╔╝ 
-╚██╗ ██╔╝██║ ███╔╝  ██╔══╝   ██╔██╗ 
+██║   ██║██║  ███╔╝ █████╗   ╚███╔╝
+╚██╗ ██╔╝██║ ███╔╝  ██╔══╝   ██╔██╗
  ╚████╔╝ ██║███████╗███████╗██╔╝ ██╗
   ╚═══╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝
     Made by: Beka Modebadze
