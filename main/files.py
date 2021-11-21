@@ -1,8 +1,8 @@
 # Class to collect and organize data about files and directories
 import os
 import sys
-import magic
 import concurrent.futures
+import magic
 
 from tabulate import tabulate
 from colored import fg, stylize
@@ -50,8 +50,8 @@ class DirectoryFiles:
     @classmethod
     def sort_data(cls, data: list, by: str, desc: bool) -> None:
         """
-        Sorts data in place, which is inputted as a list, 
-        based on a given index(key) and reverses if 
+        Sorts data in place, which is inputted as a list,
+        based on a given index(key) and reverses if
         user has selected descending order.
 
         Args:
@@ -74,8 +74,8 @@ class DirectoryFiles:
     @classmethod
     def _decorate_dir_entry(cls, entry) -> tuple:
         """
-        Decorates given entry for a directory. Decorate means that creates 
-        a colored representation of a name of the entry, grabs 
+        Decorates given entry for a directory. Decorate means that creates
+        a colored representation of a name of the entry, grabs
         the date it was last modified and size in bytes and decorates.
         collects everything and returns as a list.
         """
@@ -103,7 +103,7 @@ class DirectoryFiles:
     def _decorate_file_entry(cls, entry) -> tuple:
         """
         Decorates given entry for a file. By decorate it means that creates
-        a colored representation of a name of the entry, grabs 
+        a colored representation of a name of the entry, grabs
         the date it was last modified and size in bytes and decorates,
         determines file type. collects everything and returns as a list.
         """
@@ -131,13 +131,13 @@ class DirectoryFiles:
 
     def get_usage(self) -> list:
         """
-        Collects the data for a given path like the name of a file/folder 
-        and calculates its size if it's a directory, otherwise 
-        just grabs a file size. If the current entry in a given 
-        path is a file method evaluates its type. Finally, gives 
+        Collects the data for a given path like the name of a file/folder
+        and calculates its size if it's a directory, otherwise
+        just grabs a file size. If the current entry in a given
+        path is a file method evaluates its type. Finally, gives
         us the date when the given file/folder was last modified.
 
-        Program runs asynchronously using multiple threads or seperate processes
+        Program runs asynchronously using multiple threads or separate process
 
         Returns:
             list: which is a collection of each entry
@@ -164,8 +164,6 @@ class DirectoryFiles:
                         data.append(current.result())
                     except Exception as e:
                         print(f"Bad Entry ::> {e}", file=sys.stderr)
-                    except FileNotFoundError:
-                        continue
         return data
 
     def print_tabulated_data(self) -> tabulate:
@@ -174,7 +172,7 @@ class DirectoryFiles:
         Adds headers and sorts the list's data as rows.
 
         Returns:
-            tabulate: a tabulated form of the current 
+            tabulate: a tabulated form of the current
                     the directory's folders and files.
         """
         headers = [
