@@ -1,4 +1,7 @@
-# Class to collect and organize data about files and directories
+'''
+Collect and organize data about files and directories
+'''
+
 import os
 import sys
 import concurrent.futures
@@ -6,8 +9,8 @@ import magic
 
 from tabulate import tabulate
 from colored import fg, stylize
-from tools import bytes_to_human_readable, normalize_date, DecoratedData
 from dataclasses import dataclass
+from tools import bytes_to_human_readable, normalize_date, DecoratedData
 
 
 @dataclass
@@ -36,16 +39,21 @@ class DirectoryFiles:
         """
         total_size = 0
         for dirpath, _, filenames in os.walk(start_path):
-            for f in filenames:
-                fp = os.path.join(dirpath, f)
+            for file in filenames:
+                fpath = os.path.join(dirpath, file)
                 try:
-                    total_size += os.path.getsize(fp)
+                    total_size += os.path.getsize(fpath)
                 except FileNotFoundError:
                     # Could be a broken symlink or some other weirdness.
                     # Trap the error here so that the directory can continue
                     # to be successfully processed.
                     continue
         return total_size
+
+    @staticmethod
+    def is_hidden(entry: str) -> bool:
+        """Check if given entry is a hidden file or folder"""
+        return entry.name.startswith('.')
 
     @classmethod
     def sort_data(cls, data: list, by: str, desc: bool) -> None:
@@ -91,9 +99,9 @@ class DirectoryFiles:
         )
 
         # recursively calculates the total size of a folder
-        b = DirectoryFiles().get_dir_size(entry)
+        byte = DirectoryFiles().get_dir_size(entry)
         current.append(
-            DecoratedData(b, bytes_to_human_readable(b))
+            DecoratedData(byte, bytes_to_human_readable(byte))
         )
 
         current.append('-')  # add directory type identifier
@@ -118,9 +126,9 @@ class DirectoryFiles:
             DecoratedData(date, normalize_date('%h %d %Y %H:%M', date))
         )
 
-        b = os.stat(entry).st_size
+        byte = os.stat(entry).st_size
         current.append(
-            DecoratedData(b, bytes_to_human_readable(b))
+            DecoratedData(byte, bytes_to_human_readable(byte))
         )
 
         # Evaluate the file type
@@ -145,22 +153,22 @@ class DirectoryFiles:
         """
         data = []
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            with os.scandir(self.path) as it:
-                for entry in it:
+            with os.scandir(self.path) as entries:
+                for entry in entries:
                     try:
                         current = []
 
                         # Deal with hidden files and folders
-                        if entry.name.startswith('.') and not self.show_hidden:
+                        if self.is_hidden(entry) and not self.show_hidden:
                             continue
-                        elif entry.is_file():
+
+                        if entry.is_file():
                             current = executor.submit(
                                 self._decorate_file_entry, entry.path)
                         elif entry.is_dir():
                             current = executor.submit(
                                 self._decorate_dir_entry, entry.path)
 
-                        # Add current list to the main list
                         data.append(current.result())
                     except Exception as e:
                         print(f"Bad Entry ::> {e}", file=sys.stderr)

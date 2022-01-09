@@ -1,4 +1,6 @@
-# Text Chart Coloring and Printing Functions
+'''
+Text Chart Coloring and Printing Functions
+'''
 
 from math import ceil
 from colored import fg, attr, stylize
@@ -124,6 +126,7 @@ class HorizontalBarChart(Chart):
               footer: str,
               maximum: int,
               current: int) -> None:
+        """prints assembled chart to the terminal"""
         print(
             stylize(title, self.options.header_color +
                     self.options.header_style)
@@ -175,26 +178,6 @@ class HorizontalBarChart(Chart):
         if "█" not in self.options.fsymbol:
             return f"[{text_bar}]"
 
-        return text_bar
-
-
-class VerticalBarChart(Chart):
-    """
-    Create vertical chart with user selected color and symbol
-    """
-
-    def draw_vertical_bar(self, capacity: int, used: int) -> str:
-        """Draw a vertical bar chart"""
-        text_bar = "\n"
-        n = (used / capacity) * 8
-
-        # If the usage is below 1% print empty chart
-        if n < 0.1:
-            n = 0
-        else:
-            n = ceil(n)
-        text_bar += f"{self.options.esymbol * 9}  \n" * (8 - n)
-        text_bar += f"{self.options.fsymbol * 9}  \n" * n
         return text_bar
 
 

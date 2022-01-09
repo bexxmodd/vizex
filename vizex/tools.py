@@ -1,4 +1,6 @@
-# Utility functions for vizex/vizexdf
+'''
+Utility functions for vizex/vizexdf
+'''
 
 import os
 import re
@@ -114,7 +116,7 @@ def create_usage_warning(usage_pct: float,
 
     if usage_pct >= red_flag:
         return f"{stylize(use, attr('blink') + fg(9))}"
-    elif usage_pct >= yellow_flag:
+    if usage_pct >= yellow_flag:
         return f"{stylize(use, fg(214))}"
     return f"{stylize(use, fg(82))}"
 
@@ -155,8 +157,8 @@ def save_to_json(data: dict,
         NameError: if filename doesn't contain .json at the end
     """
     if filename.split(".")[-1].lower() == 'json':
-        with open(filename, "w") as f:
-            json.dump(data, f, indent=indent)
+        with open(filename, "w") as file:
+            json.dump(data, file, indent=indent)
     else:
         raise NameError('Please include ".json" in the filename')
 
@@ -171,9 +173,8 @@ def append_to_bash(alias: str, line: str) -> None:
     """
     bash = os.path.expanduser("~") + '/.bash_aliases'
     print(remove_if_exists(alias, bash))
-    with open(bash, 'a+') as f:
-        # if line starts with(alias {alias}')
-        f.write('alias ' + alias + f"='{line}'")
+    with open(bash, 'a+') as file:
+        file.write('alias ' + alias + f"='{line}'")
 
 
 def remove_if_exists(alias: str, path: str) -> None:
@@ -186,16 +187,17 @@ def remove_if_exists(alias: str, path: str) -> None:
     """
     if not os.path.exists(path):
         return
-    with open(path, "r") as f:
-        lines = f.readlines()
-    with open(path, "w") as f:
+    with open(path, "r") as file:
+        lines = file.readlines()
+
+    with open(path, "w") as file:
         for line in lines:
             # We only write back lines which is not alias
             if f'alias {alias}' not in line.strip("\n"):
-                f.write(line)
+                file.write(line)
 
 
-def normalize_date(format: str, date: int) -> str:
+def normalize_date(formatting: str, date: int) -> str:
     """
     Converts date from nanoseconds to the human readable form
 
@@ -206,12 +208,13 @@ def normalize_date(format: str, date: int) -> str:
     Returns:
         str: Human readable format of a date
     """
-    return time.strftime(format, time.localtime(date))
+    return time.strftime(formatting, time.localtime(date))
 
 
-def find_word(w, s) -> Optional[Match[str]]:
-    return re.compile(r'\b({0})\b'.format(w),
-                      flags=re.IGNORECASE).search(s)
+def find_word(word, src) -> Optional[Match[str]]:
+    """Find word in a src using regex"""
+    return re.compile(r'\b({0})\b'.format(word),
+                      flags=re.IGNORECASE).search(src)
 
 
 if __name__ == '__main__':
