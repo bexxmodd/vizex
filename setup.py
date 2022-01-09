@@ -8,16 +8,16 @@ with open('requirements.txt') as r:
 
 setup(
     name='vizex',
-    version='2.0.4',
+    version='2.1.0',
     author='Beka Modebadze',
     author_email='bexx.modd@gmail.com',
     description='UNIX/Linux Terminal program to graphically display the disk space usage and/or directory data',
     long_description=long_description,
     long_description_content_type ='text/markdown',
     url='https://github.com/bexxmodd/vizex',
-    package_dir = {'': 'main'},
-    py_modules=['cli', 'disks', 'tools', 'charts', 'battery', 'cpu', 'files', 'viztree'],
-    packages = find_packages(where='main'),
+    package_dir = {'': 'vizex'},
+    py_modules=['cli',  'vizexdu/disks', 'tools', 'vizexdu/charts', 'vizexdu/battery', 'vizexdu/cpu', 'vizexdf/files'],
+    packages = find_packages(where='vizex'),
     classifiers=[
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
@@ -30,5 +30,6 @@ setup(
         [console_scripts]
         vizex=cli:disk_usage
         vizexdf=cli:dirs_files
+        vizextree=cli:print_tree
     '''
 )

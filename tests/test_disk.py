@@ -11,7 +11,8 @@ import unittest
 
 from unittest.mock import MagicMock, call
 from colored import fg, attr, stylize
-from charts import Options
+from vizex.vizexdu.charts import Options
+
 
 @unittest.skip("Tests need to be updated to suit the changes in the disks.py module")
 class TestDiskUsage(unittest.TestCase):

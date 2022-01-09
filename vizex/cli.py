@@ -4,16 +4,16 @@ import click
 import sys
 
 from disks import DiskUsage
-from files import DirectoryFiles
 from battery import Battery
 from charts import Options
 from cpu import CPUFreq
-from tools import append_to_bash
+from files import DirectoryFiles
 from viztree import construct_tree
+from tools import append_to_bash
 
 
-# ----- vizexdf options and arguments -----
-@click.version_option('2.0.4', message='%(prog)s version %(version)s')
+# ----- vizextree options and arguments -----
+@click.version_option('2.1.0', message='%(prog)s version %(version)s')
 @click.command(options_metavar='[options]')
 @click.argument(
     'path',
@@ -22,10 +22,43 @@ from viztree import construct_tree
     metavar='[path]'
 )
 @click.option(
-    '-t', '--tree',
-    nargs=1,
+    'level', '-l',
     type=int,
-    help='Print the directory list tree'
+    default=3,
+    help="How many levels of Directory Tree to be printed (By Default it's 3)"
+)
+def print_tree(path: str, level: int) -> None:
+    """
+\b
+
+__   _(_)_________  _| |_ _ __ ___  ___
+\ \ / / |_  / _ \ \/ / __| '__/ _ \/ _ \
+ \ V /| |/ /  __/>  <| |_| | |  __/  __/
+  \_/ |_/___\___/_/\_\\__|_|  \___|\___|
+
+    Made by: Beka Modebadze
+
+
+    If you want to print the directory tree run vizextree -path -level
+    the level of how many child directory/files you want to be printed.
+
+    Example:
+
+        vizextree -l 2
+
+    This'll print a directory tree of current working directory for two levels
+    """
+    construct_tree(path, level)
+
+
+# ----- vizexdf options and arguments -----
+@click.version_option('2.1.0', message='%(prog)s version %(version)s')
+@click.command(options_metavar='[options]')
+@click.argument(
+    'path',
+    type=click.Path(exists=True),
+    default='.',
+    metavar='[path]'
 )
 @click.option(
     '-s', '--sort',
@@ -45,11 +78,11 @@ from viztree import construct_tree
 @click.option(
     '-l', '--alias',
     is_flag=True,
-    help='Store customized terminal command for vizexdf as an alias so you don\'t have to repeat the line everytime.'
-         + '<-l> should always be the last command in the line'
+    help='Store customized terminal command for vizexdf as an alias so '
+    + 'you don\'t have to repeat the line everytime.'
+    + '<-l> should always be the last command in the line'
 )
-def dirs_files(tree: int, sort: str, all: str,
-               desc: str, path: str, alias: str) -> None:
+def dirs_files(sort: str, all: str, desc: str, path: str, alias: str) -> None:
     """
 \b
 ██╗   ██╗██╗███████╗███████╗██╗  ██╗     _  __
@@ -72,31 +105,21 @@ You can also chain options for --all --desc --sort.
 
     Example: vizexdf -ads name
 
-Here `vizexdf` will print 'all' (-a) files and directories 
+Here `vizexdf` will print 'all' (-a) files and directories
 and 'sort' (-s) them by 'name' in 'descending' (-d) order.
 
-If you just want to print the directory tree run vizexdf with --tree/-tree and supply
-the level of how many child directory/files you want to be printed.
 
-    Example: vizexdf -tree=2
-
-This will sort in descending order by name and show all the hidden files and folders.
+This'll sort in descending order by name and show all the hidden files & folders.
 !Just make sure 's' is placed at the end of the options chain!
     """
     if alias:  # Set vizexdf as alias
         line = 'vizexdf ' + ' '.join(sys.argv[1:-1])
         append_to_bash('vizexdf', line)
 
-    if tree:
-        construct_tree(dir_path=path, level=tree)
-        return
-
     show = all
     desc_sort = desc
     sort_by = sort
     dirpath = path
-
-
 
     # Execute vizexdf
     dir_files = DirectoryFiles(path=dirpath, sort_by=sort_by,
@@ -105,7 +128,7 @@ This will sort in descending order by name and show all the hidden files and fol
 
 
 # ----- vizex options and arguments -----
-@click.version_option('2.0.4', message='%(prog)s version %(version)s')
+@click.version_option('2.1.0', message='%(prog)s version %(version)s')
 @click.command(options_metavar='[options]')
 @click.argument('arg',
                 default='disk',
@@ -113,8 +136,8 @@ This will sort in descending order by name and show all the hidden files and fol
 @click.option(
     "--save",
     help="Export your disk usage data into a CSV or JSON file:"
-         + "Takes a full path with a file name as an argument. "
-         + "File type will be defined based on a <.type> of the filename"
+    + "Takes a full path with a file name as an argument. "
+    + "File type will be defined based on a <.type> of the filename"
 )
 @click.option(
     "-P",
@@ -122,7 +145,7 @@ This will sort in descending order by name and show all the hidden files and fol
     default=None,
     multiple=True,
     help="Print directory for a provided path."
-         + " It can be both, full and relative path",
+    + " It can be both, full and relative path",
 )
 @click.option(
     "-X",
@@ -182,18 +205,19 @@ This will sort in descending order by name and show all the hidden files and fol
 @click.option(
     '-l', '--alias',
     is_flag=True,
-    help='Store customized terminal command for vizexdf as an alias so you don\'t have to repeat the line everytime.'
-         + '<-l> should always be the last command in the line'
+    help='Store customized terminal command for vizexdf as an alias so you'
+    + ' don\'t have to repeat the line everytime.'
+    + '<-l> should always be the last command in the line'
 )
 def disk_usage(arg, save, path, every,
                details, exclude, header, style,
                text, graph, mark, alias) -> None:
     """
-\b                                            
+\b
 ██╗   ██╗██╗███████╗███████╗██╗  ██╗
 ██║   ██║██║╚══███╔╝██╔════╝╚██╗██╔╝
-██║   ██║██║  ███╔╝ █████╗   ╚███╔╝ 
-╚██╗ ██╔╝██║ ███╔╝  ██╔══╝   ██╔██╗ 
+██║   ██║██║  ███╔╝ █████╗   ╚███╔╝
+╚██╗ ██╔╝██║ ███╔╝  ██╔══╝   ██╔██╗
  ╚████╔╝ ██║███████╗███████╗██╔╝ ██╗
   ╚═══╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝
     Made by: Beka Modebadze
@@ -252,4 +276,4 @@ cpu --> will visualize the usage of each CPU in live time *(beta mode)
 
 
 if __name__ == "__main__":
-    dirs_files()
+    print_tree()

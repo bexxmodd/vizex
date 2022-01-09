@@ -15,10 +15,10 @@ import unittest.mock
 from colored import fg, attr, stylize
 
 # --- Tools' methods to be tested ---
-from main.tools import save_to_csv, save_to_json
-from main.tools import bytes_to_human_readable, create_usage_warning
-from main.tools import ints_to_human_readable, printml
-from main.tools import append_to_bash, remove_if_exists
+from vizex.tools import save_to_csv, save_to_json
+from vizex.tools import bytes_to_human_readable, create_usage_warning
+from vizex.tools import ints_to_human_readable, printml
+from vizex.tools import append_to_bash, remove_if_exists
 
 
 class TestTools(unittest.TestCase):
@@ -42,7 +42,6 @@ class TestTools(unittest.TestCase):
             self.assertEqual('22.3 TB', bt, msg='24500000000000 b should have been 22.3 TB')
         except Exception as e:
             self.fail(f"Exception occured when tried to convert bytes to human readable format {e}")
-    
     def test_bytes_to_human_readable_convert_to_mb(self):
         try:
             for i in range(20):
@@ -104,7 +103,7 @@ class TestTools(unittest.TestCase):
 '''
         self.assert_stdout(arts, 1, expected1)
         self.assert_stdout(arts, 2, expected2)
-    
+
     def test_create_usage_warning_blinking_red(self):
         try:
             compare_red = f"{stylize('39.5% used', attr('blink') + fg(9))}"
@@ -164,7 +163,7 @@ class TestTools(unittest.TestCase):
                                 msg=f'{filename} is not empty')
         except Exception as e:
             self.fail(f'Exception occured when trying to save an empty CSV file {e}')
-    
+
     def test_save_to_json_wrong_filename(self):
         data = {'test_01': [11, 33, 55]}
         try:
@@ -189,7 +188,7 @@ class TestTools(unittest.TestCase):
                     ['test_02', '22', '44', '66\n'],
                     ['test_03', '33', '77', '99\n']
                 ]
-                
+
                 with open(tmpf.name) as f:
                     for line, other in zip(f, other_f):
                         self.assertListEqual(other, line.split(','),
@@ -220,7 +219,7 @@ class TestTools(unittest.TestCase):
             with tempfile.NamedTemporaryFile(mode='w+', suffix='.json') as tmpf:
                 save_to_json(data=data, filename=tmpf.name)
                 self.assertTrue(os.path.isfile(tmpf.name))
-                
+
                 with open(tmpf.name) as f:
                     loaded = json.load(tmpf)
                     for key in data.keys():

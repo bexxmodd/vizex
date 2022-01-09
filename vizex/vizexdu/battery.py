@@ -1,10 +1,12 @@
-# Battery module for vizex
+'''
+Battery module for vizex
+'''
 
 import datetime
 import psutil
 
 from math import ceil
-from charts import Chart, HorizontalBarChart, Options
+from .charts import Chart, HorizontalBarChart, Options
 
 
 class Battery:
@@ -43,7 +45,7 @@ class Battery:
         """ Format more information about the battery """
         time_left = datetime.timedelta(seconds=self._battery.secsleft)
 
-        if (plugged := self._battery.power_plugged):
+        if plugged := self._battery.power_plugged:
             return format("Charging")
         return f"Plugged in: {plugged}\tDischarging: {time_left}\t"
 
