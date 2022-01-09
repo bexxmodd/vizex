@@ -5,12 +5,10 @@ if __name__ == '__main__':
 
 import unittest
 import tempfile
-import string
-import random
 import os
 import warnings
 
-from files import DirectoryFiles
+from vizex.vizexdf.files import DirectoryFiles
 
 
 class TestDirectoryFiles(unittest.TestCase):
@@ -40,7 +38,7 @@ class TestDirectoryFiles(unittest.TestCase):
         try:
             df = DirectoryFiles(path=self.tmpd.name)
             usage = df.get_usage()
-            self.assertListEqual([], usage, 
+            self.assertListEqual([], usage,
                                 msg='For empty folder method should return an empty list')
         except Exception as e:
             self.fail(f'Exception occured when tried to get_usage of an empty directory {e}')
@@ -57,7 +55,7 @@ class TestDirectoryFiles(unittest.TestCase):
                 f = tempfile.NamedTemporaryFile(mode='wb',
                                                 dir=nested_nested_tmp.name,
                                                 delete=False)
-                f.write(b'0' * 1024 * 1024) 
+                f.write(b'0' * 1024 * 1024)
             size = DirectoryFiles().get_dir_size(self.tmpd.name)
             self.assertEqual(10485760, size,
                             msg='Total size of directory should be 10485760')

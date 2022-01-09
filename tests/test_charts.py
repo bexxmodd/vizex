@@ -9,7 +9,7 @@ import unittest
 import unittest.mock
 
 from colored import fg, attr, stylize
-from charts import Options, Chart, HorizontalBarChart, VerticalBarChart
+from vizex.vizexdu.charts import Options, Chart, HorizontalBarChart
 
 
 class TestOptions(unittest.TestCase):
@@ -118,19 +118,6 @@ class TestHorizontalBarChart(unittest.TestCase):
                 compare_02, self.horizontal_chart.draw_horizontal_bar(10, 10))
         except Exception as e:
             self.fail(f'Exception occured when trying to draw a full bar chart {e}')
-
-
-class TestVerticalBarChart(unittest.TestCase):
-    """Test Printing of Vertical bars in the terminal"""
-
-    @classmethod
-    def setUpClass(cls):
-        cls.chart = VerticalBarChart()
-
-    def test_draw_vertical_bar(self):
-        self.assertEqual(
-            self.chart.draw_vertical_bar(10, 5)[:22],
-            '\n░░░░░░░░░  \n░░░░░░░░░')
 
 
 if __name__ == '__main__':

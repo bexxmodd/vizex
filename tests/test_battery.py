@@ -6,7 +6,7 @@ if __name__ == '__main__':
 import unittest
 import psutil
 
-from battery import Battery
+from vizex.vizexdu.battery import Battery
 
 
 class TestBattery(unittest.TestCase):
