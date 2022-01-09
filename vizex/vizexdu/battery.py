@@ -1,4 +1,6 @@
-# Battery module for vizex
+'''
+Battery module for vizex
+'''
 
 import datetime
 import psutil
@@ -43,7 +45,7 @@ class Battery:
         """ Format more information about the battery """
         time_left = datetime.timedelta(seconds=self._battery.secsleft)
 
-        if (plugged := self._battery.power_plugged):
+        if plugged := self._battery.power_plugged:
             return format("Charging")
         return f"Plugged in: {plugged}\tDischarging: {time_left}\t"
 

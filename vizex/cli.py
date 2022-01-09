@@ -13,7 +13,7 @@ from viztree import construct_tree
 
 
 # ----- vizextree options and arguments -----
-@click.version_option('2.0.5', message='%(prog)s version %(version)s')
+@click.version_option('2.0.6', message='%(prog)s version %(version)s')
 @click.command(options_metavar='[options]')
 @click.argument(
     'path',
@@ -46,13 +46,13 @@ __   _(_)_________  _| |_ _ __ ___  ___
 
         vizextree -l 2
 
-    This will print a directory tree of current working directory for two levels
+    This'll print a directory tree of current working directory for two levels
     """
     construct_tree(path, level)
 
 
 # ----- vizexdf options and arguments -----
-@click.version_option('2.0.5', message='%(prog)s version %(version)s')
+@click.version_option('2.0.6', message='%(prog)s version %(version)s')
 @click.command(options_metavar='[options]')
 @click.argument(
     'path',
@@ -78,8 +78,9 @@ __   _(_)_________  _| |_ _ __ ___  ___
 @click.option(
     '-l', '--alias',
     is_flag=True,
-    help='Store customized terminal command for vizexdf as an alias so you don\'t have to repeat the line everytime.'
-         + '<-l> should always be the last command in the line'
+    help='Store customized terminal command for vizexdf as an alias so '
+    + 'you don\'t have to repeat the line everytime.'
+    + '<-l> should always be the last command in the line'
 )
 def dirs_files(sort: str, all: str, desc: str, path: str, alias: str) -> None:
     """
@@ -108,7 +109,7 @@ Here `vizexdf` will print 'all' (-a) files and directories
 and 'sort' (-s) them by 'name' in 'descending' (-d) order.
 
 
-This will sort in descending order by name and show all the hidden files and folders.
+This'll sort in descending order by name and show all the hidden files & folders.
 !Just make sure 's' is placed at the end of the options chain!
     """
     if alias:  # Set vizexdf as alias
@@ -127,7 +128,7 @@ This will sort in descending order by name and show all the hidden files and fol
 
 
 # ----- vizex options and arguments -----
-@click.version_option('2.0.5', message='%(prog)s version %(version)s')
+@click.version_option('2.0.6', message='%(prog)s version %(version)s')
 @click.command(options_metavar='[options]')
 @click.argument('arg',
                 default='disk',
@@ -135,8 +136,8 @@ This will sort in descending order by name and show all the hidden files and fol
 @click.option(
     "--save",
     help="Export your disk usage data into a CSV or JSON file:"
-         + "Takes a full path with a file name as an argument. "
-         + "File type will be defined based on a <.type> of the filename"
+    + "Takes a full path with a file name as an argument. "
+    + "File type will be defined based on a <.type> of the filename"
 )
 @click.option(
     "-P",
@@ -144,7 +145,7 @@ This will sort in descending order by name and show all the hidden files and fol
     default=None,
     multiple=True,
     help="Print directory for a provided path."
-         + " It can be both, full and relative path",
+    + " It can be both, full and relative path",
 )
 @click.option(
     "-X",
@@ -204,8 +205,9 @@ This will sort in descending order by name and show all the hidden files and fol
 @click.option(
     '-l', '--alias',
     is_flag=True,
-    help='Store customized terminal command for vizexdf as an alias so you don\'t have to repeat the line everytime.'
-         + '<-l> should always be the last command in the line'
+    help='Store customized terminal command for vizexdf as an alias so you'
+    + ' don\'t have to repeat the line everytime.'
+    + '<-l> should always be the last command in the line'
 )
 def disk_usage(arg, save, path, every,
                details, exclude, header, style,

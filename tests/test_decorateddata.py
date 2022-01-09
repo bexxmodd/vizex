@@ -7,7 +7,7 @@ if __name__ == '__main__':
 import unittest
 import unittest.mock
 
-from main.tools import DecoratedData
+from vizex.tools import DecoratedData
 
 
 class TestTools(unittest.TestCase):
@@ -37,7 +37,7 @@ class TestTools(unittest.TestCase):
         test_a = DecoratedData(7, 'five')
         test_b = DecoratedData(5, 'seven')
         self.assertGreater(test_a, test_b)
-    
+
     def test_decorated_greater_equal(self):
         test_a = DecoratedData(7, 'five')
         test_b = DecoratedData(5, 'seven')
