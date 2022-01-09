@@ -5,7 +5,7 @@
 import psutil
 import platform
 
-from charts import Chart, HorizontalBarChart, Options
+from .charts import Chart, HorizontalBarChart, Options
 from tools import ints_to_human_readable
 from tools import save_to_csv, save_to_json, create_usage_warning
 

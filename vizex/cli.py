@@ -4,16 +4,16 @@ import click
 import sys
 
 from disks import DiskUsage
-from files import DirectoryFiles
 from battery import Battery
 from charts import Options
 from cpu import CPUFreq
-from tools import append_to_bash
+from files import DirectoryFiles
 from viztree import construct_tree
+from tools import append_to_bash
 
 
 # ----- vizextree options and arguments -----
-@click.version_option('2.0.6', message='%(prog)s version %(version)s')
+@click.version_option('2.1.0', message='%(prog)s version %(version)s')
 @click.command(options_metavar='[options]')
 @click.argument(
     'path',
@@ -52,7 +52,7 @@ __   _(_)_________  _| |_ _ __ ___  ___
 
 
 # ----- vizexdf options and arguments -----
-@click.version_option('2.0.6', message='%(prog)s version %(version)s')
+@click.version_option('2.1.0', message='%(prog)s version %(version)s')
 @click.command(options_metavar='[options]')
 @click.argument(
     'path',
@@ -128,7 +128,7 @@ This'll sort in descending order by name and show all the hidden files & folders
 
 
 # ----- vizex options and arguments -----
-@click.version_option('2.0.6', message='%(prog)s version %(version)s')
+@click.version_option('2.1.0', message='%(prog)s version %(version)s')
 @click.command(options_metavar='[options]')
 @click.argument('arg',
                 default='disk',
