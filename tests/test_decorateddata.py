@@ -7,7 +7,7 @@ if __name__ == '__main__':
 import unittest
 import unittest.mock
 
-from vizex.tools import DecoratedData
+from tools import DecoratedData
 
 
 class TestTools(unittest.TestCase):

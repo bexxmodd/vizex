@@ -3,7 +3,6 @@ if __name__ == '__main__':
     from __access import ADD_PATH
     ADD_PATH()
 
-
 import io
 import random
 import psutil
@@ -11,7 +10,7 @@ import unittest
 
 from unittest.mock import MagicMock, call
 from colored import fg, attr, stylize
-from vizex.vizexdu.charts import Options
+from vizexdu.charts import Options
 
 
 @unittest.skip("Tests need to be updated to suit the changes in the disks.py module")

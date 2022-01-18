@@ -8,7 +8,7 @@ import tempfile
 import os
 import warnings
 
-from vizex.vizexdf.files import DirectoryFiles
+from vizexdf.files import DirectoryFiles
 
 
 class TestDirectoryFiles(unittest.TestCase):

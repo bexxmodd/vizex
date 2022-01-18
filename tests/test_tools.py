@@ -15,10 +15,10 @@ import unittest.mock
 from colored import fg, attr, stylize
 
 # --- Tools' methods to be tested ---
-from vizex.tools import save_to_csv, save_to_json
-from vizex.tools import bytes_to_human_readable, create_usage_warning
-from vizex.tools import ints_to_human_readable, printml
-from vizex.tools import append_to_bash, remove_if_exists
+from tools import save_to_csv, save_to_json
+from tools import bytes_to_human_readable, create_usage_warning
+from tools import ints_to_human_readable, printml
+from tools import append_to_bash, remove_if_exists
 
 
 class TestTools(unittest.TestCase):

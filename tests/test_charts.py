@@ -9,7 +9,7 @@ import unittest
 import unittest.mock
 
 from colored import fg, attr, stylize
-from vizex.vizexdu.charts import Options, Chart, HorizontalBarChart
+from vizexdu.charts import Options, Chart, HorizontalBarChart
 
 
 class TestOptions(unittest.TestCase):
