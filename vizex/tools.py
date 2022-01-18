@@ -6,10 +6,9 @@ import os
 import re
 import json
 import time
-from typing import Optional, Match
-
 import pandas as pd
 
+from typing import Optional, Match
 from math import ceil
 from colored import fg, attr, stylize
 from dataclasses import dataclass

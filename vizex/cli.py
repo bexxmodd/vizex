@@ -1,15 +1,15 @@
-# Command line interface for VIZEX and VIZEXdf
+# Command line interface for VIZEX ,VIZEXdf and VIZEXtree
 
 import click
 import sys
 
-from disks import DiskUsage
-from battery import Battery
-from charts import Options
-from cpu import CPUFreq
-from files import DirectoryFiles
-from viztree import construct_tree
 from tools import append_to_bash
+from vizexdu.disks import DiskUsage
+from vizexdu.battery import Battery
+from vizexdu.charts import Options
+from vizexdu.cpu import CPUFreq
+from vizexdf.files import DirectoryFiles
+from vizextree.viztree import construct_tree
 
 
 # ----- vizextree options and arguments -----
