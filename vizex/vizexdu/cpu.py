@@ -47,7 +47,7 @@ class CPUFreq:
                 percent = round((i.current - self._min) / (self._max - self._min) * 100, 2)
                 ch.chart(
                     title=f'CPU #{n}',
-                    pre_graph_text=f'Current: {round(i.current, 1)}hz || Min: {self._min}hz || Max: {self._max}hz',
+                    pre_graph_text=f'Current: {round(i.current, 1)}MHz || Min: {self._min}MHz || Max: {self._max}MHz',
                     post_graph_text=tools.create_usage_warning(percent, 30, 15),
                     footer=None,
                     maximum=self._max - self._min,
@@ -79,7 +79,7 @@ class CPUFreq:
             cpu = psutil.cpu_freq(percpu=False)
             ch.chart(
                 title='CPU (ALL)',
-                pre_graph_text=f'Current: {round(cpu.current, 1)}hz || Min: {self._min}hz || Max: {self._max}hz',
+                pre_graph_text=f'Current: {round(cpu.current, 1)}MHz || Min: {self._min}MHz || Max: {self._max}MHz',
                 post_graph_text=tools.create_usage_warning(
                     round((cpu.current - self._min) / (self._max - self._min) * 100, 2),
                     30, 15),
