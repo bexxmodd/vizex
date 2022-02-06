@@ -135,7 +135,7 @@ This'll sort in descending order by name and show all the hidden files & folders
                 metavar='command')
 @click.option(
     "--save",
-    help="Export your disk usage data into a CSV or JSON file:"
+    help="Export your disk/cpu usage data into a CSV or JSON file:"
     + "Takes a full path with a file name as an argument. "
     + "File type will be defined based on a <.type> of the filename"
 )
@@ -265,7 +265,7 @@ cpu --> will visualize the usage of each CPU in live time *(beta mode)
             print('Battery not found!')
     elif arg == 'cpu':
         cpus = CPUFreq()
-        cpus.display_separately()
+        cpus.display_separately(filename=save)
     else:
         renderer = DiskUsage(
             path=path, exclude=exclude_list, details=details, every=every
