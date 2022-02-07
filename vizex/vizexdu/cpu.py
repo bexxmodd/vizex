@@ -43,24 +43,25 @@ class CPUFreq:
         while True:
             cpu = psutil.cpu_freq(percpu=True)
 
-            for n, i in enumerate(cpu, start=1):
-                percent = round((i.current - self._min) / (self._max - self._min) * 100, 2)
+            for i, core in enumerate(cpu, start=1):
+                min_freq, max_freq, current_freq = core.min, core.max, core.current
+                percent = round((current_freq - min_freq) / (max_freq - min_freq) * 100, 2)
                 ch.chart(
-                    title=f'CPU #{n}',
-                    pre_graph_text=f'Current: {round(i.current, 1)}MHz || Min: {self._min}MHz || Max: {self._max}MHz',
+                    title=f'CPU #{i}',
+                    pre_graph_text=f'Current: {round(current_freq, 1)}MHz || Min: {min_freq}MHz || Max: {max_freq}MHz',
                     post_graph_text=tools.create_usage_warning(percent, 30, 15),
                     footer=None,
-                    maximum=self._max - self._min,
-                    current=i.current - self._min
+                    maximum=max_freq - min_freq,
+                    current=current_freq - min_freq,
                 )
 
                 if save:
                     cpu = {
                         'user': [getpass.getuser()],
-                        'cpu': [n],
+                        'cpu': [i],
                         'time': [time.time()],
-                        'current': [i.current],
-                        'usage': [percent]
+                        'current': [current_freq],
+                        'usage': [percent],
                     }
 
                     tools.save_to_csv(cpu, '~/cpus.csv')
@@ -69,7 +70,6 @@ class CPUFreq:
 
             time.sleep(0.8)
             os.system('cls' if os.name == 'nt' else 'clear')
-        tools.save_to_csv(cpu, '~/cpu.csv')
 
     def display_combined(self) -> None:
         os.system('cls' if os.name == 'nt' else 'clear')
