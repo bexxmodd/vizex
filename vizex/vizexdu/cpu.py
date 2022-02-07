@@ -35,7 +35,7 @@ class CPUFreq:
     def __init__(self) -> None:
         return
 
-    def display_separately(self, save=True) -> None:
+    def display_separately(self, filename="") -> None:
         os.system('cls' if os.name == 'nt' else 'clear')
         ch = HorizontalBarChart()
         ch.options.graph_color = 'white'
@@ -55,7 +55,7 @@ class CPUFreq:
                     current=current_freq - min_freq,
                 )
 
-                if save:
+                if filename:
                     cpu = {
                         'user': [getpass.getuser()],
                         'cpu': [i],
@@ -64,7 +64,11 @@ class CPUFreq:
                         'usage': [percent],
                     }
 
-                    tools.save_to_csv(cpu, '~/cpus.csv')
+                    if (filename.split(".")[-1].lower()) == 'csv':
+                        tools.save_to_csv(cpu, filename)
+                    else:
+                        raise NameError("Not supported file type, please indicate "
+                                        + ".CSV at the end of the filename")
 
                 print()
 
@@ -95,4 +99,4 @@ class CPUFreq:
 
 if __name__ == '__main__':
     cpu_freq = CPUFreq()
-    cpu_freq.display_separately()
+    cpu_freq.display_separately("~/cpu.csv")
