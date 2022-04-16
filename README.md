@@ -17,7 +17,7 @@
 
 **vizex** is the terminal program for the UNIX/Linux systems which helps the user to visualize the disk space usage for every partition and media on the user's machine. **vizex** is highly customizable and can fit any user's taste and preferences.
 
-**vizexdf** is a new feature that allows to organize and print directory data in the terminal. With a recent release 2.0.4 `vizexdf` does directory parsing using Asynchronious execution, which improved runtime perfromance by over 400%.
+**vizexdf** is a new feature that allows to organize and print directory data in the terminal. With a recent release 2.0.4 `vizexdf` does directory parsing using Asynchronous execution, which improved runtime performance by over 400%.
 
 You can check [full release history here.](https://github.com/bexxmodd/vizex/wiki/Release-History)
 
