@@ -10,7 +10,7 @@ from vizexdu.battery import Battery
 
 
 class TestBattery(unittest.TestCase):
-    """ Test battry module """
+    """ Test battery module """
 
     def test_Battery_constructor(self):
         if not (has_battery := psutil.sensors_battery()):
@@ -23,7 +23,7 @@ class TestBattery(unittest.TestCase):
         if not psutil.sensors_battery():
             pass
         else:
-            self.assertTrue(isinstance(Batter().create_details_text(), str))
+            self.assertTrue(isinstance(Battery().create_details_text(), str))
 
 
 if __name__ == '__main__':
